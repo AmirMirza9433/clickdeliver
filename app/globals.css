@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 30%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 217 91% 60%;
+    --chart-1: 217 91% 60%;
+    --chart-2: 59 89% 46%;
+    --chart-3: 16 100% 50%;
+    --chart-4: 259 95% 65%;
+    --chart-5: 12 97% 61%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-black text-white;
+  }
+
+  html.prefers-reduced-motion {
+    scroll-behavior: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-2 rounded-lg bg-brand-primary hover:bg-blue-600 text-white font-heading font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-brand-primary/50;
+  }
+
+  .btn-ghost {
+    @apply px-6 py-2 rounded-lg border border-brand-border text-white font-heading font-semibold hover:bg-brand-surface transition-all duration-300;
+  }
+
+  .section-heading {
+    @apply text-4xl md:text-5xl font-heading font-bold text-white;
+  }
+
+  .section-subheading {
+    @apply text-lg text-gray-400 max-w-2xl mx-auto;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-brand-primary to-blue-500 bg-clip-text text-transparent;
+  }
+}
+
