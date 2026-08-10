@@ -4,8 +4,8 @@ export const APP_INFO = {
   email: 'clickdeliver.app@gmail.com',
   phone: '+923287872532',
   location: 'Alipur Chattha, Punjab, Pakistan',
-  playStoreUrl: 'https://play.google.com/store/apps/details?id=com.clickdeliver',
-  appStoreUrl: '#',
+  playStoreUrl: 'https://play.google.com/store/apps/details?id=com.clickdelivers.app&pcampaignid=web_share',
+  appStoreUrl: '#', // TODO: Replace with actual iOS App Store link
 };
 
 export const SOCIAL_LINKS = {

@@ -60,9 +60,7 @@ export function Navbar() {
           <div className="flex items-center gap-4">
             {/* Desktop CTA */}
             <a
-              href={APP_INFO.playStoreUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#download"
               className="hidden md:flex px-6 py-2 rounded-lg bg-brand-primary hover:bg-blue-600 text-white font-heading font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-brand-primary/50"
             >
               Download App
@@ -103,9 +101,8 @@ export function Navbar() {
                   </Link>
                 ))}
                 <a
-                  href={APP_INFO.playStoreUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#download"
+                  onClick={() => setMobileOpen(false)}
                   className="w-full px-4 py-2 rounded-lg bg-brand-primary hover:bg-blue-600 text-white font-heading font-semibold text-sm transition-all text-center"
                 >
                   Download App

@@ -2,8 +2,6 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight, Play } from "lucide-react";
 import { APP_INFO } from "@/lib/constants";
 import { staggerContainer, staggerItem, slideRight } from "@/lib/animations";
 
@@ -56,21 +54,42 @@ export function HeroSection() {
 
           <motion.div
             variants={staggerItem}
-            className="flex flex-col sm:flex-row gap-4"
+            className="flex flex-col sm:flex-row gap-4 items-center sm:items-start"
           >
             <a
               href={APP_INFO.playStoreUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg bg-gradient-to-r from-brand-primary to-blue-600 text-white font-heading font-semibold hover:shadow-lg hover:shadow-brand-primary/50 transition-all duration-300 hover:scale-105"
+              id="hero-google-play"
             >
-              Download App
-              <ArrowRight className="w-5 h-5" />
+              <motion.div whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.97 }}>
+                <Image
+                  src="/google-play-badge.svg"
+                  alt="Get it on Google Play"
+                  width={190}
+                  height={56}
+                  className="h-[56px] w-auto drop-shadow-lg"
+                  unoptimized
+                />
+              </motion.div>
             </a>
-            <button className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg border border-brand-border text-white font-heading font-semibold hover:bg-brand-surface transition-all duration-300 hover:border-brand-primary group">
-              <Play className="w-5 h-5 group-hover:text-brand-primary transition-colors" />
-              Watch Demo
-            </button>
+            <div className={APP_INFO.appStoreUrl === "#" ? "opacity-50 cursor-not-allowed pointer-events-none relative" : "relative"}>
+              <motion.div whileHover={APP_INFO.appStoreUrl !== "#" ? { scale: 1.06 } : {}}>
+                <Image
+                  src="/app-store-badge.svg"
+                  alt="Download on the App Store"
+                  width={190}
+                  height={56}
+                  className="h-[56px] w-auto drop-shadow-lg"
+                  unoptimized
+                />
+              </motion.div>
+              {APP_INFO.appStoreUrl === "#" && (
+                <span className="absolute -top-2 -right-2 bg-brand-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  Soon
+                </span>
+              )}
+            </div>
           </motion.div>
         </motion.div>
 

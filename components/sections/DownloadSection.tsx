@@ -29,90 +29,144 @@ export function DownloadSection() {
             Download Now — FREE hai
           </h2>
           <p className="text-lg text-gray-400">
-            Available on Android. iOS coming soon!
+            Available on Android &amp; iOS
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Left: Store Buttons */}
+          {/* Left: Store Badges */}
           <motion.div variants={slideLeft} className="space-y-6">
             <h3 className="text-2xl font-heading font-semibold text-white mb-8">
               Download ClickDeliver
             </h3>
 
-            {/* Play Store Button */}
+            {/* Google Play Badge */}
             <a
               href={APP_INFO.playStoreUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="block"
+              className="block w-fit"
+              id="download-google-play"
             >
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="bg-brand-surface border border-brand-border rounded-xl p-4 hover:border-brand-primary transition-all cursor-pointer group"
+                whileTap={{ scale: 0.97 }}
+                className="transition-all duration-200"
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="white"
-                      strokeWidth="2"
-                      className="w-8 h-8"
-                    >
-                      <path d="M17 8l4-4m0 0l-4-4m4 4v12m0 4H5a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2v14a2 2 0 01-2 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-400">Get it on</p>
-                    <p className="text-lg font-heading font-semibold text-white group-hover:text-brand-primary transition-colors">
-                      Google Play
-                    </p>
-                  </div>
-                </div>
+                <Image
+                  src="/google-play-badge.svg"
+                  alt="Get it on Google Play"
+                  width={200}
+                  height={60}
+                  className="h-[60px] w-auto"
+                  unoptimized
+                />
               </motion.div>
             </a>
 
-            {/* App Store Button */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="bg-brand-surface border border-brand-border rounded-xl p-4 cursor-not-allowed opacity-60"
+            {/* App Store Badge */}
+            <a
+              href={APP_INFO.appStoreUrl === "#" ? undefined : APP_INFO.appStoreUrl}
+              target={APP_INFO.appStoreUrl === "#" ? undefined : "_blank"}
+              rel="noopener noreferrer"
+              className={`block w-fit ${APP_INFO.appStoreUrl === "#" ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
+              id="download-app-store"
+              aria-disabled={APP_INFO.appStoreUrl === "#"}
             >
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center flex-shrink-0">
-                  <svg viewBox="0 0 24 24" fill="white" className="w-8 h-8">
-                    <path d="M18 2h-3V1h-2v1h-4V1H7v1H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 16H4V7h14v11z" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400">Coming Soon on</p>
-                  <p className="text-lg font-heading font-semibold text-gray-400">
-                    Apple App Store
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+              <motion.div
+                whileHover={APP_INFO.appStoreUrl !== "#" ? { scale: 1.05 } : {}}
+                whileTap={APP_INFO.appStoreUrl !== "#" ? { scale: 0.97 } : {}}
+                className="relative transition-all duration-200"
+              >
+                <Image
+                  src="/app-store-badge.svg"
+                  alt="Download on the App Store"
+                  width={200}
+                  height={60}
+                  className="h-[60px] w-auto"
+                  unoptimized
+                />
+                {APP_INFO.appStoreUrl === "#" && (
+                  <span className="absolute -top-2 -right-2 bg-brand-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                    Soon
+                  </span>
+                )}
+              </motion.div>
+            </a>
 
             <p className="text-sm text-gray-500 pt-4 border-t border-brand-border">
-              Requirements: Android 8.0 or later
+              Requirements: Android 8.0 or later · iOS 13 or later
             </p>
           </motion.div>
 
-          {/* Right: QR Code */}
+          {/* Right: Two QR Codes */}
           <motion.div
             variants={slideRight}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center gap-6"
           >
-            <div className="bg-white p-4 rounded-2xl mb-6 border-4 border-brand-primary shadow-2xl shadow-brand-primary/50">
-              <div className="w-48 h-48 bg-brand-surface rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <p className="text-2xl mb-2">📱</p>
-                  <p className="text-xs text-gray-400">QR Code</p>
+            <p className="text-sm font-heading font-semibold text-gray-400 tracking-widest uppercase">
+              Scan to Download
+            </p>
+
+            <div className="flex gap-6 items-start">
+              {/* Android QR */}
+              <div className="flex flex-col items-center gap-3">
+                <div className="bg-white p-3 rounded-2xl border-4 border-brand-primary shadow-2xl shadow-brand-primary/40">
+                  <Image
+                    src="/qr-android.png"
+                    alt="Android QR Code"
+                    width={144}
+                    height={144}
+                    className="w-36 h-36 rounded-lg"
+                    unoptimized
+                  />
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Image
+                    src="/google-play-badge.svg"
+                    alt="Google Play"
+                    width={80}
+                    height={24}
+                    className="h-5 w-auto opacity-80"
+                    unoptimized
+                  />
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="w-px bg-brand-border self-stretch mt-4" />
+
+              {/* iOS QR */}
+              <div className="flex flex-col items-center gap-3">
+                <div className="bg-white p-3 rounded-2xl border-4 border-gray-300 shadow-2xl shadow-gray-500/20 relative">
+                  <div className="absolute -top-2 -right-2 bg-brand-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10">
+                    Soon
+                  </div>
+                  {/* TODO: Replace src with actual iOS QR image once provided */}
+                  <div className="w-36 h-36 bg-gray-100 rounded-lg flex items-center justify-center opacity-50">
+                    <div className="text-center">
+                      <p className="text-3xl mb-1">🍎</p>
+                      <p className="text-[11px] text-gray-500 font-medium">iOS QR</p>
+                    </div>
+                  </div>
+                  {/* Once user provides QR, replace the div above with:
+                  <Image src="/qr-ios.png" alt="iOS QR Code" width={144} height={144} className="w-36 h-36 rounded-lg" /> */}
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Image
+                    src="/app-store-badge.svg"
+                    alt="App Store"
+                    width={80}
+                    height={24}
+                    className="h-5 w-auto opacity-50"
+                    unoptimized
+                  />
                 </div>
               </div>
             </div>
-            <p className="text-gray-400 font-body text-center max-w-xs">
-              Scan this QR code with your phone camera and download instantly
+
+            <p className="text-gray-500 font-body text-center text-sm max-w-xs">
+              Apne phone ka camera QR pe point karo — seedha download ho ga
             </p>
           </motion.div>
         </div>
