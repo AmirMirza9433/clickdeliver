@@ -6,22 +6,13 @@ const config: Config = {
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './data/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
       fontFamily: {
-        heading: 'var(--font-heading)',
-        body: 'var(--font-body)',
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        heading: ['var(--font-heading)', 'sans-serif'],
+        body: ['var(--font-body)', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -57,21 +48,22 @@ const config: Config = {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        chart: {
-          '1': 'hsl(var(--chart-1))',
-          '2': 'hsl(var(--chart-2))',
-          '3': 'hsl(var(--chart-3))',
-          '4': 'hsl(var(--chart-4))',
-          '5': 'hsl(var(--chart-5))',
-        },
         brand: {
-          bg: '#000000',
-          surface: '#1f222a',
-          primary: '#3b82f6',
-          border: '#2d3038',
-          success: '#10b981',
-          warning: '#f59e0b',
-          danger: '#ef4444',
+          bg: '#060911',
+          surface: '#0d1527',
+          surfaceLight: '#ffffff',
+          card: '#0f1b33',
+          cardHover: '#142445',
+          primary: '#387bf0',
+          primaryDark: '#2563eb',
+          primaryLight: '#60a5fa',
+          cyan: '#06b6d4',
+          emerald: '#10b981',
+          amber: '#f59e0b',
+          rose: '#f43f5e',
+          border: 'rgba(255, 255, 255, 0.08)',
+          borderHover: 'rgba(56, 123, 240, 0.4)',
+          textMuted: '#94a3b8',
         },
       },
       keyframes: {
@@ -83,28 +75,38 @@ const config: Config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
-        'float': {
+        float: {
           '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-20px)' },
+          '50%': { transform: 'translateY(-14px)' },
         },
         'pulse-glow': {
-          '0%, 100%': { opacity: '0.4' },
-          '50%': { opacity: '1' },
+          '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+          '50%': { opacity: '0.8', transform: 'scale(1.05)' },
         },
-        'slide-down': {
-          from: { transform: 'translateY(-20px)', opacity: '0' },
-          to: { transform: 'translateY(0)', opacity: '1' },
+        'marquee-left': {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'marquee-right': {
+          '0%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(0%)' },
+        },
+        shimmer: {
+          '100%': { transform: 'translateX(100%)' },
         },
       },
       animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-        'float': 'float 4s ease-in-out infinite',
-        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
-        'slide-down': 'slide-down 0.5s ease-out',
+        'accordion-down': 'accordion-down 0.25s ease-out',
+        'accordion-up': 'accordion-up 0.25s ease-out',
+        float: 'float 5s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 4s ease-in-out infinite',
+        'marquee-left': 'marquee-left 35s linear infinite',
+        'marquee-right': 'marquee-right 35s linear infinite',
+        shimmer: 'shimmer 2.5s infinite',
       },
     },
   },
   plugins: [require('tailwindcss-animate')],
 };
+
 export default config;

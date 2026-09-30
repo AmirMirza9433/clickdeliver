@@ -1,164 +1,173 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
-import { motion } from "framer-motion";
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 import {
   Facebook,
   Instagram,
-  Youtube,
-  Music2,
   Mail,
   Phone,
   MapPin,
-} from "lucide-react";
-import { APP_INFO, SOCIAL_LINKS, NAV_LINKS } from "@/lib/constants";
+  ArrowUpRight,
+  Heart,
+  ShieldCheck,
+} from 'lucide-react';
+import { TikTokIcon } from '@/components/ui/icons/TikTokIcon';
+import { APP_CONFIG, NAV_ITEMS } from '@/data/siteConfig';
 
 export function Footer() {
   const socialIcons = [
     {
       icon: Facebook,
-      href: SOCIAL_LINKS.facebook,
-      label: "Facebook",
+      href: APP_CONFIG.socials.facebook,
+      label: 'Facebook',
+      hoverColor: 'hover:text-blue-500 hover:border-blue-500',
     },
     {
       icon: Instagram,
-      href: SOCIAL_LINKS.instagram,
-      label: "Instagram",
+      href: APP_CONFIG.socials.instagram,
+      label: 'Instagram',
+      hoverColor: 'hover:text-pink-500 hover:border-pink-500',
     },
     {
-      icon: Youtube,
-      href: SOCIAL_LINKS.youtube,
-      label: "YouTube",
-    },
-    {
-      icon: Music2,
-      href: SOCIAL_LINKS.tiktok,
-      label: "TikTok",
+      icon: TikTokIcon,
+      href: APP_CONFIG.socials.tiktok,
+      label: 'TikTok',
+      hoverColor: 'hover:text-cyan-400 hover:border-cyan-400',
     },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
-    },
-  };
-
   return (
-    <footer className="bg-black border-t border-brand-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12"
-        >
-          {/* Brand */}
-          <motion.div variants={itemVariants} className="md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <Image
-                src="/logo.png"
-                alt="ClickDeliver"
-                width={50}
-                height={40}
-                className="w-12 h-10 rounded-lg"
-              />
-              <span className="font-heading font-bold text-white text-lg">
-                ClickDeliver
-              </span>
-            </div>
-            <p className="text-sm text-gray-400">{APP_INFO.slogan}</p>
-          </motion.div>
+    <footer className="relative bg-[#04060b] border-t border-white/10 pt-16 pb-12 overflow-hidden">
+      {/* Ambient Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-24 bg-blue-600/10 blur-3xl pointer-events-none" />
 
-          {/* Quick Links */}
-          <motion.div variants={itemVariants} className="md:col-span-1">
-            <h4 className="font-heading font-semibold text-white mb-4">
-              Quick Links
-            </h4>
-            <div className="flex flex-col gap-2">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="text-sm text-gray-400 hover:text-brand-primary transition-colors"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Contact */}
-          <motion.div variants={itemVariants} className="md:col-span-1">
-            <h4 className="font-heading font-semibold text-white mb-4">
-              Contact
-            </h4>
-            <div className="flex flex-col gap-3">
-              <a
-                href={`mailto:${APP_INFO.email}`}
-                className="flex items-center gap-2 text-sm text-gray-400 hover:text-brand-primary transition-colors"
-              >
-                <Mail className="w-4 h-4" />
-                {APP_INFO.email}
-              </a>
-              <a
-                href={`tel:${APP_INFO.phone}`}
-                className="flex items-center gap-2 text-sm text-gray-400 hover:text-brand-primary transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                {APP_INFO.phone}
-              </a>
-              <div className="flex items-start gap-2 text-sm text-gray-400">
-                <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                {APP_INFO.location}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
+          {/* Col 1 & 2: Brand & Info */}
+          <div className="lg:col-span-2">
+            <Link href="/" className="flex items-center gap-3 mb-4 group">
+              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 p-1 flex items-center justify-center transition-transform group-hover:scale-105">
+                <Image
+                  src="/logo.png"
+                  alt="ClickDeliver"
+                  width={36}
+                  height={36}
+                  className="w-auto h-auto max-w-[32px] max-h-[32px] object-contain drop-shadow"
+                />
               </div>
-            </div>
-          </motion.div>
+              <span className="font-heading font-extrabold text-xl text-white tracking-tight">
+                Click<span className="text-blue-500">Deliver</span>
+              </span>
+            </Link>
 
-          {/* Social */}
-          <motion.div variants={itemVariants} className="md:col-span-1">
-            <h4 className="font-heading font-semibold text-white mb-4">
-              Follow Us
-            </h4>
-            <div className="flex gap-3">
-              {socialIcons.map(({ icon: Icon, href, label }) => (
+            <p className="text-sm text-slate-300 font-body leading-relaxed mb-6 max-w-sm">
+              Alipur Chattha ka premier on-demand delivery aur bike ride platform. Grocery,
+              pharmacy, restaurant food aur custom items &mdash; sab kuch aapke darwaze tak.
+            </p>
+
+            {/* Social Icons */}
+            <div className="flex gap-2.5">
+              {socialIcons.map(({ icon: Icon, href, label, hoverColor }) => (
                 <a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-brand-surface hover:bg-brand-primary text-gray-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:shadow-lg hover:shadow-brand-primary/50"
+                  aria-label={label}
+                  className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-slate-400 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-white/10 ${hoverColor}`}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="w-4 h-4" />
                 </a>
               ))}
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="border-t border-brand-border pt-8 text-center text-sm text-gray-400"
-        >
+          {/* Col 3: Quick Navigation */}
+          <div>
+            <h4 className="font-heading font-bold text-white text-sm mb-4">Navigation</h4>
+            <ul className="space-y-2.5 text-xs sm:text-sm font-body">
+              {NAV_ITEMS.map((item) => (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    className="text-slate-400 hover:text-white transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 4: Services */}
+          <div>
+            <h4 className="font-heading font-bold text-white text-sm mb-4">Services</h4>
+            <ul className="space-y-2.5 text-xs sm:text-sm text-slate-400 font-body">
+              <li>Grocery Doorstep Delivery</li>
+              <li>Emergency Medicines</li>
+              <li>Custom Shop Orders</li>
+              <li>Quick Bike Ride Booking</li>
+              <li>Rider / Captain Onboarding</li>
+              <li>Merchant Shop Registration</li>
+            </ul>
+          </div>
+
+          {/* Col 5: Contact & Badges */}
+          <div>
+            <h4 className="font-heading font-bold text-white text-sm mb-4">Contact &amp; App</h4>
+            <div className="space-y-3 text-xs sm:text-sm text-slate-300 font-body mb-6">
+              <a
+                href={`mailto:${APP_CONFIG.email}`}
+                className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors break-all"
+              >
+                <Mail className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                <span>{APP_CONFIG.email}</span>
+              </a>
+              <a
+                href={`tel:${APP_CONFIG.phone}`}
+                className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+              >
+                <Phone className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <span>{APP_CONFIG.phoneDisplay}</span>
+              </a>
+              <div className="flex items-start gap-2 text-slate-400">
+                <MapPin className="w-4 h-4 text-rose-400 flex-shrink-0 mt-0.5" />
+                <span>{APP_CONFIG.location}</span>
+              </div>
+            </div>
+
+            {/* Google Play Mini Badge */}
+            <a
+              href={APP_CONFIG.playStoreUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block hover:opacity-90 transition-opacity"
+            >
+              <Image
+                src="/google-play-badge.svg"
+                alt="Get ClickDeliver on Google Play"
+                width={140}
+                height={42}
+                className="h-[38px] w-auto"
+                unoptimized
+              />
+            </a>
+          </div>
+        </div>
+
+        {/* Bottom copyright bar */}
+        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-body">
           <p>
-            &copy; 2026 ClickDeliver. All rights reserved. Made with{" "}
-            <span className="text-brand-primary">❤️</span> in Pakistan
+            &copy; {new Date().getFullYear()} {APP_CONFIG.name}. All rights reserved.
           </p>
-        </motion.div>
+          <div className="flex items-center gap-1 text-slate-400">
+            <span>Made with</span>
+            <Heart className="w-3.5 h-3.5 fill-rose-500 text-rose-500 inline mx-0.5" />
+            <span>for Alipur Chattha, Pakistan</span>
+          </div>
+        </div>
       </div>
     </footer>
   );

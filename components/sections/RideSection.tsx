@@ -1,162 +1,336 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { MapPin, Clock, DollarSign } from "lucide-react";
-import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { staggerContainer, staggerItem } from "@/lib/animations";
+import { motion } from 'framer-motion';
+import {
+  Bike,
+  MapPin,
+  Clock,
+  Banknote,
+  ShieldCheck,
+  Navigation2,
+  Sparkles,
+  ArrowRight,
+} from 'lucide-react';
+import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 
 export function RideSection() {
-  const features = [
-    { icon: MapPin, text: "Apni location se pickup" },
-    { icon: DollarSign, text: "Affordable rates" },
-    { icon: Clock, text: "Real-time GPS tracking" },
+  const ridePerks = [
+    {
+      icon: MapPin,
+      title: 'Doorstep Pickup Anywhere',
+      desc: 'Ghar, dukaan ya bazar — jahan bhi hon, captain aapki exact location par aayega.',
+    },
+    {
+      icon: Banknote,
+      title: 'Sab Se Sasta Kiraya',
+      desc: 'Rickshaw se aadhi qeemat mein safar karein. Transparent rates without bargaining.',
+    },
+    {
+      icon: Navigation2,
+      title: 'Live GPS Navigation',
+      desc: 'Aapka aur captain ka rasta map par real-time track hota hai.',
+    },
+    {
+      icon: ShieldCheck,
+      title: 'Verified Local Captains',
+      desc: 'Helmet, CNIC aur driving record verified captains for maximum safety.',
+    },
   ];
 
   return (
-    <SectionWrapper className="bg-gradient-to-r from-brand-primary/10 to-blue-600/10 rounded-2xl border border-brand-border">
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
-        <motion.div variants={staggerItem} className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-4">
-            Delivery nahi — Ride chahiye?
-          </h2>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            ClickDeliver sirf delivery nahi, ride bhi deta hai
-          </p>
-        </motion.div>
+    <section id="ride" className="relative py-20 lg:py-28 overflow-hidden">
+      {/* Background Ambience */}
+      <div className="absolute left-1/4 top-1/3 w-[600px] h-[400px] bg-cyan-600/10 rounded-full blur-[140px] pointer-events-none" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Features */}
-          <motion.div variants={staggerItem} className="space-y-6">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="flex items-center gap-4 p-4 rounded-lg bg-brand-surface hover:bg-brand-border transition-colors"
-                >
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-brand-primary to-blue-600 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
-                  <span className="text-gray-300 font-body">
-                    {feature.text}
-                  </span>
-                </motion.div>
-              );
-            })}
-
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left Column: Interactive Animated Map with Self-Drawing Route */}
+          <div className="lg:col-span-6 order-2 lg:order-1">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="space-y-4 mt-8 pt-8 border-t border-brand-border"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="relative aspect-square sm:aspect-[4/3] rounded-3xl bg-slate-900/90 border border-white/10 backdrop-blur-2xl p-4 shadow-2xl shadow-blue-500/10 overflow-hidden flex flex-col justify-between"
             >
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 font-body">Average Time:</span>
-                <span className="text-brand-primary font-heading font-semibold">
-                  8-12 minutes
+              {/* Map UI Header Overlay */}
+              <div className="flex items-center justify-between z-20 px-2 py-1">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-xl bg-blue-600 text-white shadow-md">
+                    <Bike className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-heading font-bold text-white leading-none">
+                      ClickDeliver Moto Ride
+                    </h4>
+                    <p className="text-[10px] text-blue-300 mt-0.5">Alipur Chattha Safe Route</p>
+                  </div>
+                </div>
+                <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  Captain Live
                 </span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 font-body">Average Cost:</span>
-                <span className="text-brand-primary font-heading font-semibold">
-                  Rs. 60-150
-                </span>
+
+              {/* Map SVG Canvas */}
+              <div className="relative flex-1 w-full my-2 rounded-2xl bg-[#070d1d] border border-white/5 overflow-hidden min-h-[260px] flex items-center justify-center">
+                <svg
+                  className="w-full h-full"
+                  viewBox="0 0 400 300"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    <filter id="bike-glow" x="-50%" y="-50%" width="200%" height="200%">
+                      <feDropShadow dx="0" dy="2" stdDeviation="4" floodColor="#f59e0b" floodOpacity="0.6" />
+                    </filter>
+                    <filter id="route-glow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#3b82f6" floodOpacity="0.6" />
+                    </filter>
+                  </defs>
+
+                  {/* Roads / Street Grid */}
+                  <g opacity="0.25">
+                    <path d="M 0 60 L 400 60 M 0 160 L 400 160 M 0 240 L 400 240" stroke="#475569" strokeWidth="6" />
+                    <path d="M 80 0 L 80 300 M 200 0 L 200 300 M 320 0 L 320 300" stroke="#475569" strokeWidth="6" />
+                    <circle cx="200" cy="160" r="28" stroke="#334155" strokeWidth="4" fill="none" />
+                  </g>
+
+                  {/* Outer glow route */}
+                  <motion.path
+                    d="M 65 225 C 135 225, 165 115, 335 75"
+                    stroke="#2563eb"
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                    filter="url(#route-glow)"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.8, ease: 'easeInOut' }}
+                    opacity="0.6"
+                  />
+
+                  {/* Core animated route */}
+                  <motion.path
+                    d="M 65 225 C 135 225, 165 115, 335 75"
+                    stroke="#60a5fa"
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                    strokeDasharray="6 6"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.8, ease: 'easeInOut' }}
+                  />
+
+                  {/* Pickup Location Pin at (65, 225) */}
+                  <g transform="translate(65, 225)">
+                    {/* Pulsing radar */}
+                    <circle cx="0" cy="0" r="14" fill="#3b82f6" opacity="0.4">
+                      <animate attributeName="r" values="8;18;8" dur="2.4s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount="indefinite" />
+                    </circle>
+                    {/* Pin base */}
+                    <circle cx="0" cy="0" r="10" fill="#2563eb" stroke="#ffffff" strokeWidth="2.5" />
+                    <circle cx="0" cy="0" r="3.5" fill="#ffffff" />
+
+                    {/* Tooltip Badge */}
+                    <g transform="translate(0, -22)">
+                      <rect x="-48" y="-12" width="96" height="20" rx="6" fill="#1d4ed8" stroke="#60a5fa" strokeWidth="1" />
+                      <text
+                        x="0"
+                        y="2"
+                        textAnchor="middle"
+                        fill="#ffffff"
+                        fontSize="9"
+                        fontWeight="700"
+                        fontFamily="var(--font-heading), sans-serif"
+                      >
+                        Pickup: Model Town
+                      </text>
+                    </g>
+                  </g>
+
+                  {/* Dropoff Location Pin at (335, 75) */}
+                  <g transform="translate(335, 75)">
+                    {/* Pulsing radar */}
+                    <circle cx="0" cy="0" r="14" fill="#10b981" opacity="0.4">
+                      <animate attributeName="r" values="8;18;8" dur="2.4s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount="indefinite" />
+                    </circle>
+                    {/* Pin base */}
+                    <circle cx="0" cy="0" r="10" fill="#10b981" stroke="#ffffff" strokeWidth="2.5" />
+                    <text
+                      x="0"
+                      y="3.5"
+                      textAnchor="middle"
+                      fill="#ffffff"
+                      fontSize="10"
+                      fontWeight="bold"
+                      fontFamily="var(--font-heading), sans-serif"
+                    >
+                      A
+                    </text>
+
+                    {/* Tooltip Badge */}
+                    <g transform="translate(0, -22)">
+                      <rect x="-48" y="-12" width="96" height="20" rx="6" fill="#047857" stroke="#34d399" strokeWidth="1" />
+                      <text
+                        x="0"
+                        y="2"
+                        textAnchor="middle"
+                        fill="#ffffff"
+                        fontSize="9"
+                        fontWeight="700"
+                        fontFamily="var(--font-heading), sans-serif"
+                      >
+                        Drop: College Road
+                      </text>
+                    </g>
+                  </g>
+
+                  {/* Animated Motorcycle strictly locked to the path */}
+                  <g>
+                    <animateMotion
+                      path="M 65 225 C 135 225, 165 115, 335 75"
+                      dur="4.5s"
+                      repeatCount="indefinite"
+                      rotate="auto"
+                    />
+
+                    {/* Outer glowing halo */}
+                    <circle cx="0" cy="0" r="20" fill="#f59e0b" opacity="0.3">
+                      <animate attributeName="r" values="16;24;16" dur="1.5s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.4;0.1;0.4" dur="1.5s" repeatCount="indefinite" />
+                    </circle>
+
+                    {/* Main amber badge */}
+                    <circle cx="0" cy="0" r="15" fill="#f59e0b" stroke="#ffffff" strokeWidth="2" filter="url(#bike-glow)" />
+
+                    {/* Lucide Bike vector centered at (0, 0) */}
+                    <g
+                      transform="translate(-10, -10) scale(0.83)"
+                      stroke="#090d16"
+                      strokeWidth="2.2"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="18.5" cy="17.5" r="3.5" />
+                      <circle cx="5.5" cy="17.5" r="3.5" />
+                      <circle cx="15" cy="5" r="1" />
+                      <path d="M12 17.5V14l-3-3 4-3 2 3h2" />
+                    </g>
+                  </g>
+                </svg>
+              </div>
+
+              {/* Animated Counters Strip for 8-12 min & Rs. 60-150 */}
+              <div className="grid grid-cols-2 gap-3 pt-2 z-20">
+                <div className="p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400">
+                    <Clock className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+                      Average Pickup
+                    </p>
+                    <p className="text-base sm:text-lg font-heading font-extrabold text-white">
+                      <AnimatedCounter target={8} duration={1200} /> &ndash;{' '}
+                      <AnimatedCounter target={12} duration={1500} suffix=" Mins" />
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
+                  <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400">
+                    <Banknote className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+                      Trip Fair
+                    </p>
+                    <p className="text-base sm:text-lg font-heading font-extrabold text-white">
+                      Rs. <AnimatedCounter target={60} duration={1200} /> &ndash;{' '}
+                      <AnimatedCounter target={150} duration={1500} />
+                    </p>
+                  </div>
+                </div>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
 
-          {/* Illustration */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="relative"
-          >
-            <div className="aspect-square rounded-2xl bg-gradient-to-br from-brand-primary/20 to-blue-600/20 border border-brand-primary/30 relative overflow-hidden">
-              {/* Map Grid Background */}
-              <svg
-                className="absolute inset-0 w-full h-full"
-                viewBox="0 0 400 400"
-              >
-                <defs>
-                  <pattern
-                    id="grid"
-                    width="50"
-                    height="50"
-                    patternUnits="userSpaceOnUse"
+          {/* Right Column: Copy & Perks */}
+          <div className="lg:col-span-6 order-1 lg:order-2">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="section-tag"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+              <span>Fast &amp; Economical</span>
+            </motion.div>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="section-heading text-left mb-6"
+            >
+              Delivery Nahi —{' '}
+              <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-400 bg-clip-text text-transparent">
+                Ride Chahiye?
+              </span>
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-base sm:text-lg text-slate-300 font-body leading-relaxed mb-8"
+            >
+              ClickDeliver sirf delivery tak mehdood nahi hai. Agar aapko Alipur Chattha ke kisi bhi
+              hissay mein foran pohnchna hai, to app se instant motorcycle ride book karein —
+              behtareen captains aur affordable rates ke sath!
+            </motion.p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+              {ridePerks.map((perk, i) => {
+                const PerkIcon = perk.icon;
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 * i }}
+                    className="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col justify-between"
                   >
-                    <path
-                      d="M 50 0 L 0 0 0 50"
-                      fill="none"
-                      stroke="rgba(59, 130, 246, 0.1)"
-                      strokeWidth="1"
-                    />
-                  </pattern>
-                </defs>
-                <rect width="400" height="400" fill="url(#grid)" />
-
-                {/* Route Line */}
-                <motion.path
-                  d="M 80 320 Q 200 160, 320 80"
-                  stroke="#3b82f6"
-                  strokeWidth="3"
-                  fill="none"
-                  strokeDasharray="500"
-                  initial={{ strokeDashoffset: 500 }}
-                  whileInView={{ strokeDashoffset: 0 }}
-                  transition={{ duration: 2 }}
-                />
-
-                {/* Start Pin */}
-                <text
-                  x="80"
-                  y="320"
-                  fontSize="28"
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                >
-                  📍
-                </text>
-
-                {/* End Pin */}
-                <text
-                  x="320"
-                  y="80"
-                  fontSize="28"
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                >
-                  📍
-                </text>
-
-                {/* Rider - animates along the path */}
-              </svg>
-
-              {/* Bike overlay for better visibility */}
-              <motion.div
-                className="absolute text-4xl z-20"
-                animate={{
-                  left: ["20%", "50%", "78%"],
-                  top: ["77%", "40%", "20%"],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                🛵
-              </motion.div>
+                    <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-3">
+                      <PerkIcon className="w-5 h-5" />
+                    </div>
+                    <h4 className="text-sm font-heading font-bold text-white mb-1">
+                      {perk.title}
+                    </h4>
+                    <p className="text-xs text-slate-300 font-body leading-relaxed">
+                      {perk.desc}
+                    </p>
+                  </motion.div>
+                );
+              })}
             </div>
-          </motion.div>
+
+            <a
+              href="#download"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-heading font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-500 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:-translate-y-0.5"
+            >
+              <span>Book Your First Ride</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
         </div>
-      </motion.div>
-    </SectionWrapper>
+      </div>
+    </section>
   );
 }

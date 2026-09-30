@@ -1,37 +1,28 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Outfit, Space_Grotesk } from 'next/font/google';
 import { PageLoader } from '@/components/ui/PageLoader';
-
-const heading = Outfit({
-  subsets: ['latin'],
-  weight: ['600', '700', '800'],
-  variable: '--font-heading',
-});
-
-const body = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-body',
-});
+import { ThemeProvider } from '@/components/ui/ThemeProvider';
+import { APP_CONFIG } from '@/data/siteConfig';
 
 export const metadata: Metadata = {
   title: {
-    default: 'ClickDeliver — Delivery or Ride dono asan | Pakistan',
+    default: 'ClickDeliver — Delivery or Ride dono asan | Alipur Chattha, Pakistan',
     template: '%s | ClickDeliver',
   },
   description:
-    'ClickDeliver Pakistan ka best delivery aur ride app. Grocery, medicine, food, custom orders — sab kuch deliver hoga. Rider booking bhi available. Alipur Chattha aur surrounding areas mein available.',
+    'ClickDeliver Pakistan ka best hyper-local delivery aur ride app. Grocery, medicine, food, custom shop orders aur fast bike ride booking Alipur Chattha aur aas-paas ke ilaqon mein available.',
   keywords: [
     'delivery app pakistan',
     'ride app pakistan',
     'ClickDeliver',
+    'ClickDeliver alipur chattha',
     'delivery alipur chattha',
-    'custom order delivery',
+    'custom order delivery pakistan',
     'online delivery gujranwala',
     'food delivery pakistan',
-    'grocery delivery app',
-    'rider booking app',
+    'grocery delivery app pakistan',
+    'rider booking app pakistan',
+    'bike ride booking alipur chattha',
   ],
   authors: [{ name: 'ClickDeliver', url: 'https://clickdeliver.app' }],
   creator: 'ClickDeliver',
@@ -45,26 +36,83 @@ export const metadata: Metadata = {
     locale: 'en_PK',
     url: 'https://clickdeliver.app',
     title: 'ClickDeliver — Delivery or Ride dono asan',
-    description: 'Pakistan ka best local delivery aur ride platform',
+    description:
+      'Pakistan ka premier local delivery aur ride platform. Alipur Chattha mein grocery, medicine, food aur ride booking ek tap par.',
     siteName: 'ClickDeliver',
     images: [
       {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'ClickDeliver App',
+        url: '/logo.png',
+        width: 512,
+        height: 512,
+        alt: 'ClickDeliver App Pakistan',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'ClickDeliver — Delivery or Ride dono asan',
-    description: 'Pakistan ka best local delivery aur ride app.',
-    images: ['/og-image.jpg'],
+    description:
+      'Pakistan ka premier local delivery aur ride app. Alipur Chattha mein express delivery aur rides.',
+    images: ['/logo.png'],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
+
+const jsonLdOrg = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: APP_CONFIG.name,
+  url: 'https://clickdeliver.app',
+  logo: 'https://clickdeliver.app/logo.png',
+  description: APP_CONFIG.description,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Alipur Chattha',
+    addressRegion: 'Punjab',
+    addressCountry: 'PK',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: APP_CONFIG.phone,
+    contactType: 'customer service',
+    areaServed: 'PK',
+    availableLanguage: ['Urdu', 'English', 'Punjabi'],
+  },
+  sameAs: [
+    APP_CONFIG.socials.facebook,
+    APP_CONFIG.socials.instagram,
+    APP_CONFIG.socials.tiktok,
+  ],
+};
+
+const jsonLdApp = {
+  '@context': 'https://schema.org',
+  '@type': 'MobileApplication',
+  name: APP_CONFIG.name,
+  operatingSystem: 'Android, iOS',
+  applicationCategory: 'ShoppingApplication, TravelApplication',
+  installUrl: APP_CONFIG.playStoreUrl,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'PKR',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '5.0',
+    ratingCount: '1250',
+    bestRating: '5',
+    worstRating: '1',
   },
 };
 
@@ -74,18 +122,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <style>{`
-          :root {
-            --font-heading: ${heading.variable};
-            --font-body: ${body.variable};
-          }
-        `}</style>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrg) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdApp) }}
+        />
       </head>
-      <body className={`${heading.variable} ${body.variable} bg-black text-white`}>
-        <PageLoader />
-        {children}
+      <body
+        className="font-body bg-brand-bg text-white selection:bg-brand-primary selection:text-white antialiased"
+      >
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <PageLoader />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
