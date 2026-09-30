@@ -1,8 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { TESTIMONIALS_DATA } from '@/data/testimonials';
-import { Star, MessageSquare, Sparkles, Quote, MapPin } from 'lucide-react';
+import { Star, Sparkles, Quote, MapPin } from 'lucide-react';
+import { TextReveal } from '@/components/animations/TextReveal';
+import { Reveal } from '@/components/animations/Reveal';
 
 export function TestimonialsSection() {
   const row1 = TESTIMONIALS_DATA.slice(0, 3);
@@ -18,45 +19,35 @@ export function TestimonialsSection() {
       <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[700px] h-[400px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mb-14 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="section-tag"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-          <span>Local Community Love</span>
-        </motion.div>
+        <Reveal direction="up" delay={0.05}>
+          <div className="section-tag mx-auto">
+            <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+            <span>Local Community Love</span>
+          </div>
+        </Reveal>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+        <TextReveal
+          text="Alipur Chattha Ka Etemad & Review"
+          highlightWords={['Etemad', '&', 'Review']}
+          as="h2"
           className="section-heading"
-        >
-          Alipur Chattha Ka{' '}
-          <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-            Etemad &amp; Review
-          </span>
-        </motion.h2>
+          delay={0.15}
+        />
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="section-subheading"
-        >
-          Customers, riders aur local shopkeepers ka ClickDeliver ke sath rozana ka experience.
-        </motion.p>
+        <Reveal direction="up" delay={0.25}>
+          <p className="section-subheading">
+            Customers, riders aur local shopkeepers ka ClickDeliver ke sath rozana ka experience.
+          </p>
+        </Reveal>
       </div>
 
-      {/* Infinite Scrolling Marquee Track 1 (Left) */}
+      {/* Infinite Scrolling Marquee Track 1 (Left to Right, pause on hover) */}
       <div className="relative w-full overflow-hidden mb-6 py-2 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
         <div className="flex gap-6 w-max animate-marquee-left hover:[animation-play-state:paused]">
           {marqueeList1.map((item, idx) => (
             <div
               key={`${item.id}-${idx}`}
-              className="w-[340px] sm:w-[380px] rounded-3xl p-6 bg-slate-900/60 border border-white/10 backdrop-blur-xl shadow-xl flex flex-col justify-between"
+              className="w-[340px] sm:w-[380px] rounded-3xl p-6 bg-slate-900/60 border border-white/10 backdrop-blur-xl shadow-xl flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1"
             >
               <div>
                 {/* Rating & Quote Icon */}
@@ -94,13 +85,13 @@ export function TestimonialsSection() {
         </div>
       </div>
 
-      {/* Infinite Scrolling Marquee Track 2 (Right) */}
+      {/* Infinite Scrolling Marquee Track 2 (Right to Left, pause on hover) */}
       <div className="relative w-full overflow-hidden py-2 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
         <div className="flex gap-6 w-max animate-marquee-right hover:[animation-play-state:paused]">
           {marqueeList2.map((item, idx) => (
             <div
               key={`${item.id}-${idx}`}
-              className="w-[340px] sm:w-[380px] rounded-3xl p-6 bg-slate-900/60 border border-white/10 backdrop-blur-xl shadow-xl flex flex-col justify-between"
+              className="w-[340px] sm:w-[380px] rounded-3xl p-6 bg-slate-900/60 border border-white/10 backdrop-blur-xl shadow-xl flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">

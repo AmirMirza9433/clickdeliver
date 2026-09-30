@@ -15,11 +15,15 @@ import { ScrollProgressBar } from '@/components/ui/ScrollProgressBar';
 import { CursorFollower } from '@/components/ui/CursorFollower';
 import { MobileDownloadBar } from '@/components/ui/MobileDownloadBar';
 import { BackToTop } from '@/components/ui/BackToTop';
+import { SmoothScroll } from '@/components/ui/SmoothScroll';
 import { Toaster } from 'sonner';
 
 export default function Home() {
   return (
     <>
+      {/* Lenis Smooth Scroll */}
+      <SmoothScroll />
+
       {/* Top Scroll Progress Bar */}
       <ScrollProgressBar />
 

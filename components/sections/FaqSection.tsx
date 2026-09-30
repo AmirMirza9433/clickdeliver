@@ -2,8 +2,11 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FAQS_DATA, FaqItem } from '@/data/faqs';
-import { HelpCircle, ChevronDown, Sparkles, MessageCircleQuestion } from 'lucide-react';
+import { FAQS_DATA } from '@/data/faqs';
+import { HelpCircle, ChevronDown } from 'lucide-react';
+import { TextReveal } from '@/components/animations/TextReveal';
+import { Reveal } from '@/components/animations/Reveal';
+import { MOTION_EASE } from '@/lib/motion';
 
 export function FaqSection() {
   const [activeCategory, setActiveCategory] = useState<string>('all');
@@ -31,58 +34,50 @@ export function FaqSection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="section-tag"
-          >
-            <HelpCircle className="w-3.5 h-3.5 text-blue-400" />
-            <span>Got Questions?</span>
-          </motion.div>
+          <Reveal direction="up" delay={0.05}>
+            <div className="section-tag mx-auto">
+              <HelpCircle className="w-3.5 h-3.5 text-blue-400" />
+              <span>Got Questions?</span>
+            </div>
+          </Reveal>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+          <TextReveal
+            text="Aam Tor Par Poochay Gaye Sawalaat"
+            highlightWords={['Poochay', 'Gaye', 'Sawalaat']}
+            as="h2"
             className="section-heading"
-          >
-            Aam Tor Par{' '}
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-              Poochay Gaye Sawalaat
-            </span>
-          </motion.h2>
+            delay={0.15}
+          />
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="section-subheading"
-          >
-            ClickDeliver ke baray mein kisi bhi sawal ka jawab yahan dekhein.
-          </motion.p>
+          <Reveal direction="up" delay={0.25}>
+            <p className="section-subheading">
+              ClickDeliver ke baray mein kisi bhi sawal ka jawab yahan dekhein.
+            </p>
+          </Reveal>
         </div>
 
         {/* Category Filter Pills */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 py-2 rounded-xl text-xs font-heading font-semibold transition-all duration-200 focus:outline-none ${
-                activeCategory === cat.id
-                  ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                  : 'bg-slate-900/60 text-slate-400 hover:text-white border border-white/5 hover:border-white/15'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
+        <Reveal direction="up" delay={0.2}>
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-4 py-2 rounded-xl text-xs font-heading font-semibold transition-all duration-200 focus:outline-none ${
+                  activeCategory === cat.id
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                    : 'bg-slate-900/60 text-slate-400 hover:text-white border border-white/5 hover:border-white/15'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </Reveal>
 
         {/* Smooth Animated Accordion List */}
         <div className="space-y-3.5">
-          {filteredFaqs.map((faq) => {
+          {filteredFaqs.map((faq, idx) => {
             const isOpen = openId === faq.id;
 
             return (
@@ -90,7 +85,9 @@ export function FaqSection() {
                 key={faq.id}
                 layout
                 initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.05, ease: MOTION_EASE }}
                 className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
                   isOpen
                     ? 'bg-slate-900/90 border-blue-500/40 shadow-lg shadow-blue-500/5'
@@ -123,7 +120,7 @@ export function FaqSection() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      transition={{ duration: 0.35, ease: MOTION_EASE }}
                     >
                       <div className="px-5 pb-6 sm:px-6 sm:pb-6 pt-0 border-t border-white/5 text-slate-300 text-sm sm:text-base font-body leading-relaxed">
                         {faq.answer}

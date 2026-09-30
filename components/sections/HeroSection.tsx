@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import { APP_CONFIG } from '@/data/siteConfig';
 import {
@@ -14,7 +14,11 @@ import {
   Star,
   MapPin,
   Clock,
+  ChevronDown,
 } from 'lucide-react';
+import { useSplashFinished } from '@/hooks/useSplashFinished';
+import { Magnetic } from '@/components/animations/Magnetic';
+import { MOTION_EASE } from '@/lib/motion';
 
 const headlineWords = ['Delivery', 'or', 'Ride', 'dono', 'asan.'];
 
@@ -58,25 +62,61 @@ const floatingChips = [
 ];
 
 export function HeroSection() {
+  const splashFinished = useSplashFinished(1600);
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-28 pb-16 lg:py-32">
-      {/* Background Ambient Mesh Blobs */}
+    <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-28 pb-20 lg:py-32">
+      {/* Background Animated Gradient Blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-b from-blue-600/20 via-cyan-500/10 to-transparent rounded-full blur-[120px]" />
-        <div className="absolute top-1/3 -left-32 w-96 h-96 bg-blue-700/15 rounded-full blur-[100px] animate-pulse-glow" />
-        <div className="absolute bottom-10 -right-32 w-96 h-96 bg-indigo-600/15 rounded-full blur-[100px] animate-pulse-glow" />
+        <motion.div
+          animate={
+            shouldReduceMotion
+              ? {}
+              : {
+                  scale: [1, 1.08, 1],
+                  opacity: [0.18, 0.25, 0.18],
+                }
+          }
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-b from-blue-600/25 via-cyan-500/15 to-transparent rounded-full blur-[120px]"
+        />
+        <motion.div
+          animate={
+            shouldReduceMotion
+              ? {}
+              : {
+                  x: [0, 20, 0],
+                  y: [0, -20, 0],
+                }
+          }
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-1/3 -left-32 w-96 h-96 bg-blue-700/20 rounded-full blur-[100px]"
+        />
+        <motion.div
+          animate={
+            shouldReduceMotion
+              ? {}
+              : {
+                  x: [0, -25, 0],
+                  y: [0, 20, 0],
+                }
+          }
+          transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+          className="absolute bottom-10 -right-32 w-96 h-96 bg-indigo-600/20 rounded-full blur-[100px]"
+        />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)]" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Column: Staggered Word Reveal & Actions */}
+          {/* Left Column: Staggered Word Reveal & Actions (Triggered AFTER splash completes) */}
           <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left z-10">
             {/* Location Pill */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              animate={splashFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+              transition={{ duration: 0.5, ease: MOTION_EASE }}
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 backdrop-blur-md mb-6"
             >
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
@@ -88,31 +128,36 @@ export function HeroSection() {
             {/* Staggered Word-by-Word Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-white tracking-tight leading-[1.1] mb-6">
               {headlineWords.map((word, idx) => (
-                <motion.span
-                  key={idx}
-                  initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
-                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                  transition={{
-                    duration: 0.55,
-                    delay: 0.15 + idx * 0.08,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  className={`inline-block mr-3 ${
-                    word === 'dono' || word === 'asan.'
-                      ? 'bg-gradient-to-r from-blue-400 via-brand-primary to-cyan-300 bg-clip-text text-transparent'
-                      : 'text-white'
-                  }`}
-                >
-                  {word}
-                </motion.span>
+                <span key={idx} className="inline-block overflow-hidden align-top mr-3 last:mr-0">
+                  <motion.span
+                    initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 36, filter: 'blur(6px)' }}
+                    animate={
+                      splashFinished
+                        ? { opacity: 1, y: 0, filter: 'blur(0px)' }
+                        : { opacity: 0, y: shouldReduceMotion ? 0 : 36, filter: 'blur(6px)' }
+                    }
+                    transition={{
+                      duration: 0.6,
+                      delay: 0.1 + idx * 0.08,
+                      ease: MOTION_EASE,
+                    }}
+                    className={`inline-block ${
+                      word === 'dono' || word === 'asan.'
+                        ? 'bg-gradient-to-r from-blue-400 via-brand-primary to-cyan-300 bg-clip-text text-transparent'
+                        : 'text-white'
+                    }`}
+                  >
+                    {word}
+                  </motion.span>
+                </span>
               ))}
             </h1>
 
             {/* Roman Urdu Subheading */}
             <motion.p
               initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.55 }}
+              animate={splashFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+              transition={{ duration: 0.6, delay: 0.55, ease: MOTION_EASE }}
               className="text-base sm:text-lg text-slate-300 max-w-xl font-body leading-relaxed mb-8"
             >
               Grocery, dawaai, garma garam khana aur unique{' '}
@@ -126,31 +171,33 @@ export function HeroSection() {
             {/* Store Badges with Shine & Magnetic Hover */}
             <motion.div
               initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
+              animate={splashFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+              transition={{ duration: 0.6, delay: 0.7, ease: MOTION_EASE }}
               className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
             >
-              {/* Google Play Store Badge (Preserved link & badge) */}
-              <a
-                href={APP_CONFIG.playStoreUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                id="hero-google-play-btn"
-                className="group relative overflow-hidden rounded-2xl p-1 transition-transform duration-300 hover:scale-105 active:scale-95"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 opacity-60 rounded-2xl blur-sm group-hover:opacity-100 transition-opacity" />
-                <div className="relative bg-black rounded-xl p-1.5 flex items-center">
-                  <Image
-                    src="/google-play-badge.svg"
-                    alt="Get ClickDeliver on Google Play"
-                    width={180}
-                    height={54}
-                    className="h-[50px] w-auto drop-shadow-md"
-                    unoptimized
-                    priority
-                  />
-                </div>
-              </a>
+              {/* Google Play Store Badge with Magnetic wrapper */}
+              <Magnetic strength={0.25}>
+                <a
+                  href={APP_CONFIG.playStoreUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  id="hero-google-play-btn"
+                  className="group relative block overflow-hidden rounded-2xl p-1 transition-transform duration-300 hover:scale-105 active:scale-95"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 opacity-60 rounded-2xl blur-sm group-hover:opacity-100 transition-opacity" />
+                  <div className="relative bg-black rounded-xl p-1.5 flex items-center">
+                    <Image
+                      src="/google-play-badge.svg"
+                      alt="Get ClickDeliver on Google Play"
+                      width={180}
+                      height={54}
+                      className="h-[50px] w-auto drop-shadow-md"
+                      unoptimized
+                      priority
+                    />
+                  </div>
+                </a>
+              </Magnetic>
 
               {/* iOS App Store Badge (Coming Soon) */}
               <div className="relative group">
@@ -164,7 +211,7 @@ export function HeroSection() {
                     unoptimized
                   />
                 </div>
-                <span className="absolute -top-2.5 -right-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[10px] font-heading font-bold px-2 py-0.5 rounded-full shadow-lg border border-white/20">
+                <span className="absolute -top-2.5 -right-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[10px] font-heading font-bold px-2 py-0.5 rounded-full shadow-lg border border-white/20 animate-pulse">
                   iOS Soon
                 </span>
               </div>
@@ -173,8 +220,8 @@ export function HeroSection() {
             {/* Social Trust Metrics */}
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
+              animate={splashFinished ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: 0.8, delay: 0.9, ease: MOTION_EASE }}
               className="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-400 font-body"
             >
               <div className="flex items-center gap-1.5">
@@ -199,14 +246,27 @@ export function HeroSection() {
 
           {/* Right Column: Interactive Phone Mockup with Route Animation & Floating Chips */}
           <div className="lg:col-span-5 relative flex items-center justify-center">
-            {/* Floating Category Chips */}
-            {floatingChips.map((chip, i) => {
+            {/* Floating Category Chips (Different drifting speeds) */}
+            {floatingChips.map((chip) => {
               const Icon = chip.icon;
               return (
                 <motion.div
                   key={chip.label}
-                  animate={chip.animate}
-                  transition={chip.transition}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={
+                    splashFinished
+                      ? {
+                          opacity: 1,
+                          scale: 1,
+                          ...(!shouldReduceMotion ? chip.animate : {}),
+                        }
+                      : { opacity: 0, scale: 0.8 }
+                  }
+                  transition={
+                    splashFinished && !shouldReduceMotion
+                      ? chip.transition
+                      : { duration: 0.5 }
+                  }
                   className={`absolute z-20 hidden sm:flex items-center gap-3 px-3.5 py-2 rounded-2xl bg-slate-900/90 border backdrop-blur-xl shadow-xl ${chip.color} ${chip.position}`}
                 >
                   <div className="p-1.5 rounded-xl bg-white/10">
@@ -222,11 +282,27 @@ export function HeroSection() {
               );
             })}
 
-            {/* Central Phone Mockup */}
+            {/* Central Phone Mockup with continuous float (translateY +-12px, 4s loop) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+              animate={
+                splashFinished
+                  ? {
+                      opacity: 1,
+                      scale: 1,
+                      y: shouldReduceMotion ? 0 : [0, -12, 0],
+                    }
+                  : { opacity: 0, scale: 0.9, y: 30 }
+              }
+              transition={
+                splashFinished && !shouldReduceMotion
+                  ? {
+                      y: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
+                      opacity: { duration: 0.8, ease: 'easeOut' },
+                      scale: { duration: 0.8, ease: 'easeOut' },
+                    }
+                  : { duration: 0.6 }
+              }
               className="relative w-[290px] sm:w-[320px] aspect-[9/18.5] rounded-[48px] bg-slate-950 p-3 shadow-2xl shadow-blue-500/20 border-4 border-slate-700/80"
             >
               {/* Phone Speaker & Camera Notch */}
@@ -262,7 +338,7 @@ export function HeroSection() {
                   </span>
                 </div>
 
-                {/* Animated Simulated Map with Scooter Path */}
+                {/* Animated Simulated Map with Scooter Moving on loop along dashed curved route */}
                 <div className="relative w-full h-44 rounded-2xl bg-slate-900/90 border border-white/10 overflow-hidden mb-3 flex items-center justify-center">
                   <svg
                     className="w-full h-full"
@@ -312,14 +388,13 @@ export function HeroSection() {
                       strokeLinecap="round"
                     />
 
-                    {/* Start Point Pin (Store at 35, 130) */}
+                    {/* Start Point Pin (Store at 35, 130) with pulsing ripple */}
                     <g transform="translate(35, 130)">
                       <circle cx="0" cy="0" r="12" fill="#3b82f6" opacity="0.4">
                         <animate attributeName="r" values="8;16;8" dur="2.4s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount="indefinite" />
                       </circle>
                       <circle cx="0" cy="0" r="9" fill="#2563eb" stroke="#ffffff" strokeWidth="2" />
-                      {/* ShoppingBag mini icon */}
                       <g transform="translate(-5, -5) scale(0.42)" stroke="#ffffff" strokeWidth="2.5" fill="none">
                         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
                         <path d="M3 6h18" />
@@ -327,18 +402,17 @@ export function HeroSection() {
                       </g>
                     </g>
 
-                    {/* End Destination Pin (Customer Gate at 220, 50) */}
+                    {/* End Destination Pin (Customer Gate at 220, 50) with pulsing ripple */}
                     <g transform="translate(220, 50)">
                       <circle cx="0" cy="0" r="12" fill="#10b981" opacity="0.4">
                         <animate attributeName="r" values="8;16;8" dur="2.4s" repeatCount="indefinite" />
                         <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount="indefinite" />
                       </circle>
                       <circle cx="0" cy="0" r="9" fill="#10b981" stroke="#ffffff" strokeWidth="2" />
-                      {/* Map pin dot/center */}
                       <circle cx="0" cy="0" r="3" fill="#ffffff" />
                     </g>
 
-                    {/* Animated Scooter strictly locked to the route */}
+                    {/* Animated Scooter strictly locked to the route on loop */}
                     <g>
                       <animateMotion
                         path="M 35 130 Q 110 30, 220 50"
@@ -425,6 +499,29 @@ export function HeroSection() {
           </div>
         </div>
       </div>
+
+      {/* Scroll-down indicator bounce */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={splashFinished ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+        className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-1.5 pointer-events-none"
+      >
+        <span className="text-[9px] uppercase font-heading font-semibold tracking-widest text-slate-400/80">
+          Scroll Down
+        </span>
+        <motion.div
+          animate={shouldReduceMotion ? {} : { y: [0, 6, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          className="w-5 h-8 rounded-full border border-white/20 bg-white/5 flex items-start justify-center p-1 backdrop-blur-sm"
+        >
+          <motion.div
+            animate={shouldReduceMotion ? {} : { y: [0, 10, 0], opacity: [1, 0.2, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+            className="w-1 h-2 rounded-full bg-blue-400"
+          />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

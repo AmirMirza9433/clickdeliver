@@ -3,6 +3,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ROLES_DATA, RoleData } from '@/data/roles';
+import { TextReveal } from '@/components/animations/TextReveal';
+import { Reveal } from '@/components/animations/Reveal';
+import { Magnetic } from '@/components/animations/Magnetic';
+import { MOTION_EASE } from '@/lib/motion';
 import {
   UserCheck,
   Bike,
@@ -48,37 +52,27 @@ export function UserTypesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="section-tag"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-            <span>Built For Everyone</span>
-          </motion.div>
+          <Reveal direction="up" delay={0.05}>
+            <div className="section-tag mx-auto">
+              <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+              <span>Built For Everyone</span>
+            </div>
+          </Reveal>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+          <TextReveal
+            text="Har Aik Ke Liye Faida — Customer, Rider Ya Dukandar"
+            highlightWords={['Customer,', 'Rider', 'Ya', 'Dukandar']}
+            as="h2"
             className="section-heading"
-          >
-            Har Aik Ke Liye Faida &mdash;{' '}
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-              Customer, Rider Ya Dukandar
-            </span>
-          </motion.h2>
+            delay={0.15}
+          />
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="section-subheading"
-          >
-            ClickDeliver brings the entire city together: customers get convenience, riders earn
-            respectable daily income, and local shops expand their customer base.
-          </motion.p>
+          <Reveal direction="up" delay={0.25}>
+            <p className="section-subheading">
+              ClickDeliver brings the entire city together: customers get convenience, riders earn
+              respectable daily income, and local shops expand their customer base.
+            </p>
+          </Reveal>
         </div>
 
         {/* Responsive Tabbed Switcher (Grid layout ensures clean 3 columns on mobile) */}
@@ -120,7 +114,7 @@ export function UserTypesSection() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
+            transition={{ duration: 0.35, ease: MOTION_EASE }}
             className="rounded-3xl p-5 sm:p-8 lg:p-12 bg-slate-900/70 border border-white/10 backdrop-blur-2xl shadow-2xl shadow-blue-500/5"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
@@ -146,18 +140,50 @@ export function UserTypesSection() {
                   {activeRole.tagline}
                 </h3>
 
-                {/* 4 Rich Benefits */}
+                {/* 4 Rich Benefits appearing one-by-one with checkmark drawing animation */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
                   {activeRole.benefits.map((b, i) => {
                     const BIcon = iconMap[b.icon] || CheckCircle2;
                     return (
-                      <div
-                        key={i}
+                      <motion.div
+                        key={b.title}
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          duration: 0.45,
+                          delay: 0.1 + i * 0.08,
+                          ease: MOTION_EASE,
+                        }}
                         className="p-3.5 sm:p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors flex flex-col justify-between"
                       >
-                        <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-2 flex-shrink-0">
-                          <BIcon className="w-4 h-4" />
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center flex-shrink-0">
+                            <BIcon className="w-4 h-4" />
+                          </div>
+
+                          {/* Checkmark drawing animation */}
+                          <svg
+                            className="w-4 h-4 text-emerald-400"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <motion.path
+                              d="M20 6L9 17l-5-5"
+                              initial={{ pathLength: 0 }}
+                              animate={{ pathLength: 1 }}
+                              transition={{
+                                duration: 0.5,
+                                delay: 0.2 + i * 0.1,
+                                ease: 'easeOut',
+                              }}
+                            />
+                          </svg>
                         </div>
+
                         <div>
                           <h4 className="text-sm font-heading font-bold text-white mb-1">
                             {b.title}
@@ -166,18 +192,20 @@ export function UserTypesSection() {
                             {b.description}
                           </p>
                         </div>
-                      </div>
+                      </motion.div>
                     );
                   })}
                 </div>
 
-                <a
-                  href={activeRole.ctaLink}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-heading font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-500 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  <span>{activeRole.ctaText}</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
+                <Magnetic strength={0.2}>
+                  <a
+                    href={activeRole.ctaLink}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-heading font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-500 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300"
+                  >
+                    <span>{activeRole.ctaText}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                </Magnetic>
               </div>
 
               {/* Right Column: Portal Showcase Card */}

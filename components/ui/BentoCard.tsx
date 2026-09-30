@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { BentoFeature } from '@/data/features';
 import {
   ShoppingBag,
@@ -12,6 +12,7 @@ import {
   Wallet,
   CheckCircle2,
 } from 'lucide-react';
+import { MOTION_EASE } from '@/lib/motion';
 
 const iconMap: Record<string, any> = {
   ShoppingBag,
@@ -22,13 +23,29 @@ const iconMap: Record<string, any> = {
   Wallet,
 };
 
-export function BentoCard({ feature }: { feature: BentoFeature }) {
+interface BentoCardProps {
+  feature: BentoFeature;
+  index: number;
+}
+
+export function BentoCard({ feature, index }: BentoCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
+    if (!cardRef.current || isMobile) return;
     const rect = cardRef.current.getBoundingClientRect();
     setMousePos({
       x: e.clientX - rect.left,
@@ -38,27 +55,51 @@ export function BentoCard({ feature }: { feature: BentoFeature }) {
 
   const Icon = iconMap[feature.iconName] || Sparkles;
 
+  // Alternating entry:
+  // Mobile: from bottom (y: 45)
+  // Desktop: left column from left (x: -50), right column from right (x: 50)
+  const isLeft = index % 2 === 0;
+  const initialX = shouldReduceMotion ? 0 : isMobile ? 0 : isLeft ? -50 : 50;
+  const initialY = shouldReduceMotion ? 0 : isMobile ? 45 : 0;
+
   return (
     <motion.div
       ref={cardRef}
+      initial={{
+        opacity: 0,
+        x: initialX,
+        y: initialY,
+      }}
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        y: 0,
+      }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{
+        duration: shouldReduceMotion ? 0.3 : 0.65,
+        delay: shouldReduceMotion ? 0 : (index % 3) * 0.1,
+        ease: MOTION_EASE,
+      }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      whileHover={{ y: -5 }}
-      transition={{ duration: 0.3 }}
-      className={`relative rounded-3xl p-6 sm:p-8 bg-slate-900/60 border border-white/10 backdrop-blur-xl overflow-hidden group transition-all duration-300 ${feature.colSpanDesktop}`}
+      whileHover={shouldReduceMotion ? {} : { y: -8 }}
+      className={`relative rounded-3xl p-6 sm:p-8 bg-slate-900/60 border border-white/10 backdrop-blur-xl overflow-hidden group transition-all duration-300 hover:border-blue-500/40 hover:shadow-2xl hover:shadow-blue-500/10 ${feature.colSpanDesktop}`}
     >
       {/* Dynamic Cursor Glow Border following pointer */}
-      <div
-        className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{
-          background: isHovered
-            ? `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 123, 240, 0.25), transparent 70%)`
-            : undefined,
-        }}
-      />
+      {!isMobile && (
+        <div
+          className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background: isHovered
+              ? `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 123, 240, 0.3), transparent 70%)`
+              : undefined,
+          }}
+        />
+      )}
 
-      {/* Ambient Corner Mesh */}
+      {/* Ambient Corner Mesh Soft Glow */}
       <div
         className={`absolute -top-20 -right-20 w-52 h-52 rounded-full bg-gradient-to-br ${feature.accentColor} blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500`}
       />
@@ -70,8 +111,9 @@ export function BentoCard({ feature }: { feature: BentoFeature }) {
             <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-heading font-semibold bg-white/5 border border-white/10 text-blue-300 tracking-wide">
               {feature.badge}
             </span>
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600/30 to-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:text-white group-hover:border-blue-400 shadow-md">
-              <Icon className="w-6 h-6 transition-transform duration-300 group-hover:rotate-6" />
+            {/* Icon rotate and scale on hover */}
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600/30 to-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 group-hover:text-white group-hover:border-blue-400 group-hover:shadow-lg group-hover:shadow-blue-500/20">
+              <Icon className="w-6 h-6 transition-transform duration-300 group-hover:scale-110" />
             </div>
           </div>
 

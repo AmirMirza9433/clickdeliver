@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion';
 import { BENTO_FEATURES } from '@/data/features';
 import { BentoCard } from '@/components/ui/BentoCard';
+import { TextReveal } from '@/components/animations/TextReveal';
+import { Reveal } from '@/components/animations/Reveal';
 import { Sparkles } from 'lucide-react';
 
 export function FeaturesSection() {
@@ -14,45 +16,33 @@ export function FeaturesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="section-tag"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Power Packed Platform</span>
-          </motion.div>
+          <Reveal direction="up" delay={0.05}>
+            <div className="section-tag mx-auto">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Power Packed Platform</span>
+            </div>
+          </Reveal>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+          <TextReveal
+            text="Har Cheez Ek App Mein — Smart & Superfast"
+            highlightWords={['Smart', '&', 'Superfast']}
+            as="h2"
             className="section-heading"
-          >
-            Har Cheez Ek App Mein —{' '}
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-              Smart &amp; Superfast
-            </span>
-          </motion.h2>
+            delay={0.15}
+          />
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="section-subheading"
-          >
-            ClickDeliver combines express on-demand delivery, custom shopkeeper messaging,
-            and budget-friendly bike ride booking into one sleek experience.
-          </motion.p>
+          <Reveal direction="up" delay={0.25}>
+            <p className="section-subheading">
+              ClickDeliver combines express on-demand delivery, custom shopkeeper messaging,
+              and budget-friendly bike ride booking into one sleek experience.
+            </p>
+          </Reveal>
         </div>
 
-        {/* Bento Grid */}
+        {/* Bento Grid with alternating sliding cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {BENTO_FEATURES.map((feature) => (
-            <BentoCard key={feature.id} feature={feature} />
+          {BENTO_FEATURES.map((feature, idx) => (
+            <BentoCard key={feature.id} feature={feature} index={idx} />
           ))}
         </div>
       </div>

@@ -1,8 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { STATS_DATA } from '@/data/stats';
-import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
+import { CountUp } from '@/components/animations/CountUp';
+import { Reveal } from '@/components/animations/Reveal';
 import { TrendingUp, Users, Bike, Store, Award } from 'lucide-react';
 
 const iconMap: Record<string, any> = {
@@ -16,48 +16,45 @@ export function StatsSection() {
   return (
     <section className="relative py-12 z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.6 }}
-          className="relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-slate-900/60 border border-white/10 backdrop-blur-2xl shadow-2xl shadow-blue-500/5 overflow-hidden"
-        >
-          {/* Subtle Ambient Light Strip */}
-          <div className="absolute -top-24 left-1/4 w-96 h-36 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 right-1/4 w-96 h-36 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <Reveal direction="up" delay={0.05} distance={30}>
+          <div className="relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-slate-900/60 border border-white/10 backdrop-blur-2xl shadow-2xl shadow-blue-500/5 overflow-hidden">
+            {/* Subtle Ambient Light Strip */}
+            <div className="absolute -top-24 left-1/4 w-96 h-36 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-24 right-1/4 w-96 h-36 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 divide-y sm:divide-y-0 sm:divide-x divide-white/5">
-            {STATS_DATA.map((stat, idx) => {
-              const Icon = iconMap[stat.id] || Award;
-              return (
-                <div
-                  key={stat.id}
-                  className={`flex flex-col items-center text-center ${
-                    idx > 0 ? 'pt-6 sm:pt-0 sm:pl-6 lg:pl-12' : ''
-                  }`}
-                >
-                  <div className="w-10 h-10 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mb-3">
-                    <Icon className="w-5 h-5" />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 divide-y sm:divide-y-0 sm:divide-x divide-white/5">
+              {STATS_DATA.map((stat, idx) => {
+                const Icon = iconMap[stat.id] || Award;
+                return (
+                  <div
+                    key={stat.id}
+                    className={`flex flex-col items-center text-center ${
+                      idx > 0 ? 'pt-6 sm:pt-0 sm:pl-6 lg:pl-12' : ''
+                    }`}
+                  >
+                    <div className="w-10 h-10 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mb-3">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-white tracking-tight flex items-baseline">
+                      <CountUp
+                        end={stat.value}
+                        duration={1.8}
+                        suffix={stat.suffix}
+                        prefix={stat.prefix}
+                      />
+                    </div>
+                    <p className="text-sm font-heading font-semibold text-slate-200 mt-2">
+                      {stat.label}
+                    </p>
+                    <p className="text-xs text-slate-400 font-body mt-0.5">
+                      {stat.sublabel}
+                    </p>
                   </div>
-                  <div className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-white tracking-tight flex items-baseline">
-                    <AnimatedCounter
-                      target={stat.value}
-                      suffix={stat.suffix}
-                      prefix={stat.prefix}
-                    />
-                  </div>
-                  <p className="text-sm font-heading font-semibold text-slate-200 mt-2">
-                    {stat.label}
-                  </p>
-                  <p className="text-xs text-slate-400 font-body mt-0.5">
-                    {stat.sublabel}
-                  </p>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

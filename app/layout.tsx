@@ -4,6 +4,11 @@ import { PageLoader } from '@/components/ui/PageLoader';
 import { ThemeProvider } from '@/components/ui/ThemeProvider';
 import { APP_CONFIG } from '@/data/siteConfig';
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  process.env.URL ||
+  'https://clickdeliver.app';
+
 export const metadata: Metadata = {
   title: {
     default: 'ClickDeliver — Delivery or Ride dono asan | Alipur Chattha, Pakistan',
@@ -24,17 +29,17 @@ export const metadata: Metadata = {
     'rider booking app pakistan',
     'bike ride booking alipur chattha',
   ],
-  authors: [{ name: 'ClickDeliver', url: 'https://clickdeliver.app' }],
+  authors: [{ name: 'ClickDeliver', url: siteUrl }],
   creator: 'ClickDeliver',
   publisher: 'ClickDeliver',
-  metadataBase: new URL('https://clickdeliver.app'),
+  metadataBase: new URL(siteUrl),
   alternates: {
-    canonical: '/',
+    canonical: siteUrl,
   },
   openGraph: {
     type: 'website',
     locale: 'en_PK',
-    url: 'https://clickdeliver.app',
+    url: siteUrl,
     title: 'ClickDeliver — Delivery or Ride dono asan',
     description:
       'Pakistan ka premier local delivery aur ride platform. Alipur Chattha mein grocery, medicine, food aur ride booking ek tap par.',
@@ -72,8 +77,8 @@ const jsonLdOrg = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: APP_CONFIG.name,
-  url: 'https://clickdeliver.app',
-  logo: 'https://clickdeliver.app/logo.png',
+  url: siteUrl,
+  logo: `${siteUrl}/logo.png`,
   description: APP_CONFIG.description,
   address: {
     '@type': 'PostalAddress',

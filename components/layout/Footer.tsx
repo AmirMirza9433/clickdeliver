@@ -9,12 +9,11 @@ import {
   Mail,
   Phone,
   MapPin,
-  ArrowUpRight,
   Heart,
-  ShieldCheck,
 } from 'lucide-react';
 import { TikTokIcon } from '@/components/ui/icons/TikTokIcon';
 import { APP_CONFIG, NAV_ITEMS } from '@/data/siteConfig';
+import { MOTION_EASE } from '@/lib/motion';
 
 export function Footer() {
   const socialIcons = [
@@ -39,7 +38,13 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative bg-[#04060b] border-t border-white/10 pt-16 pb-12 overflow-hidden">
+    <motion.footer
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.8, ease: MOTION_EASE }}
+      className="relative bg-[#04060b] border-t border-white/10 pt-16 pb-12 overflow-hidden"
+    >
       {/* Ambient Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-24 bg-blue-600/10 blur-3xl pointer-events-none" />
 
@@ -67,19 +72,21 @@ export function Footer() {
               pharmacy, restaurant food aur custom items &mdash; sab kuch aapke darwaze tak.
             </p>
 
-            {/* Social Icons */}
+            {/* Social Icons with Spring Pop on hover */}
             <div className="flex gap-2.5">
               {socialIcons.map(({ icon: Icon, href, label, hoverColor }) => (
-                <a
+                <motion.a
                   key={label}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-slate-400 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-white/10 ${hoverColor}`}
+                  whileHover={{ scale: 1.15, rotate: 6 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                  className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-slate-400 flex items-center justify-center transition-colors ${hoverColor}`}
                 >
                   <Icon className="w-4 h-4" />
-                </a>
+                </motion.a>
               ))}
             </div>
           </div>
@@ -169,6 +176,6 @@ export function Footer() {
           </div>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }
