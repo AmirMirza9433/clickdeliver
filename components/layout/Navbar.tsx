@@ -202,13 +202,11 @@ export function Navbar() {
                 className="pt-4 flex flex-col gap-3"
               >
                 <a
-                  href={APP_CONFIG.playStoreUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#download"
                   onClick={() => setMobileOpen(false)}
                   className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center font-heading font-semibold text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2"
                 >
-                  <span>Install on Android (Google Play)</span>
+                  <span>Download Free App</span>
                   <ArrowUpRight className="w-4 h-4" />
                 </a>
               </motion.div>

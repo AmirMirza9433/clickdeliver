@@ -33,9 +33,7 @@ export function MobileDownloadBar() {
           className="fixed bottom-4 left-4 right-4 z-40 md:hidden"
         >
           <a
-            href={APP_CONFIG.playStoreUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#download"
             id="mobile-sticky-download"
             className="flex items-center justify-between gap-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-2xl shadow-blue-500/40 border border-blue-400/30 backdrop-blur-md active:scale-[0.98] transition-transform"
           >
@@ -45,7 +43,7 @@ export function MobileDownloadBar() {
               </div>
               <div className="text-left">
                 <p className="text-xs font-semibold uppercase tracking-wider text-blue-100">
-                  Google Play Store
+                  Get the App
                 </p>
                 <p className="text-sm font-heading font-bold text-white leading-tight">
                   Download ClickDeliver (Free)
