@@ -145,22 +145,39 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Google Play Mini Badge */}
-            <a
-              href={APP_CONFIG.playStoreUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block hover:opacity-90 transition-opacity"
-            >
-              <Image
-                src="/google-play-badge.svg"
-                alt="Get ClickDeliver on Google Play"
-                width={140}
-                height={42}
-                className="h-[38px] w-auto"
-                unoptimized
-              />
-            </a>
+            {/* App Badges */}
+            <div className="flex flex-col gap-2">
+              <a
+                href={APP_CONFIG.playStoreUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block hover:opacity-90 transition-opacity"
+              >
+                <Image
+                  src="/google-play-badge.svg"
+                  alt="Get ClickDeliver on Google Play"
+                  width={140}
+                  height={42}
+                  className="h-[38px] w-auto"
+                  unoptimized
+                />
+              </a>
+              <a
+                href={APP_CONFIG.appStoreUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block hover:opacity-90 transition-opacity"
+              >
+                <Image
+                  src="/app-store-badge.svg"
+                  alt="Download ClickDeliver on the App Store"
+                  width={140}
+                  height={42}
+                  className="h-[38px] w-auto"
+                  unoptimized
+                />
+              </a>
+            </div>
           </div>
         </div>
 

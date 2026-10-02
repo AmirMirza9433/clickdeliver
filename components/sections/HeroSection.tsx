@@ -203,22 +203,29 @@ export function HeroSection() {
                 </a>
               </Magnetic>
 
-              {/* iOS App Store Badge (Coming Soon) */}
-              <div className="relative group">
-                <div className="opacity-60 cursor-not-allowed filter grayscale hover:grayscale-0 transition-all p-1.5 rounded-xl bg-white/5 border border-white/10">
-                  <Image
-                    src="/app-store-badge.svg"
-                    alt="Download on the App Store (Coming Soon)"
-                    width={180}
-                    height={54}
-                    className="h-[50px] w-auto"
-                    unoptimized
-                  />
-                </div>
-                <span className="absolute -top-2.5 -right-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-[10px] font-heading font-bold px-2 py-0.5 rounded-full shadow-lg border border-white/20 animate-pulse">
-                  iOS Soon
-                </span>
-              </div>
+              {/* iOS App Store Badge */}
+              <Magnetic strength={0.25}>
+                <a
+                  href={APP_CONFIG.appStoreUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  id="hero-app-store-btn"
+                  className="group relative block overflow-hidden rounded-2xl p-1 transition-transform duration-300 hover:scale-105 active:scale-95"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 opacity-60 rounded-2xl blur-sm group-hover:opacity-100 transition-opacity" />
+                  <div className="relative bg-black rounded-xl p-1.5 flex items-center">
+                    <Image
+                      src="/app-store-badge.svg"
+                      alt="Download ClickDeliver on the App Store"
+                      width={180}
+                      height={54}
+                      className="h-[50px] w-auto drop-shadow-md"
+                      unoptimized
+                      priority
+                    />
+                  </div>
+                </a>
+              </Magnetic>
             </motion.div>
 
             {/* Social Trust Metrics */}
