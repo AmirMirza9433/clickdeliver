@@ -87,8 +87,8 @@ export function FaqSection() {
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.05, ease: MOTION_EASE }}
-                className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+                transition={{ duration: 0.34, delay: idx * 0.035, ease: MOTION_EASE }}
+                className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-200 overflow-hidden ${
                   isOpen
                     ? 'bg-white dark:bg-slate-900/90 border-blue-500/50 dark:border-blue-500/40 shadow-lg shadow-blue-500/5'
                     : 'bg-white/80 dark:bg-slate-900/40 border-slate-200/80 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10'
@@ -120,7 +120,7 @@ export function FaqSection() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.35, ease: MOTION_EASE }}
+                      transition={{ duration: 0.24, ease: MOTION_EASE }}
                     >
                       <div className="px-5 pb-6 sm:px-6 sm:pb-6 pt-0 border-t border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-300 text-sm sm:text-base font-body leading-relaxed">
                         {faq.answer}

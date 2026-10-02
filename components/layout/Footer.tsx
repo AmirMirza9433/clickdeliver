@@ -42,7 +42,7 @@ export function Footer() {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.8, ease: MOTION_EASE }}
+      transition={{ duration: 0.5, ease: MOTION_EASE }}
       className="relative bg-slate-100/90 dark:bg-[#04060b] border-t border-slate-200 dark:border-white/10 pt-16 pb-12 overflow-hidden transition-colors duration-300"
     >
       {/* Ambient Glow */}

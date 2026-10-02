@@ -37,8 +37,8 @@ export function HowItWorksSection() {
   });
 
   const lineProgress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 24,
+    stiffness: 180,
+    damping: 30,
     restDelta: 0.001,
   });
 
@@ -98,12 +98,12 @@ export function HowItWorksSection() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{
-                    duration: 0.65,
-                    delay: idx * 0.12,
+                    duration: 0.48,
+                    delay: idx * 0.075,
                     ease: MOTION_EASE,
                   }}
                   onClick={() => setActiveStep(idx)}
-                  className={`cursor-pointer rounded-2xl p-6 transition-all duration-300 relative flex items-start gap-5 border ${
+                  className={`cursor-pointer rounded-2xl p-6 transition-[background-color,border-color,box-shadow] duration-200 relative flex items-start gap-5 border ${
                     isActive
                       ? 'bg-white dark:bg-slate-900/90 border-blue-500/60 shadow-xl shadow-blue-500/15'
                       : 'bg-white/70 dark:bg-slate-900/30 border-slate-200/80 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:bg-white dark:hover:bg-slate-900/50'
@@ -116,11 +116,11 @@ export function HowItWorksSection() {
                     viewport={{ once: true }}
                     transition={{
                       type: 'spring',
-                      stiffness: 350,
-                      damping: 20,
-                      delay: 0.1 + idx * 0.12,
+                      stiffness: 420,
+                      damping: 28,
+                      delay: 0.06 + idx * 0.075,
                     }}
-                    className={`w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 font-heading font-extrabold text-lg transition-all duration-300 z-10 ${
+                    className={`w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 font-heading font-extrabold text-lg transition-[background-color,border-color,color,box-shadow] duration-200 z-10 ${
                       isActive
                         ? 'bg-gradient-to-br from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/40 ring-4 ring-blue-500/20'
                         : 'bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400'
@@ -181,7 +181,7 @@ export function HowItWorksSection() {
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -15 }}
-                      transition={{ duration: 0.3, ease: MOTION_EASE }}
+                      transition={{ duration: 0.22, ease: MOTION_EASE }}
                       className="flex-1 flex flex-col justify-between py-3"
                     >
                       {activeStep === 0 && (

@@ -19,8 +19,8 @@ export function Reveal({
   children,
   direction = 'up',
   delay = 0,
-  duration = 0.65,
-  distance = 50,
+  duration = 0.48,
+  distance = 38,
   className = '',
   once = true,
   amount = 0.2,
@@ -40,7 +40,7 @@ export function Reveal({
   return (
     <motion.div
       initial={{
-        opacity: 0,
+        opacity: shouldReduceMotion ? 1 : 0,
         x: initialX,
         y: initialY,
       }}
@@ -51,8 +51,8 @@ export function Reveal({
       }}
       viewport={{ once, amount }}
       transition={{
-        duration: shouldReduceMotion ? 0.3 : duration,
-        delay,
+        duration: shouldReduceMotion ? 0 : duration,
+        delay: shouldReduceMotion ? 0 : Math.min(delay * 0.7, 0.35),
         ease: MOTION_EASE,
       }}
       className={className}

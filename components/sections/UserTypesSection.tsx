@@ -114,7 +114,7 @@ export function UserTypesSection() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.35, ease: MOTION_EASE }}
+            transition={{ duration: 0.25, ease: MOTION_EASE }}
             className="rounded-3xl p-5 sm:p-8 lg:p-12 bg-white/80 dark:bg-slate-900/70 border border-slate-200 dark:border-white/10 backdrop-blur-2xl shadow-2xl shadow-blue-500/5"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
@@ -150,8 +150,8 @@ export function UserTypesSection() {
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{
-                          duration: 0.45,
-                          delay: 0.1 + i * 0.08,
+                          duration: 0.34,
+                          delay: 0.055 + i * 0.055,
                           ease: MOTION_EASE,
                         }}
                         className="p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 transition-colors flex flex-col justify-between"
@@ -176,9 +176,9 @@ export function UserTypesSection() {
                               initial={{ pathLength: 0 }}
                               animate={{ pathLength: 1 }}
                               transition={{
-                                duration: 0.5,
-                                delay: 0.2 + i * 0.1,
-                                ease: 'easeOut',
+                                duration: 0.38,
+                                delay: 0.1 + i * 0.065,
+                                ease: MOTION_EASE,
                               }}
                             />
                           </svg>

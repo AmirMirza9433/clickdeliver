@@ -18,7 +18,7 @@ export function Magnetic({
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
-  const springConfig = { damping: 15, stiffness: 180, mass: 0.1 };
+  const springConfig = { damping: 28, stiffness: 320, mass: 0.35 };
   const x = useSpring(0, springConfig);
   const y = useSpring(0, springConfig);
 

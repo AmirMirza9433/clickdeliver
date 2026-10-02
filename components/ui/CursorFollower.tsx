@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
 
 export function CursorFollower() {
   const [isVisible, setIsVisible] = useState(false);
   const [isPointer, setIsPointer] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
@@ -21,7 +22,7 @@ export function CursorFollower() {
       'ontouchstart' in window ||
       navigator.maxTouchPoints > 0;
 
-    if (isTouch) return;
+    if (isTouch || shouldReduceMotion) return;
 
     setIsVisible(true);
 
@@ -30,18 +31,17 @@ export function CursorFollower() {
       mouseY.set(e.clientY);
 
       const target = e.target as HTMLElement | null;
-      if (
+      const nextIsPointer = Boolean(
         target &&
         (target.tagName === 'A' ||
           target.tagName === 'BUTTON' ||
           target.closest('a') ||
           target.closest('button') ||
           target.getAttribute('role') === 'button')
-      ) {
-        setIsPointer(true);
-      } else {
-        setIsPointer(false);
-      }
+      );
+      setIsPointer((current) =>
+        current === nextIsPointer ? current : nextIsPointer
+      );
     };
 
     const handleMouseLeave = () => {
@@ -61,7 +61,7 @@ export function CursorFollower() {
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
     };
-  }, [mouseX, mouseY]);
+  }, [mouseX, mouseY, shouldReduceMotion]);
 
   if (!isVisible) return null;
 
@@ -69,26 +69,26 @@ export function CursorFollower() {
     <>
       {/* Outer subtle glow circle */}
       <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-50 rounded-full border border-blue-400/40 bg-blue-500/10 backdrop-blur-[1px] transition-transform duration-150 ease-out"
+        animate={{ width: isPointer ? 44 : 28, height: isPointer ? 44 : 28 }}
+        transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+        className="pointer-events-none fixed top-0 left-0 z-50 rounded-full border border-blue-400/40 bg-blue-500/10 backdrop-blur-[1px]"
         style={{
           x: smoothX,
           y: smoothY,
           translateX: '-50%',
           translateY: '-50%',
-          width: isPointer ? 44 : 28,
-          height: isPointer ? 44 : 28,
         }}
       />
       {/* Center pinpoint */}
       <motion.div
+        animate={{ width: isPointer ? 6 : 4, height: isPointer ? 6 : 4 }}
+        transition={{ duration: 0.16, ease: 'easeOut' }}
         className="pointer-events-none fixed top-0 left-0 z-50 rounded-full bg-blue-400"
         style={{
           x: mouseX,
           y: mouseY,
           translateX: '-50%',
           translateY: '-50%',
-          width: isPointer ? 6 : 4,
-          height: isPointer ? 6 : 4,
         }}
       />
     </>

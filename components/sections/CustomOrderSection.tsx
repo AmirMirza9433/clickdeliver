@@ -62,6 +62,13 @@ export function CustomOrderSection() {
   useEffect(() => {
     if (!isInView) return;
 
+    if (shouldReduceMotion) {
+      setMessages(chatScript);
+      setShowRiderPill(true);
+      setIsTyping(false);
+      return;
+    }
+
     // Reset simulation
     setMessages([]);
     setShowRiderPill(false);
@@ -118,7 +125,7 @@ export function CustomOrderSection() {
     return () => {
       timeouts.forEach(clearTimeout);
     };
-  }, [cycle, isInView]);
+  }, [cycle, isInView, shouldReduceMotion]);
 
   const handleRestart = () => {
     setCycle((c) => c + 1);
@@ -240,7 +247,7 @@ export function CustomOrderSection() {
                           key={msg.id}
                           initial={{ opacity: 0, y: 12, scale: 0.96 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
-                          transition={{ duration: 0.35, ease: MOTION_EASE }}
+                          transition={{ duration: 0.26, ease: MOTION_EASE }}
                           className={`flex ${isCust ? 'justify-end' : 'justify-start'}`}
                         >
                           <div

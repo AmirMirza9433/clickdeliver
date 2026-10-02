@@ -16,6 +16,7 @@ import { TextReveal } from '@/components/animations/TextReveal';
 import { Reveal } from '@/components/animations/Reveal';
 import { Parallax } from '@/components/animations/Parallax';
 import { Magnetic } from '@/components/animations/Magnetic';
+import { MOTION_EASE } from '@/lib/motion';
 
 export function DownloadSection() {
   const perks = [
@@ -80,7 +81,7 @@ export function DownloadSection() {
                       <motion.div
                         className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 pointer-events-none"
                         animate={{ translateX: ['-100%', '200%'] }}
-                        transition={{ duration: 3, repeat: Infinity, repeatDelay: 2, ease: 'easeInOut' }}
+                        transition={{ duration: 2.4, repeat: Infinity, repeatDelay: 2.4, ease: MOTION_EASE }}
                       />
                       <Image
                         src="/google-play-badge.svg"
@@ -109,7 +110,7 @@ export function DownloadSection() {
                       <motion.div
                         className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 pointer-events-none"
                         animate={{ translateX: ['-100%', '200%'] }}
-                        transition={{ duration: 3, repeat: Infinity, repeatDelay: 2, ease: 'easeInOut' }}
+                        transition={{ duration: 2.4, repeat: Infinity, repeatDelay: 2.4, ease: MOTION_EASE }}
                       />
                       <Image
                         src="/app-store-badge.svg"
@@ -144,8 +145,8 @@ export function DownloadSection() {
                   initial={{ opacity: 0, scale: 0.9, y: 20 }}
                   whileInView={{ opacity: 1, scale: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={{ y: -6, scale: 1.015 }}
                   className="relative rounded-3xl p-6 sm:p-8 bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-white/15 shadow-xl shadow-blue-500/10 flex flex-col items-center text-center max-w-sm w-full"
                 >
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-heading font-semibold bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-300 border border-blue-500/20 dark:border-blue-500/30 mb-4">

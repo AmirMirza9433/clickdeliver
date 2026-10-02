@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 
 /**
  * Ensures entrance animations for the Hero section wait until the
- * PageLoader splash animation completes (1.2s display + 0.45s fade out).
+ * PageLoader splash animation completes (0.8s display + 0.28s fade out).
  */
-export function useSplashFinished(delayMs: number = 1600): boolean {
+export function useSplashFinished(delayMs: number = 1050): boolean {
   const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {

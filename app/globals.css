@@ -68,6 +68,15 @@
     overflow-x: hidden;
   }
 
+  /* Keep compositor-driven motion crisp without promoting every element. */
+  .animate-marquee-left,
+  .animate-marquee-right,
+  .animate-float,
+  .animate-pulse-glow {
+    backface-visibility: hidden;
+    will-change: transform;
+  }
+
   ::selection {
     background-color: #387bf0;
     color: #ffffff;
@@ -98,6 +107,13 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.001ms !important;
       scroll-behavior: auto !important;
+    }
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    .animate-marquee-left,
+    .animate-marquee-right {
+      will-change: auto;
     }
   }
 }

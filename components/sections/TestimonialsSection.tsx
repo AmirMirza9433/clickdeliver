@@ -1,20 +1,24 @@
 'use client';
 
+import { useRef } from 'react';
+import { useInView } from 'framer-motion';
 import { TESTIMONIALS_DATA } from '@/data/testimonials';
 import { Star, Sparkles, Quote, MapPin } from 'lucide-react';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { Reveal } from '@/components/animations/Reveal';
 
 export function TestimonialsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { amount: 0.05 });
   const row1 = TESTIMONIALS_DATA.slice(0, 3);
   const row2 = TESTIMONIALS_DATA.slice(3, 6);
 
   // Duplicate for seamless infinite marquee loop
-  const marqueeList1 = [...row1, ...row1, ...row1];
-  const marqueeList2 = [...row2, ...row2, ...row2];
+  const marqueeList1 = [...row1, ...row1];
+  const marqueeList2 = [...row2, ...row2];
 
   return (
-    <section id="testimonials" className="relative py-20 lg:py-28 overflow-hidden">
+    <section ref={sectionRef} id="testimonials" className="relative py-20 lg:py-28 overflow-hidden">
       {/* Background Glow */}
       <div className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[700px] h-[400px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
 
@@ -43,7 +47,10 @@ export function TestimonialsSection() {
 
       {/* Infinite Scrolling Marquee Track 1 (Left to Right, pause on hover) */}
       <div className="relative w-full overflow-hidden mb-6 py-2 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-        <div className="flex gap-6 w-max animate-marquee-left hover:[animation-play-state:paused]">
+        <div
+          className="flex gap-6 w-max animate-marquee-left hover:[animation-play-state:paused!important]"
+          style={{ animationPlayState: isInView ? 'running' : 'paused' }}
+        >
           {marqueeList1.map((item, idx) => (
             <div
               key={`${item.id}-${idx}`}
@@ -87,7 +94,10 @@ export function TestimonialsSection() {
 
       {/* Infinite Scrolling Marquee Track 2 (Right to Left, pause on hover) */}
       <div className="relative w-full overflow-hidden py-2 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-        <div className="flex gap-6 w-max animate-marquee-right hover:[animation-play-state:paused]">
+        <div
+          className="flex gap-6 w-max animate-marquee-right hover:[animation-play-state:paused!important]"
+          style={{ animationPlayState: isInView ? 'running' : 'paused' }}
+        >
           {marqueeList2.map((item, idx) => (
             <div
               key={`${item.id}-${idx}`}

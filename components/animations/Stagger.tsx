@@ -15,7 +15,7 @@ interface StaggerProps {
 
 export function Stagger({
   children,
-  staggerGap = 0.1,
+  staggerGap = 0.075,
   delay = 0,
   className = '',
   once = true,
@@ -24,12 +24,12 @@ export function Stagger({
   const shouldReduceMotion = useReducedMotion();
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: shouldReduceMotion ? 1 : 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: shouldReduceMotion ? 0 : staggerGap,
-        delayChildren: delay,
+        delayChildren: shouldReduceMotion ? 0 : Math.min(delay * 0.7, 0.3),
       },
     },
   };
@@ -58,20 +58,20 @@ export function StaggerItem({
   children,
   className = '',
   yOffset = 24,
-  duration = 0.6,
+  duration = 0.46,
 }: StaggerItemProps) {
   const shouldReduceMotion = useReducedMotion();
 
   const itemVariants = {
     hidden: {
-      opacity: 0,
+      opacity: shouldReduceMotion ? 1 : 0,
       y: shouldReduceMotion ? 0 : yOffset,
     },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: shouldReduceMotion ? 0.3 : duration,
+        duration: shouldReduceMotion ? 0 : duration,
         ease: MOTION_EASE,
       },
     },

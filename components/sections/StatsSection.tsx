@@ -38,7 +38,7 @@ export function StatsSection() {
                     <div className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-slate-900 dark:text-white tracking-tight flex items-baseline">
                       <CountUp
                         end={stat.value}
-                        duration={1.8}
+                        duration={1.25}
                         suffix={stat.suffix}
                         prefix={stat.prefix}
                       />

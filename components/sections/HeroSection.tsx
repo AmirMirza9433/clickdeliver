@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useInView, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import { APP_CONFIG } from '@/data/siteConfig';
 import {
@@ -66,17 +67,20 @@ const floatingChips = [
 ];
 
 export function HeroSection() {
-  const splashFinished = useSplashFinished(1600);
+  const splashFinished = useSplashFinished(1050);
   const shouldReduceMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const isHeroInView = useInView(sectionRef, { margin: '120px 0px' });
+  const allowAmbientMotion = !shouldReduceMotion && isHeroInView;
 
   return (
-    <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-28 pb-20 lg:py-32">
+    <section ref={sectionRef} className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-28 pb-20 lg:py-32">
       {/* Background Animated Gradient Blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
           animate={
-            shouldReduceMotion
-              ? {}
+            !allowAmbientMotion
+              ? { scale: 1, opacity: 0.18 }
               : {
                   scale: [1, 1.08, 1],
                   opacity: [0.18, 0.25, 0.18],
@@ -87,8 +91,8 @@ export function HeroSection() {
         />
         <motion.div
           animate={
-            shouldReduceMotion
-              ? {}
+            !allowAmbientMotion
+              ? { x: 0, y: 0 }
               : {
                   x: [0, 20, 0],
                   y: [0, -20, 0],
@@ -99,8 +103,8 @@ export function HeroSection() {
         />
         <motion.div
           animate={
-            shouldReduceMotion
-              ? {}
+            !allowAmbientMotion
+              ? { x: 0, y: 0 }
               : {
                   x: [0, -25, 0],
                   y: [0, 20, 0],
@@ -120,7 +124,7 @@ export function HeroSection() {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={splashFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-              transition={{ duration: 0.5, ease: MOTION_EASE }}
+              transition={{ duration: 0.38, ease: MOTION_EASE }}
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 backdrop-blur-md mb-6"
             >
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
@@ -134,15 +138,15 @@ export function HeroSection() {
               {headlineWords.map((word, idx) => (
                 <span key={idx} className="inline-block overflow-hidden align-top mr-3 last:mr-0">
                   <motion.span
-                    initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 36, filter: 'blur(6px)' }}
+                    initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28 }}
                     animate={
                       splashFinished
-                        ? { opacity: 1, y: 0, filter: 'blur(0px)' }
-                        : { opacity: 0, y: shouldReduceMotion ? 0 : 36, filter: 'blur(6px)' }
+                        ? { opacity: 1, y: 0 }
+                        : { opacity: 0, y: shouldReduceMotion ? 0 : 28 }
                     }
                     transition={{
-                      duration: 0.6,
-                      delay: 0.1 + idx * 0.08,
+                      duration: 0.46,
+                      delay: 0.06 + idx * 0.055,
                       ease: MOTION_EASE,
                     }}
                     className={`inline-block ${
@@ -161,7 +165,7 @@ export function HeroSection() {
             <motion.p
               initial={{ opacity: 0, y: 18 }}
               animate={splashFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-              transition={{ duration: 0.6, delay: 0.55, ease: MOTION_EASE }}
+              transition={{ duration: 0.46, delay: 0.35, ease: MOTION_EASE }}
               className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl font-body leading-relaxed mb-8"
             >
               Grocery, dawaai, garma garam khana aur unique{' '}
@@ -176,7 +180,7 @@ export function HeroSection() {
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={splashFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-              transition={{ duration: 0.6, delay: 0.7, ease: MOTION_EASE }}
+              transition={{ duration: 0.46, delay: 0.46, ease: MOTION_EASE }}
               className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
             >
               {/* Google Play Store Badge with Magnetic wrapper */}
@@ -232,7 +236,7 @@ export function HeroSection() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={splashFinished ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ duration: 0.8, delay: 0.9, ease: MOTION_EASE }}
+              transition={{ duration: 0.5, delay: 0.58, ease: MOTION_EASE }}
               className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-600 dark:text-slate-400 font-body"
             >
               <div className="flex items-center gap-1.5">
@@ -274,9 +278,9 @@ export function HeroSection() {
                       : { opacity: 0, scale: 0.8 }
                   }
                   transition={
-                    splashFinished && !shouldReduceMotion
+                    splashFinished && allowAmbientMotion
                       ? chip.transition
-                      : { duration: 0.5 }
+                      : { duration: 0.38, ease: MOTION_EASE }
                   }
                   className={`absolute z-20 hidden sm:flex items-center gap-3 px-3.5 py-2 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-white/10 backdrop-blur-xl shadow-xl ${chip.color} ${chip.position}`}
                 >
@@ -306,13 +310,13 @@ export function HeroSection() {
                   : { opacity: 0, scale: 0.9, y: 30 }
               }
               transition={
-                splashFinished && !shouldReduceMotion
+                splashFinished && allowAmbientMotion
                   ? {
                       y: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
-                      opacity: { duration: 0.8, ease: 'easeOut' },
-                      scale: { duration: 0.8, ease: 'easeOut' },
+                      opacity: { duration: 0.56, ease: MOTION_EASE },
+                      scale: { duration: 0.56, ease: MOTION_EASE },
                     }
-                  : { duration: 0.6 }
+                  : { duration: 0.44, ease: MOTION_EASE }
               }
               className="relative w-[290px] sm:w-[320px] aspect-[9/18.5] rounded-[48px] bg-slate-900 p-3 shadow-2xl shadow-blue-500/20 border-4 border-slate-700/80"
             >
@@ -404,8 +408,8 @@ export function HeroSection() {
                     {/* Start Point Pin (Store at 35, 130) with pulsing ripple */}
                     <g transform="translate(35, 130)">
                       <circle cx="0" cy="0" r="12" fill="#3b82f6" opacity="0.4">
-                        <animate attributeName="r" values="8;16;8" dur="2.4s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount="indefinite" />
+                        <animate attributeName="r" values="8;16;8" dur="2.4s" repeatCount={allowAmbientMotion ? 'indefinite' : '0'} />
+                        <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount={allowAmbientMotion ? 'indefinite' : '0'} />
                       </circle>
                       <circle cx="0" cy="0" r="9" fill="#2563eb" stroke="#ffffff" strokeWidth="2" />
                       <g transform="translate(-5, -5) scale(0.42)" stroke="#ffffff" strokeWidth="2.5" fill="none">
@@ -418,8 +422,8 @@ export function HeroSection() {
                     {/* End Destination Pin (Customer Gate at 220, 50) with pulsing ripple */}
                     <g transform="translate(220, 50)">
                       <circle cx="0" cy="0" r="12" fill="#10b981" opacity="0.4">
-                        <animate attributeName="r" values="8;16;8" dur="2.4s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount="indefinite" />
+                        <animate attributeName="r" values="8;16;8" dur="2.4s" repeatCount={allowAmbientMotion ? 'indefinite' : '0'} />
+                        <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount={allowAmbientMotion ? 'indefinite' : '0'} />
                       </circle>
                       <circle cx="0" cy="0" r="9" fill="#10b981" stroke="#ffffff" strokeWidth="2" />
                       <circle cx="0" cy="0" r="3" fill="#ffffff" />
@@ -430,13 +434,13 @@ export function HeroSection() {
                       <animateMotion
                         path="M 35 130 Q 110 30, 220 50"
                         dur="4s"
-                        repeatCount="indefinite"
+                        repeatCount={allowAmbientMotion ? 'indefinite' : '0'}
                         rotate="auto"
                       />
                       {/* Outer pulsing halo */}
                       <circle cx="0" cy="0" r="16" fill="#f59e0b" opacity="0.3">
-                        <animate attributeName="r" values="12;18;12" dur="1.5s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.4;0.1;0.4" dur="1.5s" repeatCount="indefinite" />
+                        <animate attributeName="r" values="12;18;12" dur="1.5s" repeatCount={allowAmbientMotion ? 'indefinite' : '0'} />
+                        <animate attributeName="opacity" values="0.4;0.1;0.4" dur="1.5s" repeatCount={allowAmbientMotion ? 'indefinite' : '0'} />
                       </circle>
 
                       {/* Amber badge */}
@@ -517,19 +521,19 @@ export function HeroSection() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={splashFinished ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
+        transition={{ delay: 0.72, duration: 0.42, ease: MOTION_EASE }}
         className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-1.5 pointer-events-none"
       >
         <span className="text-[9px] uppercase font-heading font-semibold tracking-widest text-slate-400/80">
           Scroll Down
         </span>
         <motion.div
-          animate={shouldReduceMotion ? {} : { y: [0, 6, 0] }}
+          animate={allowAmbientMotion ? { y: [0, 6, 0] } : { y: 0 }}
           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
           className="w-5 h-8 rounded-full border border-white/20 bg-white/5 flex items-start justify-center p-1 backdrop-blur-sm"
         >
           <motion.div
-            animate={shouldReduceMotion ? {} : { y: [0, 10, 0], opacity: [1, 0.2, 1] }}
+            animate={allowAmbientMotion ? { y: [0, 10, 0], opacity: [1, 0.2, 1] } : { y: 0, opacity: 1 }}
             transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
             className="w-1 h-2 rounded-full bg-blue-400"
           />

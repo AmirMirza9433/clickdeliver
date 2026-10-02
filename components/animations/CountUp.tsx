@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useInView, useReducedMotion } from 'framer-motion';
 
 interface CountUpProps {
@@ -17,15 +17,15 @@ interface CountUpProps {
 export function CountUp({
   end,
   start = 0,
-  duration = 1.8,
+  duration = 1.4,
   prefix = '',
   suffix = '',
   decimals = 0,
   className = '',
   once = true,
 }: CountUpProps) {
-  const [value, setValue] = useState(start);
   const ref = useRef<HTMLSpanElement>(null);
+  const valueRef = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once, margin: '-20px' });
   const shouldReduceMotion = useReducedMotion();
 
@@ -33,7 +33,9 @@ export function CountUp({
     if (!isInView) return;
 
     if (shouldReduceMotion) {
-      setValue(end);
+      if (valueRef.current) {
+        valueRef.current.textContent = formatValue(end, decimals);
+      }
       return;
     }
 
@@ -48,28 +50,35 @@ export function CountUp({
       const easeOut = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
       const current = start + (end - start) * easeOut;
 
-      setValue(current);
+      // Updating text directly avoids a React render on every animation frame.
+      if (valueRef.current) {
+        valueRef.current.textContent = formatValue(current, decimals);
+      }
 
       if (progress < 1) {
         frameId = requestAnimationFrame(step);
       } else {
-        setValue(end);
+        if (valueRef.current) {
+          valueRef.current.textContent = formatValue(end, decimals);
+        }
       }
     };
 
     frameId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frameId);
-  }, [isInView, end, start, duration, shouldReduceMotion]);
-
-  const formattedValue = decimals > 0
-    ? value.toFixed(decimals)
-    : Math.floor(value).toLocaleString();
+  }, [isInView, end, start, duration, decimals, shouldReduceMotion]);
 
   return (
     <span ref={ref} className={`tabular-nums ${className}`}>
       {prefix}
-      {formattedValue}
+      <span ref={valueRef}>{formatValue(start, decimals)}</span>
       {suffix}
     </span>
   );
+}
+
+function formatValue(value: number, decimals: number) {
+  return decimals > 0
+    ? value.toFixed(decimals)
+    : Math.floor(value).toLocaleString();
 }

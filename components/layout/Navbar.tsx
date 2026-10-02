@@ -19,35 +19,56 @@ export function Navbar() {
   const lastScrollY = useRef(0);
 
   useEffect(() => {
+    const sections = NAV_ITEMS.map((item) => item.href.substring(1))
+      .filter(Boolean)
+      .map((id) => ({ id, element: document.getElementById(id) }))
+      .filter((section) => section.element);
+    let frameId = 0;
+
     const handleScroll = () => {
-      const currentY = window.scrollY;
+      if (frameId) return;
 
-      // Transparent at top -> blurred glass + shadow after 20px
-      setScrolled(currentY > 20);
+      frameId = requestAnimationFrame(() => {
+        const currentY = window.scrollY;
 
-      // Hide on scroll down, show on scroll up (after 120px)
-      if (currentY > 120 && currentY > lastScrollY.current + 8) {
-        setHidden(true);
-      } else if (currentY < lastScrollY.current - 8 || currentY <= 120) {
-        setHidden(false);
-      }
-      lastScrollY.current = currentY;
+        // Transparent at top -> blurred glass + shadow after 20px
+        const nextScrolled = currentY > 20;
+        setScrolled((current) =>
+          current === nextScrolled ? current : nextScrolled
+        );
 
-      // Scroll-spy active link detection
-      const sections = NAV_ITEMS.map((item) => item.href.substring(1)).filter(Boolean);
-      const scrollPosition = currentY + 160;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el && el.offsetTop <= scrollPosition) {
-          setActiveSection(`#${sections[i]}`);
-          break;
+        // Hide on scroll down, show on scroll up (after 120px)
+        if (currentY > 120 && currentY > lastScrollY.current + 8) {
+          setHidden((current) => (current ? current : true));
+        } else if (currentY < lastScrollY.current - 8 || currentY <= 120) {
+          setHidden((current) => (current ? false : current));
         }
-      }
+        lastScrollY.current = currentY;
+
+        // Scroll-spy active link detection
+        const scrollPosition = currentY + 160;
+
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const section = sections[i];
+          if (section.element && section.element.offsetTop <= scrollPosition) {
+            const nextSection = `#${section.id}`;
+            setActiveSection((current) =>
+              current === nextSection ? current : nextSection
+            );
+            break;
+          }
+        }
+
+        frameId = 0;
+      });
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (
@@ -56,7 +77,7 @@ export function Navbar() {
         y: hidden && !mobileOpen ? -100 : 0,
       }}
       transition={{
-        duration: 0.35,
+        duration: 0.26,
         ease: MOTION_EASE,
       }}
       className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
@@ -169,7 +190,7 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.32, ease: MOTION_EASE }}
+            transition={{ duration: 0.24, ease: MOTION_EASE }}
             className="lg:hidden border-b border-slate-200 dark:border-white/10 bg-white/95 dark:bg-[#060911]/95 backdrop-blur-2xl overflow-hidden"
           >
             <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col gap-2">
@@ -178,7 +199,7 @@ export function Navbar() {
                   key={link.label}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 + idx * 0.04, duration: 0.35, ease: MOTION_EASE }}
+                  transition={{ delay: 0.025 + idx * 0.025, duration: 0.26, ease: MOTION_EASE }}
                 >
                   <Link
                     href={link.href}
@@ -198,7 +219,7 @@ export function Navbar() {
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 + NAV_ITEMS.length * 0.04, duration: 0.4 }}
+                transition={{ delay: 0.025 + NAV_ITEMS.length * 0.025, duration: 0.28, ease: MOTION_EASE }}
                 className="pt-4 flex flex-col gap-3"
               >
                 <a

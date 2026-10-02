@@ -15,6 +15,7 @@ import { CountUp } from '@/components/animations/CountUp';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { Reveal } from '@/components/animations/Reveal';
 import { Magnetic } from '@/components/animations/Magnetic';
+import { MOTION_EASE } from '@/lib/motion';
 
 export function RideSection() {
   const ridePerks = [
@@ -103,7 +104,7 @@ export function RideSection() {
                       initial={{ pathLength: 0 }}
                       whileInView={{ pathLength: 1 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 1.8, ease: 'easeInOut' }}
+                      transition={{ duration: 1.15, ease: MOTION_EASE }}
                       opacity="0.6"
                     />
 
@@ -117,7 +118,7 @@ export function RideSection() {
                       initial={{ pathLength: 0 }}
                       whileInView={{ pathLength: 1 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 1.8, ease: 'easeInOut' }}
+                      transition={{ duration: 1.15, ease: MOTION_EASE }}
                     />
 
                     {/* Pickup Location Pin at (65, 225) with pulsing ripple rings */}
@@ -243,8 +244,8 @@ export function RideSection() {
                         Average Pickup
                       </p>
                       <p className="text-base sm:text-lg font-heading font-extrabold text-slate-900 dark:text-white">
-                        <CountUp end={8} duration={1.2} /> &ndash;{' '}
-                        <CountUp end={12} duration={1.5} suffix=" Mins" />
+                        <CountUp end={8} duration={0.9} /> &ndash;{' '}
+                        <CountUp end={12} duration={1.1} suffix=" Mins" />
                       </p>
                     </div>
                   </div>
@@ -258,8 +259,8 @@ export function RideSection() {
                         Trip Fair
                       </p>
                       <p className="text-base sm:text-lg font-heading font-extrabold text-slate-900 dark:text-white">
-                        Rs. <CountUp end={60} duration={1.2} /> &ndash;{' '}
-                        <CountUp end={150} duration={1.5} />
+                        Rs. <CountUp end={60} duration={0.9} /> &ndash;{' '}
+                        <CountUp end={150} duration={1.1} />
                       </p>
                     </div>
                   </div>

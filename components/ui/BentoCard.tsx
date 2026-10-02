@@ -30,27 +30,23 @@ interface BentoCardProps {
 
 export function BentoCard({ feature, index }: BentoCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    const checkMobile = () => setIsMobile(mediaQuery.matches);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    mediaQuery.addEventListener('change', checkMobile);
+    return () => mediaQuery.removeEventListener('change', checkMobile);
   }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current || isMobile) return;
     const rect = cardRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    // CSS custom properties keep pointer tracking off React's render path.
+    cardRef.current.style.setProperty('--glow-x', `${e.clientX - rect.left}px`);
+    cardRef.current.style.setProperty('--glow-y', `${e.clientY - rect.top}px`);
   };
 
   const Icon = iconMap[feature.iconName] || Sparkles;
@@ -77,27 +73,22 @@ export function BentoCard({ feature, index }: BentoCardProps) {
       }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{
-        duration: shouldReduceMotion ? 0.3 : 0.65,
-        delay: shouldReduceMotion ? 0 : (index % 3) * 0.1,
+        duration: shouldReduceMotion ? 0 : 0.5,
+        delay: shouldReduceMotion ? 0 : (index % 3) * 0.07,
         ease: MOTION_EASE,
       }}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      whileHover={shouldReduceMotion ? {} : { y: -8 }}
-      className={`relative rounded-3xl p-6 sm:p-8 bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 backdrop-blur-xl overflow-hidden group transition-all duration-300 hover:border-blue-500/40 hover:shadow-2xl hover:shadow-blue-500/10 ${feature.colSpanDesktop}`}
+      whileHover={shouldReduceMotion ? {} : { y: -6 }}
+      className={`relative rounded-3xl p-6 sm:p-8 bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 backdrop-blur-xl overflow-hidden group transition-[border-color,box-shadow] duration-200 hover:border-blue-500/40 hover:shadow-2xl hover:shadow-blue-500/10 ${feature.colSpanDesktop}`}
     >
       {/* Dynamic Cursor Glow Border following pointer */}
-      {!isMobile && (
-        <div
-          className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{
-            background: isHovered
-              ? `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 123, 240, 0.3), transparent 70%)`
-              : undefined,
-          }}
-        />
-      )}
+      <div
+        className="pointer-events-none absolute -inset-px hidden rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block"
+        style={{
+          background:
+            'radial-gradient(400px circle at var(--glow-x, 50%) var(--glow-y, 50%), rgba(56, 123, 240, 0.3), transparent 70%)',
+        }}
+      />
 
       {/* Ambient Corner Mesh Soft Glow */}
       <div

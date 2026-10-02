@@ -8,10 +8,10 @@ export function PageLoader() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Under 1.5s as required (1.2s total)
+    // Keep the branded intro brief so the page feels immediately responsive.
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1200);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, []);
@@ -25,7 +25,7 @@ export function PageLoader() {
           exit={{
             opacity: 0,
             y: -20,
-            transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+            transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
           }}
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#060911]"
         >
@@ -36,7 +36,7 @@ export function PageLoader() {
           <motion.div
             initial={{ scale: 0.8, opacity: 0, y: 10 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.36, ease: [0.16, 1, 0.3, 1] }}
             className="relative flex flex-col items-center"
           >
             <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl p-2 bg-gradient-to-b from-white/10 to-transparent border border-white/10 shadow-2xl shadow-blue-500/20 flex items-center justify-center backdrop-blur-md">
@@ -54,7 +54,7 @@ export function PageLoader() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25, duration: 0.4 }}
+              transition={{ delay: 0.14, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="mt-4 text-center"
             >
               <h1 className="text-xl font-heading font-bold text-white tracking-tight">
@@ -72,7 +72,7 @@ export function PageLoader() {
                 animate={{ x: '100%' }}
                 transition={{
                   repeat: Infinity,
-                  duration: 0.9,
+                  duration: 0.7,
                   ease: 'easeInOut',
                 }}
                 className="w-full h-full bg-gradient-to-r from-transparent via-blue-500 to-transparent"

@@ -22,7 +22,7 @@ export function TextReveal({
   className = '',
   wordClassName = '',
   delay = 0,
-  duration = 0.55,
+  duration = 0.44,
   once = true,
   highlightWords = [],
   highlightClassName = 'bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent',
@@ -34,22 +34,22 @@ export function TextReveal({
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: shouldReduceMotion ? 0 : 0.06,
-        delayChildren: delay,
+        staggerChildren: shouldReduceMotion ? 0 : 0.045,
+        delayChildren: shouldReduceMotion ? 0 : Math.min(delay * 0.7, 0.3),
       },
     },
   };
 
   const wordVariants = {
     hidden: {
-      opacity: 0,
+      opacity: shouldReduceMotion ? 1 : 0,
       y: shouldReduceMotion ? 0 : '100%',
     },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: shouldReduceMotion ? 0.25 : duration,
+        duration: shouldReduceMotion ? 0 : duration,
         ease: MOTION_EASE,
       },
     },

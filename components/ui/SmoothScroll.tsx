@@ -11,7 +11,7 @@ export function SmoothScroll() {
     if (prefersReducedMotion) return;
 
     const lenis = new Lenis({
-      duration: 1.1,
+      duration: 0.85,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       touchMultiplier: 1.5,
       infinite: false,
@@ -22,7 +22,21 @@ export function SmoothScroll() {
       lenis.raf(time);
       frameId = requestAnimationFrame(raf);
     }
-    frameId = requestAnimationFrame(raf);
+
+    const startRaf = () => {
+      cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(raf);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(frameId);
+      } else {
+        startRaf();
+      }
+    };
+
+    startRaf();
 
     // Smoothly scroll for internal hash links with navbar offset
     const handleAnchorClick = (e: MouseEvent) => {
@@ -39,10 +53,12 @@ export function SmoothScroll() {
     };
 
     document.addEventListener('click', handleAnchorClick);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       cancelAnimationFrame(frameId);
       document.removeEventListener('click', handleAnchorClick);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       lenis.destroy();
     };
   }, []);
