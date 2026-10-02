@@ -66,7 +66,7 @@ export function FaqSection() {
                 className={`px-4 py-2 rounded-xl text-xs font-heading font-semibold transition-all duration-200 focus:outline-none ${
                   activeCategory === cat.id
                     ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                    : 'bg-slate-900/60 text-slate-400 hover:text-white border border-white/5 hover:border-white/15'
+                    : 'bg-white dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200/80 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/15'
                 }`}
               >
                 {cat.label}
@@ -90,8 +90,8 @@ export function FaqSection() {
                 transition={{ duration: 0.4, delay: idx * 0.05, ease: MOTION_EASE }}
                 className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
                   isOpen
-                    ? 'bg-slate-900/90 border-blue-500/40 shadow-lg shadow-blue-500/5'
-                    : 'bg-slate-900/40 border-white/5 hover:border-white/10'
+                    ? 'bg-white dark:bg-slate-900/90 border-blue-500/50 dark:border-blue-500/40 shadow-lg shadow-blue-500/5'
+                    : 'bg-white/80 dark:bg-slate-900/40 border-slate-200/80 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10'
                 }`}
               >
                 <button
@@ -99,14 +99,14 @@ export function FaqSection() {
                   aria-expanded={isOpen}
                   className="w-full flex items-center justify-between p-5 sm:p-6 text-left focus:outline-none"
                 >
-                  <span className="text-base sm:text-lg font-heading font-bold text-white pr-4">
+                  <span className="text-base sm:text-lg font-heading font-bold text-slate-900 dark:text-white pr-4">
                     {faq.question}
                   </span>
                   <div
                     className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-300 ${
                       isOpen
                         ? 'bg-blue-600 text-white rotate-180'
-                        : 'bg-white/5 text-slate-400'
+                        : 'bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400'
                     }`}
                   >
                     <ChevronDown className="w-4 h-4" />
@@ -122,7 +122,7 @@ export function FaqSection() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.35, ease: MOTION_EASE }}
                     >
-                      <div className="px-5 pb-6 sm:px-6 sm:pb-6 pt-0 border-t border-white/5 text-slate-300 text-sm sm:text-base font-body leading-relaxed">
+                      <div className="px-5 pb-6 sm:px-6 sm:pb-6 pt-0 border-t border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-300 text-sm sm:text-base font-body leading-relaxed">
                         {faq.answer}
                       </div>
                     </motion.div>

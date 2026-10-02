@@ -43,7 +43,7 @@ export function Footer() {
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.8, ease: MOTION_EASE }}
-      className="relative bg-[#04060b] border-t border-white/10 pt-16 pb-12 overflow-hidden"
+      className="relative bg-slate-100/90 dark:bg-[#04060b] border-t border-slate-200 dark:border-white/10 pt-16 pb-12 overflow-hidden transition-colors duration-300"
     >
       {/* Ambient Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-24 bg-blue-600/10 blur-3xl pointer-events-none" />
@@ -53,7 +53,7 @@ export function Footer() {
           {/* Col 1 & 2: Brand & Info */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-3 mb-4 group">
-              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 p-1 flex items-center justify-center transition-transform group-hover:scale-105">
+              <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 p-1 flex items-center justify-center transition-transform group-hover:scale-105 shadow-sm">
                 <Image
                   src="/logo.png"
                   alt="ClickDeliver"
@@ -62,12 +62,12 @@ export function Footer() {
                   className="w-auto h-auto max-w-[32px] max-h-[32px] object-contain drop-shadow"
                 />
               </div>
-              <span className="font-heading font-extrabold text-xl text-white tracking-tight">
+              <span className="font-heading font-extrabold text-xl text-slate-900 dark:text-white tracking-tight">
                 Click<span className="text-blue-500">Deliver</span>
               </span>
             </Link>
 
-            <p className="text-sm text-slate-300 font-body leading-relaxed mb-6 max-w-sm">
+            <p className="text-sm text-slate-600 dark:text-slate-300 font-body leading-relaxed mb-6 max-w-sm">
               Alipur Chattha ka premier on-demand delivery aur bike ride platform. Grocery,
               pharmacy, restaurant food aur custom items &mdash; sab kuch aapke darwaze tak.
             </p>
@@ -83,7 +83,7 @@ export function Footer() {
                   aria-label={label}
                   whileHover={{ scale: 1.15, rotate: 6 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                  className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-slate-400 flex items-center justify-center transition-colors ${hoverColor}`}
+                  className={`w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 flex items-center justify-center transition-colors shadow-sm ${hoverColor}`}
                 >
                   <Icon className="w-4 h-4" />
                 </motion.a>
@@ -93,13 +93,13 @@ export function Footer() {
 
           {/* Col 3: Quick Navigation */}
           <div>
-            <h4 className="font-heading font-bold text-white text-sm mb-4">Navigation</h4>
+            <h4 className="font-heading font-bold text-slate-900 dark:text-white text-sm mb-4">Navigation</h4>
             <ul className="space-y-2.5 text-xs sm:text-sm font-body">
               {NAV_ITEMS.map((item) => (
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="text-slate-400 hover:text-white transition-colors"
+                    className="text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-white transition-colors"
                   >
                     {item.label}
                   </Link>
@@ -110,8 +110,8 @@ export function Footer() {
 
           {/* Col 4: Services */}
           <div>
-            <h4 className="font-heading font-bold text-white text-sm mb-4">Services</h4>
-            <ul className="space-y-2.5 text-xs sm:text-sm text-slate-400 font-body">
+            <h4 className="font-heading font-bold text-slate-900 dark:text-white text-sm mb-4">Services</h4>
+            <ul className="space-y-2.5 text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-body">
               <li>Grocery Doorstep Delivery</li>
               <li>Emergency Medicines</li>
               <li>Custom Shop Orders</li>
@@ -123,24 +123,24 @@ export function Footer() {
 
           {/* Col 5: Contact & Badges */}
           <div>
-            <h4 className="font-heading font-bold text-white text-sm mb-4">Contact &amp; App</h4>
-            <div className="space-y-3 text-xs sm:text-sm text-slate-300 font-body mb-6">
+            <h4 className="font-heading font-bold text-slate-900 dark:text-white text-sm mb-4">Contact &amp; App</h4>
+            <div className="space-y-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-body mb-6">
               <a
                 href={`mailto:${APP_CONFIG.email}`}
-                className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors break-all"
+                className="flex items-center gap-2 text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-white transition-colors break-all"
               >
-                <Mail className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                <Mail className="w-4 h-4 text-blue-500 dark:text-blue-400 flex-shrink-0" />
                 <span>{APP_CONFIG.email}</span>
               </a>
               <a
                 href={`tel:${APP_CONFIG.phone}`}
-                className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+                className="flex items-center gap-2 text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-white transition-colors"
               >
-                <Phone className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <Phone className="w-4 h-4 text-emerald-500 dark:text-emerald-400 flex-shrink-0" />
                 <span>{APP_CONFIG.phoneDisplay}</span>
               </a>
-              <div className="flex items-start gap-2 text-slate-400">
-                <MapPin className="w-4 h-4 text-rose-400 flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-2 text-slate-600 dark:text-slate-400">
+                <MapPin className="w-4 h-4 text-rose-500 dark:text-rose-400 flex-shrink-0 mt-0.5" />
                 <span>{APP_CONFIG.location}</span>
               </div>
             </div>
@@ -165,11 +165,11 @@ export function Footer() {
         </div>
 
         {/* Bottom copyright bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-body">
+        <div className="pt-8 border-t border-slate-200 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400 font-body">
           <p>
             &copy; {new Date().getFullYear()} {APP_CONFIG.name}. All rights reserved.
           </p>
-          <div className="flex items-center gap-1 text-slate-400">
+          <div className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
             <span>Made with</span>
             <Heart className="w-3.5 h-3.5 fill-rose-500 text-rose-500 inline mx-0.5" />
             <span>for Alipur Chattha, Pakistan</span>

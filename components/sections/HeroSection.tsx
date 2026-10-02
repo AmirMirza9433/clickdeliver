@@ -27,7 +27,8 @@ const floatingChips = [
     label: 'Fresh Grocery',
     sub: 'Under 25m',
     icon: ShoppingBag,
-    color: 'from-emerald-500/20 to-emerald-600/10 border-emerald-500/30 text-emerald-400',
+    color: 'border-emerald-500/30 text-emerald-600 dark:text-emerald-400',
+    iconBg: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400',
     position: '-top-6 -left-6 sm:-top-8 sm:-left-10',
     animate: { y: [0, -12, 0], x: [0, 4, 0] },
     transition: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' as const },
@@ -36,7 +37,8 @@ const floatingChips = [
     label: 'Pharmacy Urgent',
     sub: 'Verified shops',
     icon: Pill,
-    color: 'from-rose-500/20 to-rose-600/10 border-rose-500/30 text-rose-400',
+    color: 'border-rose-500/30 text-rose-600 dark:text-rose-400',
+    iconBg: 'bg-rose-50 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400',
     position: 'top-20 -right-6 sm:top-24 sm:-right-12',
     animate: { y: [0, 14, 0], x: [0, -6, 0] },
     transition: { duration: 5.2, repeat: Infinity, ease: 'easeInOut' as const, delay: 0.5 },
@@ -45,7 +47,8 @@ const floatingChips = [
     label: 'Hot Food Delivery',
     sub: 'Local restaurants',
     icon: Utensils,
-    color: 'from-amber-500/20 to-amber-600/10 border-amber-500/30 text-amber-400',
+    color: 'border-amber-500/30 text-amber-600 dark:text-amber-400',
+    iconBg: 'bg-amber-50 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400',
     position: 'bottom-28 -left-8 sm:bottom-32 sm:-left-12',
     animate: { y: [0, -10, 0], x: [0, -4, 0] },
     transition: { duration: 4.8, repeat: Infinity, ease: 'easeInOut' as const, delay: 1 },
@@ -54,7 +57,8 @@ const floatingChips = [
     label: 'Bike Ride Booking',
     sub: 'From Rs. 60',
     icon: Bike,
-    color: 'from-blue-500/20 to-blue-600/10 border-blue-500/30 text-blue-400',
+    color: 'border-blue-500/30 text-blue-600 dark:text-blue-400',
+    iconBg: 'bg-blue-50 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400',
     position: '-bottom-6 -right-4 sm:-bottom-8 sm:-right-8',
     animate: { y: [0, 12, 0], x: [0, 6, 0] },
     transition: { duration: 4.2, repeat: Infinity, ease: 'easeInOut' as const, delay: 1.5 },
@@ -120,13 +124,13 @@ export function HeroSection() {
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 backdrop-blur-md mb-6"
             >
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="text-xs font-heading font-semibold text-blue-300">
+              <span className="text-xs font-heading font-semibold text-blue-600 dark:text-blue-300">
                 Live in Alipur Chattha &amp; Surrounding Areas
               </span>
             </motion.div>
 
             {/* Staggered Word-by-Word Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-white tracking-tight leading-[1.1] mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.1] mb-6">
               {headlineWords.map((word, idx) => (
                 <span key={idx} className="inline-block overflow-hidden align-top mr-3 last:mr-0">
                   <motion.span
@@ -143,8 +147,8 @@ export function HeroSection() {
                     }}
                     className={`inline-block ${
                       word === 'dono' || word === 'asan.'
-                        ? 'bg-gradient-to-r from-blue-400 via-brand-primary to-cyan-300 bg-clip-text text-transparent'
-                        : 'text-white'
+                        ? 'bg-gradient-to-r from-blue-600 via-brand-primary to-cyan-500 dark:from-blue-400 dark:via-brand-primary dark:to-cyan-300 bg-clip-text text-transparent'
+                        : 'text-slate-900 dark:text-white'
                     }`}
                   >
                     {word}
@@ -158,10 +162,10 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 18 }}
               animate={splashFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
               transition={{ duration: 0.6, delay: 0.55, ease: MOTION_EASE }}
-              className="text-base sm:text-lg text-slate-300 max-w-xl font-body leading-relaxed mb-8"
+              className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl font-body leading-relaxed mb-8"
             >
               Grocery, dawaai, garma garam khana aur unique{' '}
-              <span className="text-white font-medium underline decoration-blue-500/50 underline-offset-4">
+              <span className="text-slate-900 dark:text-white font-medium underline decoration-blue-500/50 underline-offset-4">
                 Custom Orders
               </span>{' '}
               — sab kuch aapke darwaze tak. Fast bike ride booking bhi available,
@@ -222,7 +226,7 @@ export function HeroSection() {
               initial={{ opacity: 0 }}
               animate={splashFinished ? { opacity: 1 } : { opacity: 0 }}
               transition={{ duration: 0.8, delay: 0.9, ease: MOTION_EASE }}
-              className="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-400 font-body"
+              className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-600 dark:text-slate-400 font-body"
             >
               <div className="flex items-center gap-1.5">
                 <div className="flex text-amber-400">
@@ -230,15 +234,15 @@ export function HeroSection() {
                     <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
                   ))}
                 </div>
-                <span className="text-white font-semibold">5.0 / 5.0</span>
+                <span className="text-slate-900 dark:text-white font-semibold">5.0 / 5.0</span>
                 <span>User Rating</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <ShieldCheck className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                 <span>Verified Local Riders</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-blue-400" />
+                <Clock className="w-4 h-4 text-blue-500 dark:text-blue-400" />
                 <span>Avg. 8–12 Min Rides</span>
               </div>
             </motion.div>
@@ -267,16 +271,16 @@ export function HeroSection() {
                       ? chip.transition
                       : { duration: 0.5 }
                   }
-                  className={`absolute z-20 hidden sm:flex items-center gap-3 px-3.5 py-2 rounded-2xl bg-slate-900/90 border backdrop-blur-xl shadow-xl ${chip.color} ${chip.position}`}
+                  className={`absolute z-20 hidden sm:flex items-center gap-3 px-3.5 py-2 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-white/10 backdrop-blur-xl shadow-xl ${chip.color} ${chip.position}`}
                 >
-                  <div className="p-1.5 rounded-xl bg-white/10">
+                  <div className={`p-1.5 rounded-xl ${chip.iconBg}`}>
                     <Icon className="w-4 h-4" />
                   </div>
                   <div className="text-left">
-                    <p className="text-xs font-heading font-bold text-white leading-tight">
+                    <p className="text-xs font-heading font-bold text-slate-900 dark:text-white leading-tight">
                       {chip.label}
                     </p>
-                    <p className="text-[10px] text-slate-400">{chip.sub}</p>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400">{chip.sub}</p>
                   </div>
                 </motion.div>
               );
@@ -303,7 +307,7 @@ export function HeroSection() {
                     }
                   : { duration: 0.6 }
               }
-              className="relative w-[290px] sm:w-[320px] aspect-[9/18.5] rounded-[48px] bg-slate-950 p-3 shadow-2xl shadow-blue-500/20 border-4 border-slate-700/80"
+              className="relative w-[290px] sm:w-[320px] aspect-[9/18.5] rounded-[48px] bg-slate-900 p-3 shadow-2xl shadow-blue-500/20 border-4 border-slate-700/80"
             >
               {/* Phone Speaker & Camera Notch */}
               <div className="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-5 bg-black rounded-full z-30 flex items-center justify-end px-3">
@@ -311,11 +315,11 @@ export function HeroSection() {
               </div>
 
               {/* Inner Screen */}
-              <div className="w-full h-full rounded-[38px] bg-gradient-to-b from-[#0b1329] via-[#090e1f] to-[#050811] overflow-hidden flex flex-col p-4 pt-9 border border-white/5 relative">
+              <div className="w-full h-full rounded-[38px] bg-slate-50 dark:bg-gradient-to-b dark:from-[#0b1329] dark:via-[#090e1f] dark:to-[#050811] overflow-hidden flex flex-col p-4 pt-9 border border-slate-200 dark:border-white/5 relative shadow-inner">
                 {/* Top App Header */}
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg bg-blue-600/30 border border-blue-500/40 p-1 flex items-center justify-center">
+                    <div className="w-7 h-7 rounded-lg bg-blue-600/10 dark:bg-blue-600/30 border border-blue-500/30 dark:border-blue-500/40 p-1 flex items-center justify-center">
                       <Image
                         src="/logo.png"
                         alt="CD"
@@ -325,21 +329,21 @@ export function HeroSection() {
                       />
                     </div>
                     <div>
-                      <p className="text-[11px] font-heading font-bold text-white leading-none">
+                      <p className="text-[11px] font-heading font-bold text-slate-900 dark:text-white leading-none">
                         ClickDeliver
                       </p>
-                      <p className="text-[9px] text-blue-400 flex items-center gap-0.5 mt-0.5">
+                      <p className="text-[9px] text-blue-600 dark:text-blue-400 flex items-center gap-0.5 mt-0.5 font-medium">
                         <MapPin className="w-2.5 h-2.5" /> Alipur Chattha
                       </p>
                     </div>
                   </div>
-                  <span className="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  <span className="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
                     Live Active
                   </span>
                 </div>
 
                 {/* Animated Simulated Map with Scooter Moving on loop along dashed curved route */}
-                <div className="relative w-full h-44 rounded-2xl bg-slate-900/90 border border-white/10 overflow-hidden mb-3 flex items-center justify-center">
+                <div className="relative w-full h-44 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 overflow-hidden mb-3 flex items-center justify-center">
                   <svg
                     className="w-full h-full"
                     viewBox="0 0 260 170"
@@ -356,15 +360,17 @@ export function HeroSection() {
                     </defs>
 
                     {/* Map Grid Roads */}
-                    <g opacity="0.3">
+                    <g className="opacity-40 dark:opacity-30">
                       <path
                         d="M 10 30 L 250 30 M 10 90 L 250 90 M 10 140 L 250 140"
-                        stroke="#475569"
+                        stroke="currentColor"
+                        className="text-slate-300 dark:text-slate-600"
                         strokeWidth="3"
                       />
                       <path
                         d="M 50 10 L 50 160 M 140 10 L 140 160 M 210 10 L 210 160"
-                        stroke="#475569"
+                        stroke="currentColor"
+                        className="text-slate-300 dark:text-slate-600"
                         strokeWidth="3"
                       />
                     </g>
@@ -447,27 +453,27 @@ export function HeroSection() {
                   </svg>
 
                   {/* Map status overlay */}
-                  <div className="absolute bottom-2 left-2 right-2 px-2.5 py-1.5 rounded-xl bg-slate-950/85 backdrop-blur-md border border-white/10 flex items-center justify-between text-[10px]">
-                    <span className="text-slate-300 font-medium flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                  <div className="absolute bottom-2 left-2 right-2 px-2.5 py-1.5 rounded-xl bg-white/95 dark:bg-slate-950/85 backdrop-blur-md border border-slate-200 dark:border-white/10 flex items-center justify-between text-[10px] shadow-xs">
+                    <span className="text-slate-700 dark:text-slate-300 font-medium flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
                       Rider on the way
                     </span>
-                    <span className="text-amber-400 font-bold">ETA 6 Mins</span>
+                    <span className="text-amber-600 dark:text-amber-400 font-bold">ETA 6 Mins</span>
                   </div>
                 </div>
 
                 {/* Quick Order Live Card */}
-                <div className="p-2.5 rounded-2xl bg-white/5 border border-white/10 mb-2">
+                <div className="p-2.5 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 mb-2 shadow-xs dark:shadow-none">
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[10px] font-semibold text-slate-400">Current Order</span>
-                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300">
+                    <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Current Order</span>
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 font-semibold">
                       COD: Rs. 380
                     </span>
                   </div>
-                  <p className="text-xs font-heading font-bold text-white truncate">
+                  <p className="text-xs font-heading font-bold text-slate-900 dark:text-white truncate">
                     Bismillah Medicos &middot; Urgent Medicines
                   </p>
-                  <p className="text-[10px] text-slate-400 mt-0.5">
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
                     Rider: Naveed Ahmed (Honda 125)
                   </p>
                 </div>
@@ -475,19 +481,19 @@ export function HeroSection() {
                 {/* 4 Quick Category Pills */}
                 <div className="grid grid-cols-4 gap-1.5 mt-auto">
                   {[
-                    { label: 'Grocery', icon: ShoppingBag, color: 'text-emerald-400' },
-                    { label: 'Medicine', icon: Pill, color: 'text-rose-400' },
-                    { label: 'Food', icon: Utensils, color: 'text-amber-400' },
-                    { label: 'Ride', icon: Bike, color: 'text-blue-400' },
+                    { label: 'Grocery', icon: ShoppingBag, color: 'text-emerald-600 dark:text-emerald-400' },
+                    { label: 'Medicine', icon: Pill, color: 'text-rose-600 dark:text-rose-400' },
+                    { label: 'Food', icon: Utensils, color: 'text-amber-600 dark:text-amber-400' },
+                    { label: 'Ride', icon: Bike, color: 'text-blue-600 dark:text-blue-400' },
                   ].map((cat) => {
                     const CatIcon = cat.icon;
                     return (
                       <div
                         key={cat.label}
-                        className="flex flex-col items-center justify-center p-1.5 rounded-xl bg-white/5 border border-white/5 text-center"
+                        className="flex flex-col items-center justify-center p-1.5 rounded-xl bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/5 text-center shadow-xs dark:shadow-none"
                       >
                         <CatIcon className={`w-3.5 h-3.5 ${cat.color} mb-1`} />
-                        <span className="text-[8px] font-heading font-medium text-slate-300">
+                        <span className="text-[8px] font-heading font-medium text-slate-700 dark:text-slate-300">
                           {cat.label}
                         </span>
                       </div>

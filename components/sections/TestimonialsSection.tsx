@@ -47,7 +47,7 @@ export function TestimonialsSection() {
           {marqueeList1.map((item, idx) => (
             <div
               key={`${item.id}-${idx}`}
-              className="w-[340px] sm:w-[380px] rounded-3xl p-6 bg-slate-900/60 border border-white/10 backdrop-blur-xl shadow-xl flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1"
+              className="w-[340px] sm:w-[380px] rounded-3xl p-6 bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-xl flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1"
             >
               <div>
                 {/* Rating & Quote Icon */}
@@ -60,22 +60,22 @@ export function TestimonialsSection() {
                   <Quote className="w-5 h-5 text-blue-500/40" />
                 </div>
 
-                <p className="text-sm text-slate-200 font-body leading-relaxed mb-6 italic">
+                <p className="text-sm text-slate-700 dark:text-slate-200 font-body leading-relaxed mb-6 italic">
                   &ldquo;{item.comment}&rdquo;
                 </p>
               </div>
 
               {/* Author & Area Info */}
-              <div className="flex items-center gap-3 pt-4 border-t border-white/10">
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-white/10">
                 <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-500 text-white font-heading font-bold text-xs flex items-center justify-center shadow-md">
                   {item.avatarText}
                 </div>
                 <div>
-                  <h4 className="text-sm font-heading font-bold text-white leading-tight">
+                  <h4 className="text-sm font-heading font-bold text-slate-900 dark:text-white leading-tight">
                     {item.name}
                   </h4>
-                  <p className="text-xs text-blue-400 font-medium">{item.role}</p>
-                  <p className="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
+                  <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">{item.role}</p>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-0.5 font-medium">
                     <MapPin className="w-2.5 h-2.5" /> {item.area}
                   </p>
                 </div>
@@ -91,7 +91,7 @@ export function TestimonialsSection() {
           {marqueeList2.map((item, idx) => (
             <div
               key={`${item.id}-${idx}`}
-              className="w-[340px] sm:w-[380px] rounded-3xl p-6 bg-slate-900/60 border border-white/10 backdrop-blur-xl shadow-xl flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1"
+              className="w-[340px] sm:w-[380px] rounded-3xl p-6 bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-xl flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
@@ -103,21 +103,21 @@ export function TestimonialsSection() {
                   <Quote className="w-5 h-5 text-blue-500/40" />
                 </div>
 
-                <p className="text-sm text-slate-200 font-body leading-relaxed mb-6 italic">
+                <p className="text-sm text-slate-700 dark:text-slate-200 font-body leading-relaxed mb-6 italic">
                   &ldquo;{item.comment}&rdquo;
                 </p>
               </div>
 
-              <div className="flex items-center gap-3 pt-4 border-t border-white/10">
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-white/10">
                 <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-500 text-white font-heading font-bold text-xs flex items-center justify-center shadow-md">
                   {item.avatarText}
                 </div>
                 <div>
-                  <h4 className="text-sm font-heading font-bold text-white leading-tight">
+                  <h4 className="text-sm font-heading font-bold text-slate-900 dark:text-white leading-tight">
                     {item.name}
                   </h4>
-                  <p className="text-xs text-blue-400 font-medium">{item.role}</p>
-                  <p className="text-[10px] text-slate-400 flex items-center gap-1 mt-0.5">
+                  <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">{item.role}</p>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-0.5 font-medium">
                     <MapPin className="w-2.5 h-2.5" /> {item.area}
                   </p>
                 </div>

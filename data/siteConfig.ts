@@ -31,7 +31,7 @@ export const APP_CONFIG: AppInfo = {
   address: 'Main Bazar, Alipur Chattha, District Gujranwala, Punjab, Pakistan',
   playStoreUrl:
     'https://play.google.com/store/apps/details?id=com.clickdelivers.app&pcampaignid=web_share',
-  appStoreUrl: '#', // iOS coming soon
+  appStoreUrl: 'https://apps.apple.com/app/clicks-deliver/id6813540581',
   packageId: 'com.clickdelivers.app',
   socials: {
     facebook: 'https://www.facebook.com/profile.php?id=61591840280575',

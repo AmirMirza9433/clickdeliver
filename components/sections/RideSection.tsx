@@ -50,7 +50,7 @@ export function RideSection() {
           {/* Left Column: Interactive Animated Map with Self-Drawing Route & Bike */}
           <div className="lg:col-span-6 order-2 lg:order-1">
             <Reveal direction="left" delay={0.1}>
-              <div className="relative aspect-square sm:aspect-[4/3] rounded-3xl bg-slate-900/90 border border-white/10 backdrop-blur-2xl p-4 shadow-2xl shadow-blue-500/10 overflow-hidden flex flex-col justify-between">
+              <div className="relative aspect-square sm:aspect-[4/3] rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-white/10 backdrop-blur-2xl p-4 shadow-2xl shadow-blue-500/10 overflow-hidden flex flex-col justify-between">
                 {/* Map UI Header Overlay */}
                 <div className="flex items-center justify-between z-20 px-2 py-1">
                   <div className="flex items-center gap-2">
@@ -58,19 +58,19 @@ export function RideSection() {
                       <Bike className="w-4 h-4" />
                     </div>
                     <div>
-                      <h4 className="text-xs font-heading font-bold text-white leading-none">
+                      <h4 className="text-xs font-heading font-bold text-slate-900 dark:text-white leading-none">
                         ClickDeliver Moto Ride
                       </h4>
-                      <p className="text-[10px] text-blue-300 mt-0.5">Alipur Chattha Safe Route</p>
+                      <p className="text-[10px] text-blue-600 dark:text-blue-300 mt-0.5 font-medium">Alipur Chattha Safe Route</p>
                     </div>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
                     Captain Live
                   </span>
                 </div>
 
                 {/* Map SVG Canvas */}
-                <div className="relative flex-1 w-full my-2 rounded-2xl bg-[#070d1d] border border-white/5 overflow-hidden min-h-[260px] flex items-center justify-center">
+                <div className="relative flex-1 w-full my-2 rounded-2xl bg-slate-100 dark:bg-[#070d1d] border border-slate-200 dark:border-white/5 overflow-hidden min-h-[260px] flex items-center justify-center">
                   <svg
                     className="w-full h-full"
                     viewBox="0 0 400 300"
@@ -87,10 +87,10 @@ export function RideSection() {
                     </defs>
 
                     {/* Roads / Street Grid */}
-                    <g opacity="0.25">
-                      <path d="M 0 60 L 400 60 M 0 160 L 400 160 M 0 240 L 400 240" stroke="#475569" strokeWidth="6" />
-                      <path d="M 80 0 L 80 300 M 200 0 L 200 300 M 320 0 L 320 300" stroke="#475569" strokeWidth="6" />
-                      <circle cx="200" cy="160" r="28" stroke="#334155" strokeWidth="4" fill="none" />
+                    <g className="opacity-40 dark:opacity-25">
+                      <path d="M 0 60 L 400 60 M 0 160 L 400 160 M 0 240 L 400 240" stroke="currentColor" className="text-slate-400 dark:text-slate-600" strokeWidth="6" />
+                      <path d="M 80 0 L 80 300 M 200 0 L 200 300 M 320 0 L 320 300" stroke="currentColor" className="text-slate-400 dark:text-slate-600" strokeWidth="6" />
+                      <circle cx="200" cy="160" r="28" stroke="currentColor" className="text-slate-400 dark:text-slate-700" strokeWidth="4" fill="none" />
                     </g>
 
                     {/* Outer glow route */}
@@ -234,30 +234,30 @@ export function RideSection() {
 
                 {/* Animated CountUp Strip for "8-12 minutes" and "Rs. 60-150" */}
                 <div className="grid grid-cols-2 gap-3 pt-2 z-20">
-                  <div className="p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
-                    <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400">
+                  <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center gap-3 shadow-xs">
+                    <div className="p-2 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
                       <Clock className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
                         Average Pickup
                       </p>
-                      <p className="text-base sm:text-lg font-heading font-extrabold text-white">
+                      <p className="text-base sm:text-lg font-heading font-extrabold text-slate-900 dark:text-white">
                         <CountUp end={8} duration={1.2} /> &ndash;{' '}
                         <CountUp end={12} duration={1.5} suffix=" Mins" />
                       </p>
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3">
-                    <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400">
+                  <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center gap-3 shadow-xs">
+                    <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                       <Banknote className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
                         Trip Fair
                       </p>
-                      <p className="text-base sm:text-lg font-heading font-extrabold text-white">
+                      <p className="text-base sm:text-lg font-heading font-extrabold text-slate-900 dark:text-white">
                         Rs. <CountUp end={60} duration={1.2} /> &ndash;{' '}
                         <CountUp end={150} duration={1.5} />
                       </p>
@@ -272,7 +272,7 @@ export function RideSection() {
           <div className="lg:col-span-6 order-1 lg:order-2">
             <Reveal direction="right" delay={0.05}>
               <div className="section-tag mb-4">
-                <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+                <Sparkles className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
                 <span>Fast &amp; Economical</span>
               </div>
             </Reveal>
@@ -286,7 +286,7 @@ export function RideSection() {
             />
 
             <Reveal direction="right" delay={0.25}>
-              <p className="text-base sm:text-lg text-slate-300 font-body leading-relaxed mb-8">
+              <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-body leading-relaxed mb-8">
                 ClickDeliver sirf delivery tak mehdood nahi hai. Agar aapko Alipur Chattha ke kisi bhi
                 hissay mein foran pohnchna hai, to app se instant motorcycle ride book karein —
                 behtareen captains aur affordable rates ke sath!
@@ -298,14 +298,14 @@ export function RideSection() {
                 const PerkIcon = perk.icon;
                 return (
                   <Reveal key={i} direction="up" delay={0.3 + i * 0.08}>
-                    <div className="p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors">
-                      <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-2.5">
+                    <div className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 shadow-sm dark:shadow-none transition-colors">
+                      <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-2.5">
                         <PerkIcon className="w-4 h-4" />
                       </div>
-                      <h4 className="text-sm font-heading font-bold text-white mb-1">
+                      <h4 className="text-sm font-heading font-bold text-slate-900 dark:text-white mb-1">
                         {perk.title}
                       </h4>
-                      <p className="text-xs text-slate-300 font-body leading-relaxed">
+                      <p className="text-xs text-slate-600 dark:text-slate-300 font-body leading-relaxed">
                         {perk.desc}
                       </p>
                     </div>

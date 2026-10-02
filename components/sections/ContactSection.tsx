@@ -123,21 +123,21 @@ export function ContactSection() {
                   <StaggerItem key={item.title} className="mb-4 last:mb-0">
                     <a
                       href={item.href}
-                      className="flex items-start gap-4 p-5 rounded-3xl bg-slate-900/60 border border-white/10 backdrop-blur-xl hover:border-blue-500/40 hover:bg-slate-900/90 transition-all duration-300 group shadow-lg"
+                      className="flex items-start gap-4 p-5 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl hover:border-blue-500/40 hover:bg-slate-50 dark:hover:bg-slate-900/90 transition-all duration-300 group shadow-lg"
                     >
-                      <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                      <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all">
                         <Icon className="w-5 h-5" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
-                          <p className="text-xs font-heading font-semibold text-slate-400">
+                          <p className="text-xs font-heading font-semibold text-slate-500 dark:text-slate-400">
                             {item.title}
                           </p>
-                          <span className="text-[11px] font-heading font-medium text-blue-400 group-hover:underline">
+                          <span className="text-[11px] font-heading font-medium text-blue-600 dark:text-blue-400 group-hover:underline">
                             {item.actionLabel}
                           </span>
                         </div>
-                        <p className="text-base font-heading font-bold text-white mt-1 break-words">
+                        <p className="text-base font-heading font-bold text-slate-900 dark:text-white mt-1 break-words">
                           {item.value}
                         </p>
                       </div>
@@ -149,8 +149,8 @@ export function ContactSection() {
 
             {/* Social Channels with Spring Pop on Hover */}
             <Reveal direction="up" delay={0.35}>
-              <div className="p-6 rounded-3xl bg-slate-900/60 border border-white/10 backdrop-blur-xl">
-                <h4 className="text-sm font-heading font-bold text-white mb-4">
+              <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-lg">
+                <h4 className="text-sm font-heading font-bold text-slate-900 dark:text-white mb-4">
                   Follow ClickDeliver on Socials
                 </h4>
                 <div className="flex gap-3">
@@ -183,7 +183,7 @@ export function ContactSection() {
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.15, rotate: 5 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                        className={`w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 transition-colors ${s.color}`}
+                        className={`w-12 h-12 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-700 dark:text-slate-300 transition-colors ${s.color}`}
                         aria-label={s.name}
                       >
                         <SIcon className="w-5 h-5" />
@@ -198,11 +198,11 @@ export function ContactSection() {
           {/* Right Column: Interactive Quick Inquiries / Rider Form */}
           <div className="lg:col-span-7">
             <Reveal direction="up" delay={0.2}>
-              <div className="rounded-3xl p-6 sm:p-10 bg-slate-900/80 border border-white/10 backdrop-blur-2xl shadow-2xl shadow-blue-500/10">
-                <h3 className="text-2xl font-heading font-bold text-white mb-2">
+              <div className="rounded-3xl p-6 sm:p-10 bg-white dark:bg-slate-900/80 border border-slate-200/90 dark:border-white/10 backdrop-blur-2xl shadow-2xl shadow-blue-500/10">
+                <h3 className="text-2xl font-heading font-bold text-slate-900 dark:text-white mb-2">
                   Hamein Direct Message Bhejein
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-400 font-body mb-6">
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-body mb-6">
                   Chaahe rider banna ho, shopkeeper partner banna ho ya koi feedback dena ho.
                 </p>
 
@@ -211,11 +211,11 @@ export function ContactSection() {
                     <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-3 shadow-lg shadow-emerald-500/30">
                       <CheckCircle2 className="w-6 h-6" />
                     </div>
-                    <h4 className="text-lg font-heading font-bold text-white mb-1">
+                    <h4 className="text-lg font-heading font-bold text-slate-900 dark:text-white mb-1">
                       Message WhatsApp Par Bhej Diya Gaya!
                     </h4>
-                    <p className="text-xs text-emerald-300 max-w-md mx-auto mb-5 leading-relaxed">
-                      Aapka message hamare official WhatsApp number <strong className="text-white font-bold">{APP_CONFIG.phoneDisplay}</strong> par forward ho chuka hai. ClickDeliver team jald hi aap se rabta karegi.
+                    <p className="text-xs text-emerald-700 dark:text-emerald-300 max-w-md mx-auto mb-5 leading-relaxed font-medium">
+                      Aapka message hamare official WhatsApp number <strong className="text-slate-900 dark:text-white font-bold">{APP_CONFIG.phoneDisplay}</strong> par forward ho chuka hai. ClickDeliver team jald hi aap se rabta karegi.
                     </p>
                     <div className="flex flex-wrap gap-3 justify-center">
                       <a
@@ -235,7 +235,7 @@ export function ContactSection() {
                           setIsSubmitted(false);
                           setFormData({ name: '', phone: '', role: 'customer', message: '' });
                         }}
-                        className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-heading font-semibold transition-all"
+                        className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-700 dark:text-white text-xs font-heading font-semibold transition-all"
                       >
                         Naya Message Bhejein
                       </button>
@@ -245,7 +245,7 @@ export function ContactSection() {
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-heading font-semibold text-slate-300 mb-1.5">
+                        <label className="block text-xs font-heading font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                           Aapka Naam
                         </label>
                         <input
@@ -254,11 +254,11 @@ export function ContactSection() {
                           placeholder="e.g. Muhammad Ali"
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-heading font-semibold text-slate-300 mb-1.5">
+                        <label className="block text-xs font-heading font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                           Mobile Number / WhatsApp
                         </label>
                         <input
@@ -267,34 +267,34 @@ export function ContactSection() {
                           placeholder="0300 1234567"
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-heading font-semibold text-slate-300 mb-1.5">
+                      <label className="block text-xs font-heading font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                         Aapka Maqsad
                       </label>
                       <div className="relative">
                         <select
                           value={formData.role}
                           onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                          className="w-full px-4 py-3 pr-10 rounded-xl bg-slate-900 border border-white/10 text-white text-sm appearance-none focus:outline-none focus:border-blue-500 transition-colors cursor-pointer"
+                          className="w-full px-4 py-3 pr-10 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm appearance-none focus:outline-none focus:border-blue-500 transition-colors cursor-pointer"
                         >
-                          <option value="customer" className="bg-slate-900 text-white">Customer Inquiry / Order Help</option>
-                          <option value="rider" className="bg-slate-900 text-white">Join as Rider / Captain</option>
-                          <option value="shopkeeper" className="bg-slate-900 text-white">Register Shop / Merchant Partnership</option>
-                          <option value="feedback" className="bg-slate-900 text-white">Suggestions / Feedback</option>
+                          <option value="customer" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Customer Inquiry / Order Help</option>
+                          <option value="rider" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Join as Rider / Captain</option>
+                          <option value="shopkeeper" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Register Shop / Merchant Partnership</option>
+                          <option value="feedback" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Suggestions / Feedback</option>
                         </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-blue-400">
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5 text-blue-500 dark:text-blue-400">
                           <ChevronDown className="w-4 h-4" />
                         </div>
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-heading font-semibold text-slate-300 mb-1.5">
+                      <label className="block text-xs font-heading font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                         Message ya Detail
                       </label>
                       <textarea
@@ -303,7 +303,7 @@ export function ContactSection() {
                         placeholder="Apna sawal ya message yahan likhein..."
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500 transition-colors resize-none"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm focus:outline-none focus:border-blue-500 transition-colors resize-none"
                       />
                     </div>
 

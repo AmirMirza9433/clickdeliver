@@ -139,7 +139,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className="font-body bg-brand-bg text-white selection:bg-brand-primary selection:text-white antialiased"
+        className="font-body bg-background text-foreground selection:bg-brand-primary selection:text-white antialiased transition-colors duration-300"
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <PageLoader />

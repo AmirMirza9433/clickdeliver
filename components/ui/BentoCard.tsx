@@ -85,7 +85,7 @@ export function BentoCard({ feature, index }: BentoCardProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       whileHover={shouldReduceMotion ? {} : { y: -8 }}
-      className={`relative rounded-3xl p-6 sm:p-8 bg-slate-900/60 border border-white/10 backdrop-blur-xl overflow-hidden group transition-all duration-300 hover:border-blue-500/40 hover:shadow-2xl hover:shadow-blue-500/10 ${feature.colSpanDesktop}`}
+      className={`relative rounded-3xl p-6 sm:p-8 bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 backdrop-blur-xl overflow-hidden group transition-all duration-300 hover:border-blue-500/40 hover:shadow-2xl hover:shadow-blue-500/10 ${feature.colSpanDesktop}`}
     >
       {/* Dynamic Cursor Glow Border following pointer */}
       {!isMobile && (
@@ -108,8 +108,7 @@ export function BentoCard({ feature, index }: BentoCardProps) {
         <div>
           {/* Badge & Icon Row */}
           <div className="flex items-center justify-between gap-4 mb-6">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-heading font-semibold bg-white/5 border border-white/10 text-blue-300 tracking-wide">
-              {feature.badge}
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-heading font-semibold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-blue-600 dark:text-blue-300 tracking-wide">
             </span>
             {/* Icon rotate and scale on hover */}
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600/30 to-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 group-hover:text-white group-hover:border-blue-400 group-hover:shadow-lg group-hover:shadow-blue-500/20">
@@ -118,26 +117,26 @@ export function BentoCard({ feature, index }: BentoCardProps) {
           </div>
 
           {/* Heading */}
-          <h3 className="text-xl sm:text-2xl font-heading font-bold text-white mb-3 tracking-tight group-hover:text-blue-200 transition-colors">
+          <h3 className="text-xl sm:text-2xl font-heading font-bold text-slate-900 dark:text-white mb-3 tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-200 transition-colors">
             {feature.title}
           </h3>
 
           {/* Description */}
-          <p className="text-sm sm:text-base text-slate-300 font-body leading-relaxed mb-4">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 font-body leading-relaxed mb-4">
             {feature.description}
           </p>
 
-          <p className="text-xs text-blue-400/90 font-heading font-medium mb-6">
+          <p className="text-xs text-blue-600/90 dark:text-blue-400/90 font-heading font-medium mb-6">
             {feature.subtext}
           </p>
         </div>
 
         {/* Highlight Bullets */}
-        <div className="pt-4 border-t border-white/10 flex flex-wrap gap-2 sm:gap-3">
+        <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex flex-wrap gap-2 sm:gap-3">
           {feature.highlights.map((h, i) => (
             <span
               key={i}
-              className="inline-flex items-center gap-1.5 text-xs text-slate-300 bg-white/5 px-2.5 py-1 rounded-lg border border-white/5"
+              className="inline-flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-white/5 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/5"
             >
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
               <span>{h}</span>

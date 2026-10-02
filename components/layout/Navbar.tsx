@@ -61,7 +61,7 @@ export function Navbar() {
       }}
       className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
         scrolled
-          ? 'py-3 bg-[#060911]/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/25'
+          ? 'py-3 bg-white/85 dark:bg-[#060911]/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/10 shadow-lg shadow-slate-900/5 dark:shadow-black/25'
           : 'py-5 bg-transparent'
       }`}
     >
@@ -69,7 +69,7 @@ export function Navbar() {
         <div className="flex items-center justify-between">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-3 group focus:outline-none">
-            <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-white/5 border border-white/10 p-1 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:border-blue-500/50 shadow-md">
+            <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 p-1 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:border-blue-500/50 shadow-md">
               <Image
                 src="/logo.png"
                 alt="ClickDeliver"
@@ -80,10 +80,10 @@ export function Navbar() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-heading font-extrabold text-lg text-white tracking-tight flex items-center gap-1">
+              <span className="font-heading font-extrabold text-lg text-slate-900 dark:text-white tracking-tight flex items-center gap-1">
                 Click<span className="text-blue-500">Deliver</span>
               </span>
-              <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400">
+              <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400">
                 Alipur Chattha
               </span>
             </div>
@@ -92,7 +92,7 @@ export function Navbar() {
           {/* Desktop Navigation Links with animated underline and scroll-spy */}
           <nav
             onMouseLeave={() => setHoveredLink(null)}
-            className="hidden lg:flex items-center gap-1 p-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md"
+            className="hidden lg:flex items-center gap-1 p-1 rounded-full bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-md"
           >
             {NAV_ITEMS.map((link) => {
               const isActive = activeSection === link.href;
@@ -104,7 +104,9 @@ export function Navbar() {
                   href={link.href}
                   onMouseEnter={() => setHoveredLink(link.href)}
                   className={`relative px-4 py-1.5 rounded-full text-xs font-heading font-medium transition-colors duration-200 ${
-                    isActive ? 'text-white font-semibold' : 'text-slate-300 hover:text-white'
+                    isActive
+                      ? 'text-blue-600 dark:text-white font-semibold'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   <span className="relative z-10">{link.label}</span>
@@ -113,7 +115,7 @@ export function Navbar() {
                   {isActive && (
                     <motion.div
                       layoutId="nav-pill"
-                      className="absolute inset-0 bg-blue-600/30 rounded-full border border-blue-400/40 z-0"
+                      className="absolute inset-0 bg-blue-600/10 dark:bg-blue-600/30 rounded-full border border-blue-500/30 dark:border-blue-400/40 z-0"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -151,7 +153,7 @@ export function Navbar() {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors focus:outline-none"
+              className="lg:hidden p-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-white transition-colors focus:outline-none"
               aria-label="Toggle navigation menu"
             >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -168,7 +170,7 @@ export function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.32, ease: MOTION_EASE }}
-            className="lg:hidden border-b border-white/10 bg-[#060911]/95 backdrop-blur-2xl overflow-hidden"
+            className="lg:hidden border-b border-slate-200 dark:border-white/10 bg-white/95 dark:bg-[#060911]/95 backdrop-blur-2xl overflow-hidden"
           >
             <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col gap-2">
               {NAV_ITEMS.map((link, idx) => (
@@ -183,12 +185,12 @@ export function Navbar() {
                     onClick={() => setMobileOpen(false)}
                     className={`flex items-center justify-between py-2.5 px-3 rounded-xl text-sm font-heading font-medium transition-colors ${
                       activeSection === link.href
-                        ? 'bg-blue-600/20 text-blue-400 font-semibold border border-blue-500/30'
-                        : 'text-slate-300 hover:text-white hover:bg-white/5'
+                        ? 'bg-blue-600/10 dark:bg-blue-600/20 text-blue-600 dark:text-blue-400 font-semibold border border-blue-500/20 dark:border-blue-500/30'
+                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
                     }`}
                   >
                     <span>{link.label}</span>
-                    <ArrowUpRight className="w-4 h-4 text-slate-500" />
+                    <ArrowUpRight className="w-4 h-4 text-slate-400" />
                   </Link>
                 </motion.div>
               ))}
