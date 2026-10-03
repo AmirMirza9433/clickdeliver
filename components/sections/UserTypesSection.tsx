@@ -97,7 +97,7 @@ export function UserTypesSection() {
                   {isSelected && (
                     <motion.div
                       layoutId="role-tab-indicator"
-                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 shadow-lg shadow-blue-500/30 -z-10"
+                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 shadow-lg shadow-cyan-500/30 -z-10"
                       transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                     />
                   )}
@@ -200,10 +200,13 @@ export function UserTypesSection() {
                 <Magnetic strength={0.2}>
                   <a
                     href={activeRole.ctaLink}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-heading font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-500 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300"
+                    className="group relative inline-flex overflow-hidden rounded-xl p-[3px] shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300"
                   >
-                    <span>{activeRole.ctaText}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <span className="absolute inset-[-1000%] animate-[spin_20s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#e11d48,#a855f7,#3b82f6,#10b981,#e11d48)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="relative inline-flex items-center gap-2 px-6 py-3 w-full h-full rounded-[9px] font-heading font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-300">
+                      <span>{activeRole.ctaText}</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </span>
                   </a>
                 </Magnetic>
               </div>

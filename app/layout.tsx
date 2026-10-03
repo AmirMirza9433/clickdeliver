@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { PageLoader } from '@/components/ui/PageLoader';
 import { ThemeProvider } from '@/components/ui/ThemeProvider';
+import { QuickContactFab } from '@/components/ui/QuickContactFab';
 import { APP_CONFIG } from '@/data/siteConfig';
 
 const siteUrl =
@@ -144,6 +145,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <PageLoader />
           {children}
+          <QuickContactFab />
         </ThemeProvider>
       </body>
     </html>

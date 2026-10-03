@@ -25,8 +25,8 @@ export const APP_CONFIG: AppInfo = {
   description:
     'ClickDeliver Pakistan ka premier hyper-local delivery aur ride-booking platform hai. Grocery, medicine, food, custom orders aur ride booking — sab kuch Alipur Chattha mein ek tap par.',
   email: 'clickdeliver.app@gmail.com',
-  phone: '+923287872532',
-  phoneDisplay: '+92 328 7872532',
+  phone: '+923712388070',
+  phoneDisplay: '+92 371 2388070',
   location: 'Alipur Chattha, Gujranwala, Punjab, Pakistan',
   address: 'Main Bazar, Alipur Chattha, District Gujranwala, Punjab, Pakistan',
   playStoreUrl:

@@ -25,12 +25,7 @@ export function Navbar() {
       // Transparent at top -> blurred glass + shadow after 20px
       setScrolled(currentY > 20);
 
-      // Hide on scroll down, show on scroll up (after 120px)
-      if (currentY > 120 && currentY > lastScrollY.current + 8) {
-        setHidden(true);
-      } else if (currentY < lastScrollY.current - 8 || currentY <= 120) {
-        setHidden(false);
-      }
+      // Header remains fixed always, no hiding logic needed
       lastScrollY.current = currentY;
 
       // Scroll-spy active link detection
@@ -53,15 +48,15 @@ export function Navbar() {
   return (
     <motion.header
       animate={{
-        y: hidden && !mobileOpen ? -100 : 0,
+        y: 0,
       }}
       transition={{
         duration: 0.35,
         ease: MOTION_EASE,
       }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'py-3 bg-white/85 dark:bg-[#060911]/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/10 shadow-lg shadow-slate-900/5 dark:shadow-black/25'
+          ? 'py-3 bg-white/90 dark:bg-[#060911]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/10 shadow-lg shadow-slate-900/5 dark:shadow-black/25'
           : 'py-5 bg-transparent'
       }`}
     >
@@ -69,21 +64,21 @@ export function Navbar() {
         <div className="flex items-center justify-between">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-3 group focus:outline-none">
-            <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 p-1 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:border-blue-500/50 shadow-md">
+            <div className="relative w-11 h-11 rounded-xl overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 p-1 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:border-blue-500/50 shadow-md">
               <Image
                 src="/logo.png"
                 alt="ClickDeliver"
-                width={36}
-                height={36}
-                className="w-auto h-auto max-w-[34px] max-h-[34px] object-contain drop-shadow"
+                width={40}
+                height={40}
+                className="w-auto h-auto max-w-[36px] max-h-[36px] object-contain drop-shadow"
                 priority
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-heading font-extrabold text-lg text-slate-900 dark:text-white tracking-tight flex items-center gap-1">
+              <span className="font-heading font-extrabold text-xl text-slate-900 dark:text-white tracking-tight flex items-center gap-1">
                 Click<span className="text-blue-500">Deliver</span>
               </span>
-              <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400">
+              <span className="text-xs uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400">
                 Alipur Chattha
               </span>
             </div>
@@ -92,7 +87,7 @@ export function Navbar() {
           {/* Desktop Navigation Links with animated underline and scroll-spy */}
           <nav
             onMouseLeave={() => setHoveredLink(null)}
-            className="hidden lg:flex items-center gap-1 p-1 rounded-full bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-md"
+            className="hidden lg:flex items-center gap-1.5 p-1.5 rounded-full bg-white/90 dark:bg-[#111827]/90 border border-slate-200 dark:border-white/10 backdrop-blur-md shadow-sm"
           >
             {NAV_ITEMS.map((link) => {
               const isActive = activeSection === link.href;
@@ -103,10 +98,10 @@ export function Navbar() {
                   key={link.label}
                   href={link.href}
                   onMouseEnter={() => setHoveredLink(link.href)}
-                  className={`relative px-4 py-1.5 rounded-full text-xs font-heading font-medium transition-colors duration-200 ${
+                  className={`relative px-4 py-2 rounded-full text-[15px] font-heading transition-colors duration-200 ${
                     isActive
-                      ? 'text-blue-600 dark:text-white font-semibold'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                      ? 'text-white font-semibold'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium'
                   }`}
                 >
                   <span className="relative z-10">{link.label}</span>
@@ -115,7 +110,7 @@ export function Navbar() {
                   {isActive && (
                     <motion.div
                       layoutId="nav-pill"
-                      className="absolute inset-0 bg-blue-600/10 dark:bg-blue-600/30 rounded-full border border-blue-500/30 dark:border-blue-400/40 z-0"
+                      className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full shadow-md shadow-blue-500/25 z-0"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -142,10 +137,13 @@ export function Navbar() {
               <Magnetic strength={0.25}>
                 <a
                   href="#download"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-heading font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/35 transition-all duration-300"
+                  className="group relative inline-flex overflow-hidden rounded-xl p-[3px] shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-cyan-500/35 transition-all duration-300"
                 >
-                  <span>Download App</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
+                  <span className="absolute inset-[-1000%] animate-[spin_20s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#e11d48,#a855f7,#3b82f6,#10b981,#e11d48)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="relative inline-flex items-center gap-2 px-4 py-2 w-full h-full rounded-[9px] text-sm font-heading font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 transition-all duration-300">
+                    <span>Download App</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </span>
                 </a>
               </Magnetic>
             </div>
@@ -204,10 +202,13 @@ export function Navbar() {
                 <a
                   href="#download"
                   onClick={() => setMobileOpen(false)}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center font-heading font-semibold text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2"
+                  className="group relative flex overflow-hidden w-full rounded-xl p-[3px] shadow-lg shadow-blue-500/25 transition-all duration-300"
                 >
-                  <span>Download Free App</span>
-                  <ArrowUpRight className="w-4 h-4" />
+                  <span className="absolute inset-[-1000%] animate-[spin_20s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#e11d48,#a855f7,#3b82f6,#10b981,#e11d48)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <span className="relative flex items-center justify-center gap-2 w-full h-full py-3 rounded-[9px] bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-heading font-semibold text-sm transition-all duration-300">
+                    <span>Download Free App</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </span>
                 </a>
               </motion.div>
             </div>
