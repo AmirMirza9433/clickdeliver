@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Reveal } from "./Reveal";
+import { RevealDirection } from "@/lib/motion";
 interface TextRevealProps {
   text: string;
   as?: "h1" | "h2" | "h3" | "h4" | "p" | "span" | "div";
@@ -9,6 +10,7 @@ interface TextRevealProps {
   delay?: number;
   duration?: number;
   once?: boolean;
+  direction?: RevealDirection;
   highlightWords?: string[];
   highlightClassName?: string;
 }
@@ -20,11 +22,17 @@ export function TextReveal({
   delay = 0,
   duration = 0.5,
   once = true,
+  direction = "up",
   highlightWords = [],
   highlightClassName = "text-blue-600 dark:text-blue-300",
 }: TextRevealProps) {
   return (
-    <Reveal delay={delay} duration={duration} once={once}>
+    <Reveal
+      direction={direction}
+      delay={delay}
+      duration={duration}
+      once={once}
+    >
       <Component className={className}>
         {text.split(" ").map((word, i) => (
           <React.Fragment key={i}>

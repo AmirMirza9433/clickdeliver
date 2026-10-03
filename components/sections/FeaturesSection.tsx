@@ -16,7 +16,7 @@ export function FeaturesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <Reveal direction="up" delay={0.05}>
+          <Reveal direction="left" delay={0.05}>
             <div className="section-tag mx-auto">
               <Sparkles className="w-3.5 h-3.5" />
               <span>HAR DIN, HAR ZAROORAT</span>
@@ -29,9 +29,10 @@ export function FeaturesSection() {
             as="h2"
             className="section-heading"
             delay={0.15}
+            direction="left"
           />
 
-          <Reveal direction="up" delay={0.25}>
+          <Reveal direction="left" delay={0.25}>
             <p className="section-subheading">
               Grocery ho, dawaai ho ya bike ride — apne shehar ki services ab ek hi app mein.
             </p>

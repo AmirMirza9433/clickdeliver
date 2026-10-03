@@ -35,7 +35,7 @@ export function FaqSection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-12">
-          <Reveal direction="up" delay={0.05}>
+          <Reveal direction="left" delay={0.05}>
             <div className="section-tag mx-auto">
               <HelpCircle className="w-3.5 h-3.5 text-blue-400" />
               <span>Got Questions?</span>
@@ -48,9 +48,10 @@ export function FaqSection() {
             as="h2"
             className="section-heading"
             delay={0.15}
+            direction="left"
           />
 
-          <Reveal direction="up" delay={0.25}>
+          <Reveal direction="left" delay={0.25}>
             <p className="section-subheading">
               ClickDeliver ke baray mein kisi bhi sawal ka jawab yahan dekhein.
             </p>
@@ -58,7 +59,7 @@ export function FaqSection() {
         </div>
 
         {/* Category Filter Pills */}
-        <Reveal direction="up" delay={0.2}>
+        <Reveal direction="right" delay={0.2}>
           <div className="flex flex-wrap justify-center gap-2 mb-10">
             {categories.map((cat) => (
               <button

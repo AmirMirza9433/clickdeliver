@@ -16,7 +16,7 @@ export function StatsSection() {
   return (
     <section className="relative py-12 z-20 stats-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Reveal direction="up" delay={0.05} distance={30}>
+        <Reveal direction="right" delay={0.05} distance={36}>
           <div className="relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 backdrop-blur-2xl shadow-2xl shadow-blue-500/5 overflow-hidden">
             {/* Subtle Ambient Light Strip */}
             <div className="absolute -top-24 left-1/4 w-96 h-36 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />

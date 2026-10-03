@@ -22,14 +22,19 @@ export function BentoCard({
   const Icon = icons[feature.iconName as keyof typeof icons] || Sparkles;
   const reduced = useReducedMotion();
   return (
-    <Reveal delay={(index % 3) * 0.08} className={feature.colSpanDesktop}>
+    <Reveal
+      direction={index % 2 === 0 ? "left" : "right"}
+      delay={(index % 3) * 0.08}
+      distance={40}
+      className={feature.colSpanDesktop}
+    >
       <motion.article
         whileHover={reduced ? undefined : { y: -5 }}
         transition={{ duration: 0.2 }}
         className="feature-card h-full flex flex-col"
       >
         <div className="flex items-center justify-between mb-6">
-          <span className="w-11 h-11 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-300 flex items-center justify-center">
+          <span className="feature-icon w-11 h-11 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-300 flex items-center justify-center">
             <Icon size={22} />
           </span>
           <span className="text-[9px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400">
@@ -49,7 +54,10 @@ export function BentoCard({
               key={item}
               className="flex items-center gap-1.5 text-[10px] text-slate-600 dark:text-slate-300"
             >
-              <Check size={12} className="text-blue-600 dark:text-blue-400" />
+              <Check
+                size={12}
+                className="feature-check text-blue-600 dark:text-blue-400"
+              />
               {item}
             </span>
           ))}

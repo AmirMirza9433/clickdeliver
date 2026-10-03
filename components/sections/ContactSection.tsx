@@ -91,7 +91,7 @@ export function ContactSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <Reveal direction="up" delay={0.05}>
+          <Reveal direction="right" delay={0.05}>
             <div className="section-tag mx-auto">
               <MessageSquare className="w-3.5 h-3.5 text-blue-400" />
               <span>Always Connected</span>
@@ -104,9 +104,10 @@ export function ContactSection() {
             as="h2"
             className="section-heading"
             delay={0.15}
+            direction="right"
           />
 
-          <Reveal direction="up" delay={0.25}>
+          <Reveal direction="right" delay={0.25}>
             <p className="section-subheading">
               Kisi bhi mushkil, rider registration ya shopkeeper partnership ke liye hamse direct rabta karein.
             </p>
@@ -148,7 +149,7 @@ export function ContactSection() {
             </Stagger>
 
             {/* Social Channels with Spring Pop on Hover */}
-            <Reveal direction="up" delay={0.35}>
+            <Reveal direction="left" delay={0.35}>
               <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/10 backdrop-blur-xl shadow-lg">
                 <h4 className="text-sm font-heading font-bold text-slate-900 dark:text-white mb-4">
                   Follow ClickDeliver on Socials
@@ -197,7 +198,7 @@ export function ContactSection() {
 
           {/* Right Column: Interactive Quick Inquiries / Rider Form */}
           <div className="lg:col-span-7">
-            <Reveal direction="up" delay={0.2}>
+            <Reveal direction="right" delay={0.2}>
               <div className="rounded-3xl p-6 sm:p-10 bg-white dark:bg-slate-900/80 border border-slate-200/90 dark:border-white/10 backdrop-blur-2xl shadow-2xl shadow-blue-500/10">
                 <h3 className="text-2xl font-heading font-bold text-slate-900 dark:text-white mb-2">
                   Hamein Direct Message Bhejein

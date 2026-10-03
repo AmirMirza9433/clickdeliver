@@ -41,7 +41,7 @@ export function DownloadSection() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Column: Badges & Copy */}
             <div className="lg:col-span-7">
-              <Reveal direction="up" delay={0.05}>
+              <Reveal direction="right" delay={0.05}>
                 <div className="section-tag mb-4">
                   <Download className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
                   <span>Get ClickDeliver Now</span>
@@ -54,9 +54,10 @@ export function DownloadSection() {
                 as="h2"
                 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-slate-900 dark:text-white mb-4 tracking-tight leading-tight"
                 delay={0.15}
+                direction="right"
               />
 
-              <Reveal direction="up" delay={0.25}>
+              <Reveal direction="right" delay={0.25}>
                 <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-body leading-relaxed mb-8">
                   Chahe rozmarra ki grocery mangwani ho, emergency dawaai ya foran bike ride —
                   ClickDeliver aapke phone mein hona zaroori hai. Abhi download karein!

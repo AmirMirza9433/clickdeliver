@@ -329,12 +329,56 @@ main [class*="shadow-xl"] {
   color: #385875;
 }
 .status-dot {
+  position: relative;
   width: 6px;
   height: 6px;
   background: #35bb9b;
   border-radius: 50%;
   display: inline-block;
   flex-shrink: 0;
+}
+.status-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid #35bb9b;
+  border-radius: inherit;
+  animation: status-ring 2.4s ease-out infinite;
+}
+@keyframes status-ring {
+  0%,
+  35% {
+    opacity: 0.55;
+    transform: scale(0.55);
+  }
+  75%,
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+.site-loader {
+  animation: loader-failsafe 0s 1.4s forwards;
+}
+.loader-logo-ring {
+  animation: loader-ring 1.2s ease-in-out infinite;
+}
+@keyframes loader-ring {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.07);
+  }
+}
+@keyframes loader-failsafe {
+  to {
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
 .hero-title {
   font-family: var(--font-heading);
@@ -389,6 +433,9 @@ main [class*="shadow-xl"] {
 }
 .store-button {
   display: flex;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background: #05080d;
   border: 1px solid #596d87;
   border-radius: 10px;
@@ -398,6 +445,17 @@ main [class*="shadow-xl"] {
     border-color 0.2s,
     box-shadow 0.2s;
 }
+.store-button::after {
+  content: "";
+  position: absolute;
+  inset: -35% auto -35% -45%;
+  z-index: 2;
+  width: 34%;
+  transform: skewX(-18deg) translateX(-260%);
+  background: linear-gradient(90deg, transparent, #ffffff38, transparent);
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
 .store-button img {
   width: 158px;
   height: 48px;
@@ -406,6 +464,10 @@ main [class*="shadow-xl"] {
   transform: translateY(-3px);
   border-color: #7cb5ff;
   box-shadow: 0 8px 24px #2563eb22;
+}
+.store-button:hover::after,
+.store-button:focus-visible::after {
+  transform: skewX(-18deg) translateX(520%);
 }
 .hero-notes {
   display: flex;
@@ -434,6 +496,18 @@ main [class*="shadow-xl"] {
 }
 .hero-explore:hover {
   color: #73b4ff;
+}
+.hero-explore svg {
+  animation: explore-nudge 2s ease-in-out infinite;
+}
+@keyframes explore-nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
 }
 .light .hero-explore {
   color: #4b627c;
@@ -485,6 +559,18 @@ main [class*="shadow-xl"] {
   box-shadow:
     0 0 0 44px #5b9bd507,
     0 0 0 90px #5b9bd504;
+  animation: orbit-breathe 7s ease-in-out infinite;
+}
+@keyframes orbit-breathe {
+  0%,
+  100% {
+    transform: scale(0.985);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
 }
 .phone-entrance {
   animation: phone-enter 0.65s 0.16s both cubic-bezier(0.16, 1, 0.3, 1);
@@ -589,6 +675,13 @@ main [class*="shadow-xl"] {
   border-radius: 12px;
   width: 40px;
   height: 38px;
+  transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.22s ease;
+}
+.phone-categories > div:hover > span {
+  transform: translateY(-2px) scale(1.04);
+  background: #deebfb;
 }
 .phone-map {
   margin: 0 11px;
@@ -664,6 +757,9 @@ main [class*="shadow-xl"] {
 }
 .hero-section[data-running="false"]
   :is(.rider-marker, .destination-pulse, .service-badge) {
+  animation-play-state: paused;
+}
+.hero-section[data-running="false"] .phone-orbit {
   animation-play-state: paused;
 }
 .phone-order {
@@ -820,6 +916,9 @@ main [class*="shadow-xl"] {
   margin-left: auto;
   width: 12px;
   opacity: 0.5;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 .hero-service-strip strong {
   display: block;
@@ -836,12 +935,18 @@ main [class*="shadow-xl"] {
 .hero-service-strip > a:hover {
   background: #3b82f609;
 }
+.hero-service-strip > a:hover > svg:last-child,
+.hero-service-strip > a:focus-visible > svg:last-child {
+  transform: translate(2px, -2px);
+  opacity: 1;
+}
 .feature-card {
   border: 1px solid hsl(var(--border));
   border-radius: 22px;
   padding: 28px;
   background: hsl(var(--card) / 0.68);
   transition:
+    transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
     border-color 0.2s,
     box-shadow 0.2s;
 }
@@ -852,6 +957,27 @@ main [class*="shadow-xl"] {
 .feature-card:hover {
   border-color: #448af180;
   box-shadow: 0 12px 30px -20px #2563eb40;
+}
+.feature-icon {
+  transition:
+    transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.24s ease,
+    box-shadow 0.24s ease;
+}
+.feature-icon svg,
+.feature-check {
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.feature-card:hover .feature-icon {
+  transform: translateY(-2px) rotate(-4deg);
+  background-color: rgb(59 130 246 / 0.16);
+  box-shadow: 0 8px 20px -12px rgb(37 99 235 / 0.75);
+}
+.feature-card:hover .feature-icon svg {
+  transform: scale(1.08) rotate(4deg);
+}
+.feature-card:hover .feature-check {
+  transform: scale(1.14);
 }
 .feature-card h3 {
   font-size: 22px;
@@ -1012,6 +1138,15 @@ main [class*="shadow-xl"] {
   .rider-marker {
     offset-distance: 50%;
   }
+  .phone-orbit,
+  .status-dot::after,
+  .hero-explore svg,
+  .loader-logo-ring {
+    animation: none !important;
+  }
+  .site-loader {
+    animation-delay: 0.08s !important;
+  }
   [data-motion-reveal] {
     opacity: 1 !important;
     transform: none !important;
@@ -1040,6 +1175,9 @@ main [class*="shadow-xl"] {
 @media (hover: none) {
   .feature-card {
     transform: none !important;
+  }
+  .phone-categories > div:hover > span {
+    transform: none;
   }
 }
 

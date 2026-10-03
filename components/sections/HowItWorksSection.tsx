@@ -35,7 +35,7 @@ export function HowItWorksSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <Reveal direction="up" delay={0.05}>
+          <Reveal direction="right" delay={0.05}>
             <div className="section-tag mx-auto">
               <Sparkles className="w-3.5 h-3.5" />
               <span>3 Simple Steps</span>
@@ -48,9 +48,10 @@ export function HowItWorksSection() {
             as="h2"
             className="section-heading"
             delay={0.15}
+            direction="right"
           />
 
-          <Reveal direction="up" delay={0.25}>
+          <Reveal direction="right" delay={0.25}>
             <p className="section-subheading">
               No complex registrations. Within 60 seconds you can place an order or book a captain.
             </p>
@@ -65,16 +66,14 @@ export function HowItWorksSection() {
             <div className="hidden sm:block absolute left-8 top-10 bottom-10 w-0.5 bg-white/10" />
 
             {/* Connecting line that draws itself as the user scrolls */}
-            {!shouldReduceMotion && (
-              <motion.div
-                initial={false}
-                whileInView={{ scaleY: shouldReduceMotion ? 1 : [0, 1] }}
-                viewport={{ once: true, amount: .3 }}
-                transition={{ duration: .65 }}
-                style={{ originY: 0 }}
-                className="hidden sm:block absolute left-8 top-10 bottom-10 w-0.5 bg-gradient-to-b from-blue-500 via-cyan-400 to-emerald-400 shadow-[0_0_8px_rgba(59,130,246,0.5)]"
-              />
-            )}
+            <motion.div
+              initial={false}
+              whileInView={{ scaleY: shouldReduceMotion ? 1 : [0, 1] }}
+              viewport={{ once: true, amount: .3 }}
+              transition={{ duration: shouldReduceMotion ? 0 : .65 }}
+              style={{ originY: 0 }}
+              className="hidden sm:block absolute left-8 top-10 bottom-10 w-0.5 bg-gradient-to-b from-blue-500 via-cyan-400 to-emerald-400 shadow-[0_0_8px_rgba(59,130,246,0.5)]"
+            />
 
             {HOW_IT_WORKS_STEPS.map((step, idx) => {
               const Icon = iconMap[step.iconName] || Smartphone;

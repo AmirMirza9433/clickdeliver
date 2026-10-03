@@ -8,15 +8,16 @@ export function TestimonialsSection() {
     <section id="testimonials" className="relative py-20 lg:py-28">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <Reveal>
+          <Reveal direction="left">
             <div className="section-tag">APNE SHEHAR KI BAATEIN</div>
           </Reveal>
           <TextReveal
             text="Alipur Chattha Ka Etemad & Review"
             highlightWords={["Etemad", "&", "Review"]}
             className="section-heading"
+            direction="left"
           />
-          <Reveal>
+          <Reveal direction="left">
             <p className="section-subheading">
               Customers, riders aur local shopkeepers ka ClickDeliver ke sath
               rozana ka experience.
@@ -25,7 +26,12 @@ export function TestimonialsSection() {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {TESTIMONIALS_DATA.map((item, i) => (
-            <Reveal key={item.id} delay={(i % 3) * 0.08}>
+            <Reveal
+              key={item.id}
+              direction={i % 2 === 0 ? "left" : "right"}
+              delay={(i % 3) * 0.08}
+              distance={36}
+            >
               <figure className="rounded-[22px] border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/50 p-6 h-full flex flex-col">
                 <div className="flex justify-between items-center mb-4">
                   <span

@@ -52,7 +52,7 @@ export function UserTypesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-          <Reveal direction="up" delay={0.05}>
+          <Reveal direction="left" delay={0.05}>
             <div className="section-tag mx-auto">
               <Sparkles className="w-3.5 h-3.5 text-blue-400" />
               <span>Built For Everyone</span>
@@ -65,9 +65,10 @@ export function UserTypesSection() {
             as="h2"
             className="section-heading"
             delay={0.15}
+            direction="left"
           />
 
-          <Reveal direction="up" delay={0.25}>
+          <Reveal direction="left" delay={0.25}>
             <p className="section-subheading">
               ClickDeliver brings the entire city together: customers get convenience, riders earn
               respectable daily income, and local shops expand their customer base.
