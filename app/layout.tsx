@@ -1,6 +1,5 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { PageLoader } from '@/components/ui/PageLoader';
 import { ThemeProvider } from '@/components/ui/ThemeProvider';
 import { APP_CONFIG } from '@/data/siteConfig';
 
@@ -142,7 +141,6 @@ export default function RootLayout({
         className="font-body bg-background text-foreground selection:bg-brand-primary selection:text-white antialiased transition-colors duration-300"
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <PageLoader />
           {children}
         </ThemeProvider>
       </body>

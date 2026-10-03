@@ -85,7 +85,7 @@ export function UserTypesSection() {
               return (
                 <button
                   key={role.id}
-                  onClick={() => setActiveTab(role.id)}
+                  onClick={() => setActiveTab(role.id)} aria-pressed={activeTab === role.id}
                   className={`relative flex items-center justify-center gap-1.5 sm:gap-2.5 py-2.5 sm:py-3 px-2 rounded-xl font-heading text-xs sm:text-sm font-bold transition-colors duration-200 z-10 focus:outline-none ${
                     isSelected ? 'text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
@@ -108,7 +108,7 @@ export function UserTypesSection() {
         </div>
 
         {/* Tab Content with AnimatePresence */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={activeTab}
             initial={{ opacity: 0, y: 15 }}
@@ -147,7 +147,7 @@ export function UserTypesSection() {
                     return (
                       <motion.div
                         key={b.title}
-                        initial={{ opacity: 0, y: 16 }}
+                        initial={false}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{
                           duration: 0.34,
@@ -173,7 +173,7 @@ export function UserTypesSection() {
                           >
                             <motion.path
                               d="M20 6L9 17l-5-5"
-                              initial={{ pathLength: 0 }}
+                              initial={false}
                               animate={{ pathLength: 1 }}
                               transition={{
                                 duration: 0.38,

@@ -1,8 +1,6 @@
-'use client';
-
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { BentoFeature } from '@/data/features';
+"use client";
+import { motion, useReducedMotion } from "framer-motion";
+import { BentoFeature } from "@/data/features";
 import {
   ShoppingBag,
   Bike,
@@ -10,131 +8,53 @@ import {
   Compass,
   MessagesSquare,
   Wallet,
-  CheckCircle2,
-} from 'lucide-react';
-import { MOTION_EASE } from '@/lib/motion';
-
-const iconMap: Record<string, any> = {
-  ShoppingBag,
-  Bike,
-  Sparkles,
-  Compass,
-  MessagesSquare,
-  Wallet,
-};
-
-interface BentoCardProps {
+  Check,
+} from "lucide-react";
+import { Reveal } from "@/components/animations/Reveal";
+const icons = { ShoppingBag, Bike, Sparkles, Compass, MessagesSquare, Wallet };
+export function BentoCard({
+  feature,
+  index,
+}: {
   feature: BentoFeature;
   index: number;
-}
-
-export function BentoCard({ feature, index }: BentoCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 767px)');
-    const checkMobile = () => setIsMobile(mediaQuery.matches);
-    checkMobile();
-    mediaQuery.addEventListener('change', checkMobile);
-    return () => mediaQuery.removeEventListener('change', checkMobile);
-  }, []);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current || isMobile) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    // CSS custom properties keep pointer tracking off React's render path.
-    cardRef.current.style.setProperty('--glow-x', `${e.clientX - rect.left}px`);
-    cardRef.current.style.setProperty('--glow-y', `${e.clientY - rect.top}px`);
-  };
-
-  const Icon = iconMap[feature.iconName] || Sparkles;
-
-  // Alternating entry:
-  // Mobile: from bottom (y: 45)
-  // Desktop: left column from left (x: -50), right column from right (x: 50)
-  const isLeft = index % 2 === 0;
-  const initialX = shouldReduceMotion ? 0 : isMobile ? 0 : isLeft ? -50 : 50;
-  const initialY = shouldReduceMotion ? 0 : isMobile ? 45 : 0;
-
+}) {
+  const Icon = icons[feature.iconName as keyof typeof icons] || Sparkles;
+  const reduced = useReducedMotion();
   return (
-    <motion.div
-      ref={cardRef}
-      initial={{
-        opacity: 0,
-        x: initialX,
-        y: initialY,
-      }}
-      whileInView={{
-        opacity: 1,
-        x: 0,
-        y: 0,
-      }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{
-        duration: shouldReduceMotion ? 0 : 0.5,
-        delay: shouldReduceMotion ? 0 : (index % 3) * 0.07,
-        ease: MOTION_EASE,
-      }}
-      onMouseMove={handleMouseMove}
-      whileHover={shouldReduceMotion ? {} : { y: -6 }}
-      className={`relative rounded-3xl p-6 sm:p-8 bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 backdrop-blur-xl overflow-hidden group transition-[border-color,box-shadow] duration-200 hover:border-blue-500/40 hover:shadow-2xl hover:shadow-blue-500/10 ${feature.colSpanDesktop}`}
-    >
-      {/* Dynamic Cursor Glow Border following pointer */}
-      <div
-        className="pointer-events-none absolute -inset-px hidden rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block"
-        style={{
-          background:
-            'radial-gradient(400px circle at var(--glow-x, 50%) var(--glow-y, 50%), rgba(56, 123, 240, 0.3), transparent 70%)',
-        }}
-      />
-
-      {/* Ambient Corner Mesh Soft Glow */}
-      <div
-        className={`absolute -top-20 -right-20 w-52 h-52 rounded-full bg-gradient-to-br ${feature.accentColor} blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-500`}
-      />
-
-      <div className="relative z-10 flex flex-col h-full justify-between">
-        <div>
-          {/* Badge & Icon Row */}
-          <div className="flex items-center justify-between gap-4 mb-6">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-heading font-semibold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-blue-600 dark:text-blue-300 tracking-wide">
-            </span>
-            {/* Icon rotate and scale on hover */}
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600/30 to-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 group-hover:text-white group-hover:border-blue-400 group-hover:shadow-lg group-hover:shadow-blue-500/20">
-              <Icon className="w-6 h-6 transition-transform duration-300 group-hover:scale-110" />
-            </div>
-          </div>
-
-          {/* Heading */}
-          <h3 className="text-xl sm:text-2xl font-heading font-bold text-slate-900 dark:text-white mb-3 tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-200 transition-colors">
-            {feature.title}
-          </h3>
-
-          {/* Description */}
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 font-body leading-relaxed mb-4">
-            {feature.description}
-          </p>
-
-          <p className="text-xs text-blue-600/90 dark:text-blue-400/90 font-heading font-medium mb-6">
-            {feature.subtext}
-          </p>
+    <Reveal delay={(index % 3) * 0.08} className={feature.colSpanDesktop}>
+      <motion.article
+        whileHover={reduced ? undefined : { y: -5 }}
+        transition={{ duration: 0.2 }}
+        className="feature-card h-full flex flex-col"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <span className="w-11 h-11 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-300 flex items-center justify-center">
+            <Icon size={22} />
+          </span>
+          <span className="text-[9px] uppercase tracking-[.12em] text-slate-500 dark:text-slate-400">
+            {feature.badge}
+          </span>
         </div>
-
-        {/* Highlight Bullets */}
-        <div className="pt-4 border-t border-slate-200 dark:border-white/10 flex flex-wrap gap-2 sm:gap-3">
-          {feature.highlights.map((h, i) => (
+        <h3 className="font-heading mb-3">{feature.title}</h3>
+        <p className="text-slate-600 dark:text-slate-300 mb-3">
+          {feature.description}
+        </p>
+        <p className="text-blue-700 dark:text-blue-300 mb-6">
+          {feature.subtext}
+        </p>
+        <div className="flex flex-wrap gap-x-4 gap-y-2 border-t border-slate-200 dark:border-white/10 pt-4 mt-auto">
+          {feature.highlights.map((item) => (
             <span
-              key={i}
-              className="inline-flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-white/5 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/5"
+              key={item}
+              className="flex items-center gap-1.5 text-[10px] text-slate-600 dark:text-slate-300"
             >
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>{h}</span>
+              <Check size={12} className="text-blue-600 dark:text-blue-400" />
+              {item}
             </span>
           ))}
         </div>
-      </div>
-    </motion.div>
+      </motion.article>
+    </Reveal>
   );
 }

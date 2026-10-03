@@ -62,7 +62,7 @@ export function RideSection() {
                       <h4 className="text-xs font-heading font-bold text-slate-900 dark:text-white leading-none">
                         ClickDeliver Moto Ride
                       </h4>
-                      <p className="text-[10px] text-blue-600 dark:text-blue-300 mt-0.5 font-medium">Alipur Chattha Safe Route</p>
+                      <p className="text-[10px] text-blue-600 dark:text-blue-300 mt-0.5 font-medium">Alipur Chattha · Illustrative route preview</p>
                     </div>
                   </div>
                   <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
@@ -101,7 +101,7 @@ export function RideSection() {
                       strokeWidth="8"
                       strokeLinecap="round"
                       filter="url(#route-glow)"
-                      initial={{ pathLength: 0 }}
+                      initial={false}
                       whileInView={{ pathLength: 1 }}
                       viewport={{ once: true }}
                       transition={{ duration: 1.15, ease: MOTION_EASE }}
@@ -115,7 +115,7 @@ export function RideSection() {
                       strokeWidth="3.5"
                       strokeLinecap="round"
                       strokeDasharray="6 6"
-                      initial={{ pathLength: 0 }}
+                      initial={false}
                       whileInView={{ pathLength: 1 }}
                       viewport={{ once: true }}
                       transition={{ duration: 1.15, ease: MOTION_EASE }}
@@ -125,13 +125,9 @@ export function RideSection() {
                     <g transform="translate(65, 225)">
                       {/* Outer ripple ring */}
                       <circle cx="0" cy="0" r="16" fill="#3b82f6" opacity="0.3">
-                        <animate attributeName="r" values="8;22;8" dur="2.4s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.6;0;0.6" dur="2.4s" repeatCount="indefinite" />
                       </circle>
                       {/* Inner ripple ring */}
                       <circle cx="0" cy="0" r="10" fill="#3b82f6" opacity="0.5">
-                        <animate attributeName="r" values="6;14;6" dur="2.4s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2.4s" repeatCount="indefinite" />
                       </circle>
                       {/* Pin base */}
                       <circle cx="0" cy="0" r="10" fill="#2563eb" stroke="#ffffff" strokeWidth="2.5" />
@@ -158,13 +154,9 @@ export function RideSection() {
                     <g transform="translate(335, 75)">
                       {/* Outer ripple ring */}
                       <circle cx="0" cy="0" r="16" fill="#10b981" opacity="0.3">
-                        <animate attributeName="r" values="8;22;8" dur="2.4s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.6;0;0.6" dur="2.4s" repeatCount="indefinite" />
                       </circle>
                       {/* Inner ripple ring */}
                       <circle cx="0" cy="0" r="10" fill="#10b981" opacity="0.5">
-                        <animate attributeName="r" values="6;14;6" dur="2.4s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2.4s" repeatCount="indefinite" />
                       </circle>
                       {/* Pin base */}
                       <circle cx="0" cy="0" r="10" fill="#10b981" stroke="#ffffff" strokeWidth="2.5" />
@@ -197,19 +189,11 @@ export function RideSection() {
                       </g>
                     </g>
 
-                    {/* Animated Motorcycle strictly locked to the path */}
-                    <g>
-                      <animateMotion
-                        path="M 65 225 C 135 225, 165 115, 335 75"
-                        dur="4.5s"
-                        repeatCount="indefinite"
-                        rotate="auto"
-                      />
+                    {/* Rider shown midway along this illustrative route. */}
+                    <g transform="translate(163 165)">
 
                       {/* Outer glowing halo */}
                       <circle cx="0" cy="0" r="20" fill="#f59e0b" opacity="0.3">
-                        <animate attributeName="r" values="16;24;16" dur="1.5s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" values="0.4;0.1;0.4" dur="1.5s" repeatCount="indefinite" />
                       </circle>
 
                       {/* Main amber badge */}

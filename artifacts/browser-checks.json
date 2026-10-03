@@ -1,0 +1,42 @@
+[
+  {
+    "viewport": "desktop",
+    "width": 1440,
+    "overflow": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "dark",
+    "accessibility": []
+  },
+  {
+    "viewport": "desktop",
+    "theme": "light",
+    "accessibility": []
+  },
+  {
+    "viewport": "tablet",
+    "width": 768,
+    "overflow": []
+  },
+  {
+    "viewport": "mobile",
+    "width": 390,
+    "overflow": []
+  },
+  {
+    "viewport": "mobile",
+    "theme": "light",
+    "accessibility": []
+  },
+  {
+    "viewport": "small-mobile",
+    "width": 320,
+    "overflow": []
+  },
+  {
+    "checks": "navigation, keyboard FAQ, filters, steps, roles, QR switching, store URLs, intercepted WhatsApp handoff, route motion and pause, reduced motion, touch tilt, no-JS content",
+    "passed": true,
+    "errors": []
+  }
+]

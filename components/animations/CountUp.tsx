@@ -12,6 +12,7 @@ interface CountUpProps {
   decimals?: number;
   className?: string;
   once?: boolean;
+  verified?: boolean;
 }
 
 export function CountUp({
@@ -23,6 +24,7 @@ export function CountUp({
   decimals = 0,
   className = '',
   once = true,
+  verified = false,
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const valueRef = useRef<HTMLSpanElement>(null);
@@ -30,7 +32,7 @@ export function CountUp({
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || !verified) return;
 
     if (shouldReduceMotion) {
       if (valueRef.current) {
@@ -66,12 +68,12 @@ export function CountUp({
 
     frameId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frameId);
-  }, [isInView, end, start, duration, decimals, shouldReduceMotion]);
+  }, [isInView, end, start, duration, decimals, shouldReduceMotion, verified]);
 
   return (
     <span ref={ref} className={`tabular-nums ${className}`}>
       {prefix}
-      <span ref={valueRef}>{formatValue(start, decimals)}</span>
+      <span ref={valueRef}>{formatValue(end, decimals)}</span>
       {suffix}
     </span>
   );

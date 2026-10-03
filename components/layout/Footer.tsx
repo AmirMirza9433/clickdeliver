@@ -39,7 +39,7 @@ export function Footer() {
 
   return (
     <motion.footer
-      initial={{ opacity: 0 }}
+      initial={false}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.5, ease: MOTION_EASE }}
@@ -81,7 +81,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  whileHover={{ scale: 1.15, rotate: 6 }}
+                  whileHover={{ y: -2 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 15 }}
                   className={`w-10 h-10 rounded-xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 flex items-center justify-center transition-colors shadow-sm ${hoverColor}`}
                 >

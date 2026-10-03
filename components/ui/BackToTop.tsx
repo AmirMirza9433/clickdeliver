@@ -26,7 +26,7 @@ export function BackToTop() {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
 
   return (
@@ -39,7 +39,7 @@ export function BackToTop() {
           transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
           onClick={scrollToTop}
           aria-label="Scroll back to top"
-          className="fixed bottom-6 right-6 z-40 p-3 rounded-2xl bg-white/10 hover:bg-blue-600 border border-white/10 text-white backdrop-blur-md shadow-xl transition-[background-color,border-color,box-shadow] duration-200 hover:shadow-blue-500/25 hidden md:flex items-center justify-center group"
+          className="fixed bottom-6 right-6 z-40 p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-blue-100 dark:hover:bg-blue-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-white backdrop-blur-md shadow-xl transition-[background-color,border-color,box-shadow] duration-200 hover:shadow-blue-500/25 hidden md:flex items-center justify-center group"
         >
           <ChevronUp className="w-5 h-5 transition-transform group-hover:-translate-y-0.5" />
         </motion.button>

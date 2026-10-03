@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { HOW_IT_WORKS_STEPS } from '@/data/howItWorks';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { Reveal } from '@/components/animations/Reveal';
@@ -29,18 +29,6 @@ export function HowItWorksSection() {
   const currentStep = HOW_IT_WORKS_STEPS[activeStep];
   const stepsContainerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
-
-  // Connecting line scroll progress tied to scroll
-  const { scrollYProgress } = useScroll({
-    target: stepsContainerRef,
-    offset: ['start 80%', 'end 60%'],
-  });
-
-  const lineProgress = useSpring(scrollYProgress, {
-    stiffness: 180,
-    damping: 30,
-    restDelta: 0.001,
-  });
 
   return (
     <section id="how-it-works" className="relative py-20 lg:py-28 overflow-hidden">
@@ -79,7 +67,11 @@ export function HowItWorksSection() {
             {/* Connecting line that draws itself as the user scrolls */}
             {!shouldReduceMotion && (
               <motion.div
-                style={{ scaleY: lineProgress, originY: 0 }}
+                initial={false}
+                whileInView={{ scaleY: shouldReduceMotion ? 1 : [0, 1] }}
+                viewport={{ once: true, amount: .3 }}
+                transition={{ duration: .65 }}
+                style={{ originY: 0 }}
                 className="hidden sm:block absolute left-8 top-10 bottom-10 w-0.5 bg-gradient-to-b from-blue-500 via-cyan-400 to-emerald-400 shadow-[0_0_8px_rgba(59,130,246,0.5)]"
               />
             )}
@@ -94,8 +86,8 @@ export function HowItWorksSection() {
               return (
                 <motion.div
                   key={step.number}
-                  initial={{ opacity: 0, x: enterX }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={false}
+                  whileInView={{ opacity: shouldReduceMotion ? 1 : [.3, 1], y: shouldReduceMotion ? 0 : [16, 0] }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{
                     duration: 0.48,
@@ -103,6 +95,8 @@ export function HowItWorksSection() {
                     ease: MOTION_EASE,
                   }}
                   onClick={() => setActiveStep(idx)}
+                  role="button" tabIndex={0} aria-pressed={isActive} aria-label={`Preview step ${step.number}: ${step.title}`}
+                  onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setActiveStep(idx); } }}
                   className={`cursor-pointer rounded-2xl p-6 transition-[background-color,border-color,box-shadow] duration-200 relative flex items-start gap-5 border ${
                     isActive
                       ? 'bg-white dark:bg-slate-900/90 border-blue-500/60 shadow-xl shadow-blue-500/15'
@@ -111,7 +105,7 @@ export function HowItWorksSection() {
                 >
                   {/* Step Number Circle with Spring Pop-In */}
                   <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
+                    initial={false}
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{
@@ -135,7 +129,7 @@ export function HowItWorksSection() {
                         {step.badge}
                       </span>
                       {isActive && (
-                        <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                        <span className="flex items-center gap-1 hidden sm:flex text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                           <Check className="w-3 h-3" /> Active Step
                         </span>
                       )}
@@ -175,7 +169,7 @@ export function HowItWorksSection() {
                   </div>
 
                   {/* Animated Screen Content */}
-                  <AnimatePresence mode="wait">
+                  <AnimatePresence mode="wait" initial={false}>
                     <motion.div
                       key={activeStep}
                       initial={{ opacity: 0, y: 15 }}
@@ -262,7 +256,7 @@ export function HowItWorksSection() {
                           <div className="relative h-28 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 overflow-hidden flex items-center justify-center shadow-xs">
                             <div className="absolute inset-0 bg-blue-500/5 dark:bg-blue-500/10" />
                             <div className="flex flex-col items-center">
-                              <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg animate-bounce">
+                              <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg ">
                                 <MapPin className="w-4 h-4" />
                               </div>
                               <span className="text-[10px] font-bold text-slate-900 dark:text-white mt-1">
@@ -288,7 +282,7 @@ export function HowItWorksSection() {
                   <div className="pt-3 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                     <span>{currentStep.phoneDetails.status}</span>
                     <span className="text-slate-900 dark:text-white font-semibold flex items-center gap-1">
-                      Next <ArrowRight className="w-3 h-3" />
+                      Illustrative preview
                     </span>
                   </div>
                 </div>

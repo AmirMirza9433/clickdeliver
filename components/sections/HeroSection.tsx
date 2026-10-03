@@ -1,544 +1,406 @@
-'use client';
+"use client";
 
-import { useRef } from 'react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
-import Image from 'next/image';
-import { APP_CONFIG } from '@/data/siteConfig';
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, useReducedMotion, useSpring } from "framer-motion";
+import Image from "next/image";
 import {
   ShoppingBag,
   Pill,
   Utensils,
   Bike,
-  Sparkles,
-  ArrowRight,
-  ShieldCheck,
-  Star,
   MapPin,
-  Clock,
-  ChevronDown,
-} from 'lucide-react';
-import { useSplashFinished } from '@/hooks/useSplashFinished';
-import { Magnetic } from '@/components/animations/Magnetic';
-import { MOTION_EASE } from '@/lib/motion';
+  ArrowDown,
+  ArrowUpRight,
+  Wallet,
+  MessageCircle,
+  ChevronRight,
+} from "lucide-react";
+import { APP_CONFIG } from "@/data/siteConfig";
 
-const headlineWords = ['Delivery', 'or', 'Ride', 'dono', 'asan.'];
-
-const floatingChips = [
-  {
-    label: 'Fresh Grocery',
-    sub: 'Under 25m',
-    icon: ShoppingBag,
-    color: 'border-emerald-500/30 text-emerald-600 dark:text-emerald-400',
-    iconBg: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400',
-    position: '-top-6 -left-6 sm:-top-8 sm:-left-10',
-    animate: { y: [0, -12, 0], x: [0, 4, 0] },
-    transition: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' as const },
-  },
-  {
-    label: 'Pharmacy Urgent',
-    sub: 'Verified shops',
-    icon: Pill,
-    color: 'border-rose-500/30 text-rose-600 dark:text-rose-400',
-    iconBg: 'bg-rose-50 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400',
-    position: 'top-20 -right-6 sm:top-24 sm:-right-12',
-    animate: { y: [0, 14, 0], x: [0, -6, 0] },
-    transition: { duration: 5.2, repeat: Infinity, ease: 'easeInOut' as const, delay: 0.5 },
-  },
-  {
-    label: 'Hot Food Delivery',
-    sub: 'Local restaurants',
-    icon: Utensils,
-    color: 'border-amber-500/30 text-amber-600 dark:text-amber-400',
-    iconBg: 'bg-amber-50 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400',
-    position: 'bottom-28 -left-8 sm:bottom-32 sm:-left-12',
-    animate: { y: [0, -10, 0], x: [0, -4, 0] },
-    transition: { duration: 4.8, repeat: Infinity, ease: 'easeInOut' as const, delay: 1 },
-  },
-  {
-    label: 'Bike Ride Booking',
-    sub: 'From Rs. 60',
-    icon: Bike,
-    color: 'border-blue-500/30 text-blue-600 dark:text-blue-400',
-    iconBg: 'bg-blue-50 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400',
-    position: '-bottom-6 -right-4 sm:-bottom-8 sm:-right-8',
-    animate: { y: [0, 12, 0], x: [0, 6, 0] },
-    transition: { duration: 4.2, repeat: Infinity, ease: 'easeInOut' as const, delay: 1.5 },
-  },
+const services = [
+  { label: "Grocery", detail: "Rozmarra ki zaroorat", icon: ShoppingBag },
+  { label: "Medicine", detail: "Dawaai ghar tak", icon: Pill },
+  { label: "Food", detail: "Apna pasandeeda khana", icon: Utensils },
+  { label: "Bike rides", detail: "Apni manzil tak", icon: Bike },
 ];
 
 export function HeroSection() {
-  const splashFinished = useSplashFinished(1050);
-  const shouldReduceMotion = useReducedMotion();
-  const sectionRef = useRef<HTMLElement>(null);
-  const isHeroInView = useInView(sectionRef, { margin: '120px 0px' });
-  const allowAmbientMotion = !shouldReduceMotion && isHeroInView;
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { amount: 0.1 });
+  const reduced = useReducedMotion();
+  const [finePointer, setFinePointer] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const rotateX = useSpring(0, { stiffness: 160, damping: 24 });
+  const rotateY = useSpring(0, { stiffness: 160, damping: 24 });
+  useEffect(() => {
+    const media = matchMedia("(hover: hover) and (pointer: fine)");
+    const update = () =>
+      setFinePointer(media.matches && navigator.maxTouchPoints === 0);
+    const visibility = () => setVisible(!document.hidden);
+    update();
+    visibility();
+    media.addEventListener("change", update);
+    document.addEventListener("visibilitychange", visibility);
+    return () => {
+      media.removeEventListener("change", update);
+      document.removeEventListener("visibilitychange", visibility);
+    };
+  }, []);
+  useEffect(() => {
+    if (reduced || !finePointer || !inView) {
+      rotateX.set(0);
+      rotateY.set(0);
+    }
+  }, [reduced, finePointer, inView, rotateX, rotateY]);
+  const running = inView && visible && !reduced;
 
   return (
-    <section ref={sectionRef} className="relative min-h-[92vh] flex items-center justify-center overflow-hidden pt-28 pb-20 lg:py-32">
-      {/* Background Animated Gradient Blobs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <motion.div
-          animate={
-            !allowAmbientMotion
-              ? { scale: 1, opacity: 0.18 }
-              : {
-                  scale: [1, 1.08, 1],
-                  opacity: [0.18, 0.25, 0.18],
-                }
-          }
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-b from-blue-600/25 via-cyan-500/15 to-transparent rounded-full blur-[120px]"
-        />
-        <motion.div
-          animate={
-            !allowAmbientMotion
-              ? { x: 0, y: 0 }
-              : {
-                  x: [0, 20, 0],
-                  y: [0, -20, 0],
-                }
-          }
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-1/3 -left-32 w-96 h-96 bg-blue-700/20 rounded-full blur-[100px]"
-        />
-        <motion.div
-          animate={
-            !allowAmbientMotion
-              ? { x: 0, y: 0 }
-              : {
-                  x: [0, -25, 0],
-                  y: [0, 20, 0],
-                }
-          }
-          transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-          className="absolute bottom-10 -right-32 w-96 h-96 bg-indigo-600/20 rounded-full blur-[100px]"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)]" />
-      </div>
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Column: Staggered Word Reveal & Actions (Triggered AFTER splash completes) */}
-          <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left z-10">
-            {/* Location Pill */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={splashFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-              transition={{ duration: 0.38, ease: MOTION_EASE }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 backdrop-blur-md mb-6"
+    <section
+      ref={ref}
+      id="home"
+      className="hero-section"
+      data-running={running}
+    >
+      <div className="hero-grid" aria-hidden="true" />
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 w-full relative">
+        <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-8 items-center">
+          <div className="hero-copy">
+            <div
+              className="hero-location hero-enter"
+              style={{ animationDelay: "40ms" }}
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="text-xs font-heading font-semibold text-blue-600 dark:text-blue-300">
-                Live in Alipur Chattha &amp; Surrounding Areas
-              </span>
-            </motion.div>
-
-            {/* Staggered Word-by-Word Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.1] mb-6">
-              {headlineWords.map((word, idx) => (
-                <span key={idx} className="inline-block overflow-hidden align-top mr-3 last:mr-0">
-                  <motion.span
-                    initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 28 }}
-                    animate={
-                      splashFinished
-                        ? { opacity: 1, y: 0 }
-                        : { opacity: 0, y: shouldReduceMotion ? 0 : 28 }
-                    }
-                    transition={{
-                      duration: 0.46,
-                      delay: 0.06 + idx * 0.055,
-                      ease: MOTION_EASE,
-                    }}
-                    className={`inline-block ${
-                      word === 'dono' || word === 'asan.'
-                        ? 'bg-gradient-to-r from-blue-600 via-brand-primary to-cyan-500 dark:from-blue-400 dark:via-brand-primary dark:to-cyan-300 bg-clip-text text-transparent'
-                        : 'text-slate-900 dark:text-white'
-                    }`}
+              <span className="status-dot" />
+              <span>ALIPUR CHATTHA &amp; SURROUNDING AREAS</span>
+            </div>
+            <h1 className="hero-title" aria-label="Delivery or Ride dono asan.">
+              <span className="block">
+                {["Delivery", "or", "Ride"].map((word, i) => (
+                  <span
+                    aria-hidden="true"
+                    key={word}
+                    className="hero-word"
+                    style={{ animationDelay: `${100 + i * 65}ms` }}
                   >
-                    {word}
-                  </motion.span>
-                </span>
-              ))}
+                    {word}{" "}
+                  </span>
+                ))}
+              </span>
+              <span className="block hero-accent">
+                {["dono", "asan."].map((word, i) => (
+                  <span
+                    aria-hidden="true"
+                    key={word}
+                    className="hero-word"
+                    style={{ animationDelay: `${295 + i * 65}ms` }}
+                  >
+                    {word}{" "}
+                  </span>
+                ))}
+              </span>
             </h1>
-
-            {/* Roman Urdu Subheading */}
-            <motion.p
-              initial={{ opacity: 0, y: 18 }}
-              animate={splashFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-              transition={{ duration: 0.46, delay: 0.35, ease: MOTION_EASE }}
-              className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl font-body leading-relaxed mb-8"
+            <p
+              className="hero-description hero-enter"
+              style={{ animationDelay: "380ms" }}
             >
-              Grocery, dawaai, garma garam khana aur unique{' '}
-              <span className="text-slate-900 dark:text-white font-medium underline decoration-blue-500/50 underline-offset-4">
-                Custom Orders
-              </span>{' '}
-              — sab kuch aapke darwaze tak. Fast bike ride booking bhi available,
-              shandar rates par!
-            </motion.p>
-
-            {/* Store Badges with Shine & Magnetic Hover */}
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={splashFinished ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-              transition={{ duration: 0.46, delay: 0.46, ease: MOTION_EASE }}
-              className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
-            >
-              {/* Google Play Store Badge with Magnetic wrapper */}
-              <Magnetic strength={0.25}>
+              Grocery, dawaai, garma garam khana — sab kuch aapke darwaze tak.
+              Ya apni manzil ke liye bike ride book karein.{" "}
+              <strong>Bas ClickDeliver karein.</strong>
+            </p>
+            <div className="hero-enter" style={{ animationDelay: "450ms" }}>
+              <p className="download-label">Aapka shehar. Aapki app.</p>
+              <div className="store-buttons">
                 <a
                   href={APP_CONFIG.playStoreUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   id="hero-google-play-btn"
-                  className="group relative block overflow-hidden rounded-2xl p-1 transition-transform duration-300 hover:scale-105 active:scale-95"
+                  className="store-button"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 opacity-60 rounded-2xl blur-sm group-hover:opacity-100 transition-opacity" />
-                  <div className="relative bg-black rounded-xl p-1.5 flex items-center">
-                    <Image
-                      src="/google-play-badge.svg"
-                      alt="Get ClickDeliver on Google Play"
-                      width={180}
-                      height={54}
-                      className="h-[50px] w-auto drop-shadow-md"
-                      unoptimized
-                      priority
-                    />
-                  </div>
+                  <Image
+                    src="/google-play-badge.svg"
+                    alt="Get ClickDeliver on Google Play"
+                    width={174}
+                    height={52}
+                    priority
+                    unoptimized
+                  />
                 </a>
-              </Magnetic>
-
-              {/* iOS App Store Badge */}
-              <Magnetic strength={0.25}>
                 <a
                   href={APP_CONFIG.appStoreUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   id="hero-app-store-btn"
-                  className="group relative block overflow-hidden rounded-2xl p-1 transition-transform duration-300 hover:scale-105 active:scale-95"
+                  className="store-button"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 opacity-60 rounded-2xl blur-sm group-hover:opacity-100 transition-opacity" />
-                  <div className="relative bg-black rounded-xl p-1.5 flex items-center">
-                    <Image
-                      src="/app-store-badge.svg"
-                      alt="Download ClickDeliver on the App Store"
-                      width={180}
-                      height={54}
-                      className="h-[50px] w-auto drop-shadow-md"
-                      unoptimized
-                      priority
-                    />
-                  </div>
+                  <Image
+                    src="/app-store-badge.svg"
+                    alt="Download ClickDeliver on the App Store"
+                    width={174}
+                    height={52}
+                    priority
+                    unoptimized
+                  />
                 </a>
-              </Magnetic>
-            </motion.div>
-
-            {/* Social Trust Metrics */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={splashFinished ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ duration: 0.5, delay: 0.58, ease: MOTION_EASE }}
-              className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-600 dark:text-slate-400 font-body"
+              </div>
+            </div>
+            <div
+              className="hero-notes hero-enter"
+              style={{ animationDelay: "510ms" }}
             >
-              <div className="flex items-center gap-1.5">
-                <div className="flex text-amber-400">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
-                  ))}
-                </div>
-                <span className="text-slate-900 dark:text-white font-semibold">5.0 / 5.0</span>
-                <span>User Rating</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
-                <span>Verified Local Riders</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-blue-500 dark:text-blue-400" />
-                <span>Avg. 8–12 Min Rides</span>
-              </div>
-            </motion.div>
+              <span>
+                <Wallet size={16} /> Cash on Delivery
+              </span>
+              <span>
+                <MapPin size={16} /> Apne shehar ki service
+              </span>
+            </div>
+            <a href="#how-it-works" className="hero-explore">
+              Dekhein, kaise kaam karta hai <ArrowDown size={16} />
+            </a>
           </div>
-
-          {/* Right Column: Interactive Phone Mockup with Route Animation & Floating Chips */}
-          <div className="lg:col-span-5 relative flex items-center justify-center">
-            {/* Floating Category Chips (Different drifting speeds) */}
-            {floatingChips.map((chip) => {
-              const Icon = chip.icon;
-              return (
-                <motion.div
-                  key={chip.label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={
-                    splashFinished
-                      ? {
-                          opacity: 1,
-                          scale: 1,
-                          ...(!shouldReduceMotion ? chip.animate : {}),
-                        }
-                      : { opacity: 0, scale: 0.8 }
-                  }
-                  transition={
-                    splashFinished && allowAmbientMotion
-                      ? chip.transition
-                      : { duration: 0.38, ease: MOTION_EASE }
-                  }
-                  className={`absolute z-20 hidden sm:flex items-center gap-3 px-3.5 py-2 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-white/10 backdrop-blur-xl shadow-xl ${chip.color} ${chip.position}`}
-                >
-                  <div className={`p-1.5 rounded-xl ${chip.iconBg}`}>
-                    <Icon className="w-4 h-4" />
+          <div className="phone-stage">
+            <div className="phone-orbit" aria-hidden="true" />
+            <div className="phone-entrance">
+              <motion.div
+                className="phone-shell"
+                style={{ rotateX, rotateY, transformPerspective: 1000 }}
+                onPointerMove={(e) => {
+                  if (!finePointer || reduced || e.pointerType !== "mouse")
+                    return;
+                  const box = e.currentTarget.getBoundingClientRect();
+                  rotateY.set(
+                    Math.max(
+                      -3,
+                      Math.min(
+                        3,
+                        ((e.clientX - box.left) / box.width - 0.5) * 6,
+                      ),
+                    ),
+                  );
+                  rotateX.set(
+                    Math.max(
+                      -3,
+                      Math.min(
+                        3,
+                        -((e.clientY - box.top) / box.height - 0.5) * 6,
+                      ),
+                    ),
+                  );
+                }}
+                onPointerLeave={() => {
+                  rotateX.set(0);
+                  rotateY.set(0);
+                }}
+              >
+                <div className="phone-screen">
+                  <div className="phone-status">
+                    <span>9:41</span>
+                    <span className="phone-island" />
+                    <span>▮▮▮ ▰</span>
                   </div>
-                  <div className="text-left">
-                    <p className="text-xs font-heading font-bold text-slate-900 dark:text-white leading-tight">
-                      {chip.label}
-                    </p>
-                    <p className="text-[10px] text-slate-500 dark:text-slate-400">{chip.sub}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-
-            {/* Central Phone Mockup with continuous float (translateY +-12px, 4s loop) */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 30 }}
-              animate={
-                splashFinished
-                  ? {
-                      opacity: 1,
-                      scale: 1,
-                      y: shouldReduceMotion ? 0 : [0, -12, 0],
-                    }
-                  : { opacity: 0, scale: 0.9, y: 30 }
-              }
-              transition={
-                splashFinished && allowAmbientMotion
-                  ? {
-                      y: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
-                      opacity: { duration: 0.56, ease: MOTION_EASE },
-                      scale: { duration: 0.56, ease: MOTION_EASE },
-                    }
-                  : { duration: 0.44, ease: MOTION_EASE }
-              }
-              className="relative w-[290px] sm:w-[320px] aspect-[9/18.5] rounded-[48px] bg-slate-900 p-3 shadow-2xl shadow-blue-500/20 border-4 border-slate-700/80"
-            >
-              {/* Phone Speaker & Camera Notch */}
-              <div className="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-5 bg-black rounded-full z-30 flex items-center justify-end px-3">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-900/80 border border-blue-500/50" />
-              </div>
-
-              {/* Inner Screen */}
-              <div className="w-full h-full rounded-[38px] bg-slate-50 dark:bg-gradient-to-b dark:from-[#0b1329] dark:via-[#090e1f] dark:to-[#050811] overflow-hidden flex flex-col p-4 pt-9 border border-slate-200 dark:border-white/5 relative shadow-inner">
-                {/* Top App Header */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg bg-blue-600/10 dark:bg-blue-600/30 border border-blue-500/30 dark:border-blue-500/40 p-1 flex items-center justify-center">
-                      <Image
-                        src="/logo.png"
-                        alt="CD"
-                        width={20}
-                        height={20}
-                        className="object-contain"
-                      />
-                    </div>
+                  <div className="phone-app-header">
                     <div>
-                      <p className="text-[11px] font-heading font-bold text-slate-900 dark:text-white leading-none">
-                        ClickDeliver
-                      </p>
-                      <p className="text-[9px] text-blue-600 dark:text-blue-400 flex items-center gap-0.5 mt-0.5 font-medium">
-                        <MapPin className="w-2.5 h-2.5" /> Alipur Chattha
+                      <span className="phone-eyebrow">DELIVERING TO</span>
+                      <p>
+                        <MapPin size={12} /> Alipur Chattha{" "}
+                        <ChevronRight size={12} />
                       </p>
                     </div>
-                  </div>
-                  <span className="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
-                    Live Active
-                  </span>
-                </div>
-
-                {/* Animated Simulated Map with Scooter Moving on loop along dashed curved route */}
-                <div className="relative w-full h-44 rounded-2xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 overflow-hidden mb-3 flex items-center justify-center">
-                  <svg
-                    className="w-full h-full"
-                    viewBox="0 0 260 170"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <defs>
-                      <filter id="hero-bike-glow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#f59e0b" floodOpacity="0.6" />
-                      </filter>
-                      <filter id="hero-route-glow" x="-20%" y="-20%" width="140%" height="140%">
-                        <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="#3b82f6" floodOpacity="0.6" />
-                      </filter>
-                    </defs>
-
-                    {/* Map Grid Roads */}
-                    <g className="opacity-40 dark:opacity-30">
-                      <path
-                        d="M 10 30 L 250 30 M 10 90 L 250 90 M 10 140 L 250 140"
-                        stroke="currentColor"
-                        className="text-slate-300 dark:text-slate-600"
-                        strokeWidth="3"
-                      />
-                      <path
-                        d="M 50 10 L 50 160 M 140 10 L 140 160 M 210 10 L 210 160"
-                        stroke="currentColor"
-                        className="text-slate-300 dark:text-slate-600"
-                        strokeWidth="3"
-                      />
-                    </g>
-
-                    {/* Glow Route Line */}
-                    <path
-                      d="M 35 130 Q 110 30, 220 50"
-                      stroke="#2563eb"
-                      strokeWidth="6"
-                      strokeLinecap="round"
-                      filter="url(#hero-route-glow)"
-                      opacity="0.5"
+                    <Image
+                      src="/logo.png"
+                      alt="ClickDeliver"
+                      width={31}
+                      height={31}
                     />
-
-                    {/* Animated Dashed Route Path */}
-                    <path
-                      d="M 35 130 Q 110 30, 220 50"
-                      stroke="#60a5fa"
-                      strokeWidth="3"
-                      strokeDasharray="6 4"
-                      strokeLinecap="round"
-                    />
-
-                    {/* Start Point Pin (Store at 35, 130) with pulsing ripple */}
-                    <g transform="translate(35, 130)">
-                      <circle cx="0" cy="0" r="12" fill="#3b82f6" opacity="0.4">
-                        <animate attributeName="r" values="8;16;8" dur="2.4s" repeatCount={allowAmbientMotion ? 'indefinite' : '0'} />
-                        <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount={allowAmbientMotion ? 'indefinite' : '0'} />
-                      </circle>
-                      <circle cx="0" cy="0" r="9" fill="#2563eb" stroke="#ffffff" strokeWidth="2" />
-                      <g transform="translate(-5, -5) scale(0.42)" stroke="#ffffff" strokeWidth="2.5" fill="none">
-                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                        <path d="M3 6h18" />
-                        <path d="M16 10a4 4 0 0 1-8 0" />
-                      </g>
-                    </g>
-
-                    {/* End Destination Pin (Customer Gate at 220, 50) with pulsing ripple */}
-                    <g transform="translate(220, 50)">
-                      <circle cx="0" cy="0" r="12" fill="#10b981" opacity="0.4">
-                        <animate attributeName="r" values="8;16;8" dur="2.4s" repeatCount={allowAmbientMotion ? 'indefinite' : '0'} />
-                        <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount={allowAmbientMotion ? 'indefinite' : '0'} />
-                      </circle>
-                      <circle cx="0" cy="0" r="9" fill="#10b981" stroke="#ffffff" strokeWidth="2" />
-                      <circle cx="0" cy="0" r="3" fill="#ffffff" />
-                    </g>
-
-                    {/* Animated Scooter strictly locked to the route on loop */}
-                    <g>
-                      <animateMotion
-                        path="M 35 130 Q 110 30, 220 50"
-                        dur="4s"
-                        repeatCount={allowAmbientMotion ? 'indefinite' : '0'}
-                        rotate="auto"
-                      />
-                      {/* Outer pulsing halo */}
-                      <circle cx="0" cy="0" r="16" fill="#f59e0b" opacity="0.3">
-                        <animate attributeName="r" values="12;18;12" dur="1.5s" repeatCount={allowAmbientMotion ? 'indefinite' : '0'} />
-                        <animate attributeName="opacity" values="0.4;0.1;0.4" dur="1.5s" repeatCount={allowAmbientMotion ? 'indefinite' : '0'} />
-                      </circle>
-
-                      {/* Amber badge */}
-                      <circle cx="0" cy="0" r="12" fill="#f59e0b" stroke="#ffffff" strokeWidth="1.8" filter="url(#hero-bike-glow)" />
-
-                      {/* Bike icon centered at (0, 0) */}
-                      <g
-                        transform="translate(-8, -8) scale(0.67)"
-                        stroke="#090d16"
-                        strokeWidth="2.4"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <circle cx="18.5" cy="17.5" r="3.5" />
-                        <circle cx="5.5" cy="17.5" r="3.5" />
-                        <circle cx="15" cy="5" r="1" />
-                        <path d="M12 17.5V14l-3-3 4-3 2 3h2" />
-                      </g>
-                    </g>
-                  </svg>
-
-                  {/* Map status overlay */}
-                  <div className="absolute bottom-2 left-2 right-2 px-2.5 py-1.5 rounded-xl bg-white/95 dark:bg-slate-950/85 backdrop-blur-md border border-slate-200 dark:border-white/10 flex items-center justify-between text-[10px] shadow-xs">
-                    <span className="text-slate-700 dark:text-slate-300 font-medium flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                      Rider on the way
-                    </span>
-                    <span className="text-amber-600 dark:text-amber-400 font-bold">ETA 6 Mins</span>
                   </div>
-                </div>
-
-                {/* Quick Order Live Card */}
-                <div className="p-2.5 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 mb-2 shadow-xs dark:shadow-none">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Current Order</span>
-                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 font-semibold">
-                      COD: Rs. 380
-                    </span>
+                  <div className="phone-greeting">
+                    Aaj kya chahiye?<span>Apni zaroorat, apni pasand.</span>
                   </div>
-                  <p className="text-xs font-heading font-bold text-slate-900 dark:text-white truncate">
-                    Bismillah Medicos &middot; Urgent Medicines
-                  </p>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
-                    Rider: Naveed Ahmed (Honda 125)
-                  </p>
-                </div>
-
-                {/* 4 Quick Category Pills */}
-                <div className="grid grid-cols-4 gap-1.5 mt-auto">
-                  {[
-                    { label: 'Grocery', icon: ShoppingBag, color: 'text-emerald-600 dark:text-emerald-400' },
-                    { label: 'Medicine', icon: Pill, color: 'text-rose-600 dark:text-rose-400' },
-                    { label: 'Food', icon: Utensils, color: 'text-amber-600 dark:text-amber-400' },
-                    { label: 'Ride', icon: Bike, color: 'text-blue-600 dark:text-blue-400' },
-                  ].map((cat) => {
-                    const CatIcon = cat.icon;
-                    return (
-                      <div
-                        key={cat.label}
-                        className="flex flex-col items-center justify-center p-1.5 rounded-xl bg-white dark:bg-white/5 border border-slate-200/80 dark:border-white/5 text-center shadow-xs dark:shadow-none"
-                      >
-                        <CatIcon className={`w-3.5 h-3.5 ${cat.color} mb-1`} />
-                        <span className="text-[8px] font-heading font-medium text-slate-700 dark:text-slate-300">
-                          {cat.label}
+                  <div className="phone-categories">
+                    {services.map(({ label, icon: Icon }) => (
+                      <div key={label}>
+                        <span>
+                          <Icon size={18} />
                         </span>
+                        {label}
                       </div>
-                    );
-                  })}
+                    ))}
+                  </div>
+                  <div
+                    className="phone-map"
+                    role="img"
+                    aria-label="Illustrative delivery preview: a rider follows a route from a local shop to your home."
+                  >
+                    <svg viewBox="0 0 260 230" fill="none" aria-hidden="true">
+                      <rect width="260" height="230" fill="#eaf0ef" />
+                      <path
+                        d="M0 38H260M0 105H260M0 180H260M45 0V230M130 0V230M215 0V230"
+                        stroke="#fff"
+                        strokeWidth="12"
+                      />
+                      <path
+                        d="M0 38H260M0 105H260M0 180H260M45 0V230M130 0V230M215 0V230"
+                        stroke="#d9e2e4"
+                        strokeWidth="1"
+                      />
+                      <rect
+                        x="57"
+                        y="49"
+                        width="59"
+                        height="42"
+                        rx="9"
+                        fill="#d5e6db"
+                      />
+                      <rect
+                        x="145"
+                        y="119"
+                        width="57"
+                        height="46"
+                        rx="10"
+                        fill="#d5e6db"
+                      />
+                      <text x="57" y="22" fill="#64777e" fontSize="9">
+                        ALIPUR CHATTHA
+                      </text>
+                      <text x="58" y="205" fill="#64777e" fontSize="8">
+                        Main Bazar
+                      </text>
+                      <path
+                        d="M45 180 L45 119 Q45 105 59 105 L201 105 Q215 105 215 91 L215 52"
+                        stroke="#abc9f3"
+                        strokeWidth="6"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        className="delivery-route"
+                        pathLength="1"
+                        d="M45 180 L45 119 Q45 105 59 105 L201 105 Q215 105 215 91 L215 52"
+                        stroke="#2563eb"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                      />
+                      <circle
+                        cx="45"
+                        cy="180"
+                        r="7"
+                        fill="#fff"
+                        stroke="#2563eb"
+                        strokeWidth="3"
+                      />
+                      <circle
+                        className="destination-pulse"
+                        cx="215"
+                        cy="52"
+                        r="15"
+                        fill="#2563eb"
+                        opacity=".15"
+                      />
+                      <circle
+                        cx="215"
+                        cy="52"
+                        r="7"
+                        fill="#2563eb"
+                        stroke="white"
+                        strokeWidth="3"
+                      />
+                      <g className="rider-marker">
+                        <circle
+                          r="14"
+                          fill="#173b76"
+                          stroke="white"
+                          strokeWidth="2"
+                        />
+                        <g
+                          transform="translate(-9 -9)"
+                          stroke="white"
+                          strokeWidth="1.6"
+                        >
+                          <circle cx="4" cy="13" r="3" />
+                          <circle cx="14" cy="13" r="3" />
+                          <path d="m4 13 4-7 6 7M7 6h4M8 3h2" />
+                        </g>
+                      </g>
+                    </svg>
+                    <div className="map-caption">
+                      <span className="status-dot" /> Rider raastay mein hai
+                    </div>
+                  </div>
+                  <div className="phone-order">
+                    <span className="phone-order-icon">
+                      <ShoppingBag size={20} />
+                    </span>
+                    <div>
+                      <strong>Aapka order, ghar tak</strong>
+                      <span>Shop se seedha aapke paas</span>
+                    </div>
+                    <span className="phone-check">✓</span>
+                  </div>
+                  <div className="phone-nav">
+                    <span>
+                      <ShoppingBag size={16} />
+                      Home
+                    </span>
+                    <span>
+                      <Bike size={16} />
+                      Ride
+                    </span>
+                    <span>
+                      <MessageCircle size={16} />
+                      Chat
+                    </span>
+                  </div>
+                  <div className="phone-homebar" />
                 </div>
+              </motion.div>
+            </div>
+            <div className="service-badge badge-grocery">
+              <div className="badge-icon">
+                <ShoppingBag size={20} />
               </div>
-            </motion.div>
+              <div>
+                <strong>Grocery ghar tak</strong>
+                <span>Apni local dukan se</span>
+              </div>
+            </div>
+            <div className="service-badge badge-ride">
+              <div className="badge-icon">
+                <Bike size={20} />
+              </div>
+              <div>
+                <strong>Chalein, kahin bhi.</strong>
+                <span>Bike ride booking</span>
+              </div>
+              <ArrowUpRight size={16} />
+            </div>
+            <p className="preview-caption">
+              <span /> ILLUSTRATIVE APP PREVIEW
+            </p>
           </div>
         </div>
+        <div className="hero-service-strip">
+          {services.map(({ label, detail, icon: Icon }) => (
+            <a
+              key={label}
+              href={label === "Bike rides" ? "#ride" : "#features"}
+            >
+              <Icon size={20} />
+              <span>
+                <strong>{label}</strong>
+                <small>{detail}</small>
+              </span>
+              <ArrowUpRight size={15} />
+            </a>
+          ))}
+          <a href="#custom-orders">
+            <MessageCircle size={20} />
+            <span>
+              <strong>Custom orders</strong>
+              <small>Jo chahiye, mangwaein</small>
+            </span>
+            <ArrowUpRight size={15} />
+          </a>
+        </div>
       </div>
-
-      {/* Scroll-down indicator bounce */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={splashFinished ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ delay: 0.72, duration: 0.42, ease: MOTION_EASE }}
-        className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-1.5 pointer-events-none"
-      >
-        <span className="text-[9px] uppercase font-heading font-semibold tracking-widest text-slate-400/80">
-          Scroll Down
-        </span>
-        <motion.div
-          animate={allowAmbientMotion ? { y: [0, 6, 0] } : { y: 0 }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-5 h-8 rounded-full border border-white/20 bg-white/5 flex items-start justify-center p-1 backdrop-blur-sm"
-        >
-          <motion.div
-            animate={allowAmbientMotion ? { y: [0, 10, 0], opacity: [1, 0.2, 1] } : { y: 0, opacity: 1 }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-1 h-2 rounded-full bg-blue-400"
-          />
-        </motion.div>
-      </motion.div>
     </section>
   );
 }

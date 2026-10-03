@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { FAQS_DATA } from '@/data/faqs';
 import { HelpCircle, ChevronDown } from 'lucide-react';
 import { TextReveal } from '@/components/animations/TextReveal';
@@ -9,6 +9,7 @@ import { Reveal } from '@/components/animations/Reveal';
 import { MOTION_EASE } from '@/lib/motion';
 
 export function FaqSection() {
+  const reduced = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [openId, setOpenId] = useState<string | null>(FAQS_DATA[0].id);
 
@@ -62,7 +63,8 @@ export function FaqSection() {
             {categories.map((cat) => (
               <button
                 key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
+                onClick={() => { setActiveCategory(cat.id); setOpenId(null); }}
+                aria-pressed={activeCategory === cat.id}
                 className={`px-4 py-2 rounded-xl text-xs font-heading font-semibold transition-all duration-200 focus:outline-none ${
                   activeCategory === cat.id
                     ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
@@ -83,11 +85,10 @@ export function FaqSection() {
             return (
               <motion.div
                 key={faq.id}
-                layout
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={false}
+                whileInView={{ opacity: reduced ? 1 : [.3, 1], y: reduced ? 0 : [16, 0] }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.34, delay: idx * 0.035, ease: MOTION_EASE }}
+                transition={{ duration: reduced ? 0 : 0.45, delay: reduced ? 0 : (idx % 3) * 0.08, ease: MOTION_EASE }}
                 className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-200 overflow-hidden ${
                   isOpen
                     ? 'bg-white dark:bg-slate-900/90 border-blue-500/50 dark:border-blue-500/40 shadow-lg shadow-blue-500/5'
@@ -97,6 +98,7 @@ export function FaqSection() {
                 <button
                   onClick={() => toggleFaq(faq.id)}
                   aria-expanded={isOpen}
+                  aria-controls={`${faq.id}-answer`} id={`${faq.id}-question`}
                   className="w-full flex items-center justify-between p-5 sm:p-6 text-left focus:outline-none"
                 >
                   <span className="text-base sm:text-lg font-heading font-bold text-slate-900 dark:text-white pr-4">
@@ -117,12 +119,13 @@ export function FaqSection() {
                   {isOpen && (
                     <motion.div
                       key="content"
+                      id={`${faq.id}-answer`} role="region" aria-labelledby={`${faq.id}-question`}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.24, ease: MOTION_EASE }}
+                      transition={{ duration: reduced ? 0 : 0.22, ease: MOTION_EASE }}
                     >
-                      <div className="px-5 pb-6 sm:px-6 sm:pb-6 pt-0 border-t border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-300 text-sm sm:text-base font-body leading-relaxed">
+                      <div className="px-5 pb-6 sm:px-6 sm:pb-6 pt-4 border-t border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-300 text-sm sm:text-base font-body leading-relaxed">
                         {faq.answer}
                       </div>
                     </motion.div>

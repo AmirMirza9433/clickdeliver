@@ -49,13 +49,13 @@ export function ContactSection() {
     const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(messageText)}`;
 
     if (typeof window !== 'undefined') {
-      window.open(whatsappUrl, '_blank');
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     }
 
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      toast.success('Message WhatsApp par open ho gaya hai!');
+      toast.success('WhatsApp mein Send dabayein taake message pohanchay.');
     }, 500);
   };
 
@@ -78,7 +78,7 @@ export function ContactSection() {
       icon: MapPin,
       title: 'Operating Hub',
       value: APP_CONFIG.address,
-      href: '#',
+      href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(APP_CONFIG.address)}`,
       actionLabel: 'Alipur Chattha',
     },
   ];
@@ -128,7 +128,7 @@ export function ContactSection() {
                       <div className="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all">
                         <Icon className="w-5 h-5" />
                       </div>
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
                           <p className="text-xs font-heading font-semibold text-slate-500 dark:text-slate-400">
                             {item.title}
@@ -181,7 +181,7 @@ export function ContactSection() {
                         href={s.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        whileHover={{ scale: 1.15, rotate: 5 }}
+                        whileHover={{ y: -2 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 15 }}
                         className={`w-12 h-12 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-700 dark:text-slate-300 transition-colors ${s.color}`}
                         aria-label={s.name}
@@ -207,15 +207,15 @@ export function ContactSection() {
                 </p>
 
                 {isSubmitted ? (
-                  <div className="p-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center flex flex-col items-center">
+                  <div role="status" className="p-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center flex flex-col items-center">
                     <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-3 shadow-lg shadow-emerald-500/30">
                       <CheckCircle2 className="w-6 h-6" />
                     </div>
                     <h4 className="text-lg font-heading font-bold text-slate-900 dark:text-white mb-1">
-                      Message WhatsApp Par Bhej Diya Gaya!
+                      WhatsApp Par Message Tayyar Hai
                     </h4>
                     <p className="text-xs text-emerald-700 dark:text-emerald-300 max-w-md mx-auto mb-5 leading-relaxed font-medium">
-                      Aapka message hamare official WhatsApp number <strong className="text-slate-900 dark:text-white font-bold">{APP_CONFIG.phoneDisplay}</strong> par forward ho chuka hai. ClickDeliver team jald hi aap se rabta karegi.
+                      Aapka message hamare official WhatsApp number <strong className="text-slate-900 dark:text-white font-bold">{APP_CONFIG.phoneDisplay}</strong> ke liye tayyar hai. WhatsApp mein Send dabayein taake message hamari team tak pohanchay.
                     </p>
                     <div className="flex flex-wrap gap-3 justify-center">
                       <a
@@ -245,10 +245,11 @@ export function ContactSection() {
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-heading font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                        <label htmlFor="contact-name" className="block text-xs font-heading font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                           Aapka Naam
                         </label>
                         <input
+                          id="contact-name" name="name" autoComplete="name"
                           type="text"
                           required
                           placeholder="e.g. Muhammad Ali"
@@ -258,10 +259,11 @@ export function ContactSection() {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-heading font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                        <label htmlFor="contact-phone" className="block text-xs font-heading font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                           Mobile Number / WhatsApp
                         </label>
                         <input
+                          id="contact-phone" name="phone" autoComplete="tel"
                           type="tel"
                           required
                           placeholder="0300 1234567"
@@ -273,11 +275,11 @@ export function ContactSection() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-heading font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                      <label htmlFor="contact-role" className="block text-xs font-heading font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                         Aapka Maqsad
                       </label>
                       <div className="relative">
-                        <select
+                        <select id="contact-role" name="role"
                           value={formData.role}
                           onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                           className="w-full px-4 py-3 pr-10 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm appearance-none focus:outline-none focus:border-blue-500 transition-colors cursor-pointer"
@@ -294,10 +296,10 @@ export function ContactSection() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-heading font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                      <label htmlFor="contact-message" className="block text-xs font-heading font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                         Message ya Detail
                       </label>
-                      <textarea
+                      <textarea id="contact-message" name="message"
                         rows={3}
                         required
                         placeholder="Apna sawal ya message yahan likhein..."

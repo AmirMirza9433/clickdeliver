@@ -1,240 +1,198 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { NAV_ITEMS, APP_CONFIG } from '@/data/siteConfig';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
-import { Magnetic } from '@/components/animations/Magnetic';
-import { MOTION_EASE } from '@/lib/motion';
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Menu, X, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { NAV_ITEMS } from "@/data/siteConfig";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-  const lastScrollY = useRef(0);
-
+  const [active, setActive] = useState("");
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
   useEffect(() => {
-    const sections = NAV_ITEMS.map((item) => item.href.substring(1))
-      .filter(Boolean)
-      .map((id) => ({ id, element: document.getElementById(id) }))
-      .filter((section) => section.element);
-    let frameId = 0;
-
-    const handleScroll = () => {
-      if (frameId) return;
-
-      frameId = requestAnimationFrame(() => {
-        const currentY = window.scrollY;
-
-        // Transparent at top -> blurred glass + shadow after 20px
-        const nextScrolled = currentY > 20;
-        setScrolled((current) =>
-          current === nextScrolled ? current : nextScrolled
-        );
-
-        // Hide on scroll down, show on scroll up (after 120px)
-        if (currentY > 120 && currentY > lastScrollY.current + 8) {
-          setHidden((current) => (current ? current : true));
-        } else if (currentY < lastScrollY.current - 8 || currentY <= 120) {
-          setHidden((current) => (current ? false : current));
-        }
-        lastScrollY.current = currentY;
-
-        // Scroll-spy active link detection
-        const scrollPosition = currentY + 160;
-
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const section = sections[i];
-          if (section.element && section.element.offsetTop <= scrollPosition) {
-            const nextSection = `#${section.id}`;
-            setActiveSection((current) =>
-              current === nextSection ? current : nextSection
-            );
-            break;
-          }
-        }
-
-        frameId = 0;
-      });
+    const scroll = () => {
+      setScrolled(window.scrollY > 20);
+      if (window.scrollY < 100) setActive("");
     };
-
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    scroll();
+    window.addEventListener("scroll", scroll, { passive: true });
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(`#${entry.target.id}`);
+        }),
+      { rootMargin: "-100px 0px -60% 0px" },
+    );
+    NAV_ITEMS.forEach((item) => {
+      const section = document.querySelector(item.href);
+      if (section) observer.observe(section);
+    });
     return () => {
-      cancelAnimationFrame(frameId);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", scroll);
+      observer.disconnect();
     };
   }, []);
-
+  useEffect(() => {
+    const media = matchMedia("(min-width: 1280px)");
+    const change = () => {
+      if (media.matches) setMobileOpen(false);
+    };
+    media.addEventListener("change", change);
+    return () => media.removeEventListener("change", change);
+  }, []);
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const keydown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        toggleRef.current?.focus();
+      }
+      if (e.key === "Tab") {
+        const links =
+          menuRef.current?.querySelectorAll<HTMLElement>("a, button");
+        if (!links?.length) return;
+        if (
+          e.shiftKey &&
+          (document.activeElement === links[0] ||
+            document.activeElement === toggleRef.current)
+        ) {
+          e.preventDefault();
+          links[links.length - 1].focus();
+        } else if (
+          !e.shiftKey &&
+          document.activeElement === links[links.length - 1]
+        ) {
+          e.preventDefault();
+          toggleRef.current?.focus();
+        }
+      }
+    };
+    menuRef.current?.querySelector("a")?.focus();
+    document.addEventListener("keydown", keydown);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener("keydown", keydown);
+    };
+  }, [mobileOpen]);
+  const closeForLink = (href: string) => {
+    setMobileOpen(false);
+    const destination = document.querySelector<HTMLElement>(href);
+    if (destination) {
+      destination.tabIndex = -1;
+      destination.focus({ preventScroll: true });
+    }
+  };
   return (
-    <motion.header
-      animate={{
-        y: hidden && !mobileOpen ? -100 : 0,
-      }}
-      transition={{
-        duration: 0.26,
-        ease: MOTION_EASE,
-      }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
-        scrolled
-          ? 'py-3 bg-white/85 dark:bg-[#060911]/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/10 shadow-lg shadow-slate-900/5 dark:shadow-black/25'
-          : 'py-5 bg-transparent'
-      }`}
+    <header
+      className={`site-header fixed inset-x-0 top-0 z-50 border-b transition-[background-color,box-shadow,border-color] duration-200 ${scrolled || mobileOpen ? "bg-white/95 dark:bg-[#0b1425]/95 backdrop-blur-xl border-slate-200 dark:border-white/10 shadow-lg shadow-black/5" : "bg-transparent border-transparent"}`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-3 group focus:outline-none">
-            <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 p-1 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:border-blue-500/50 shadow-md">
-              <Image
-                src="/logo.png"
-                alt="ClickDeliver"
-                width={36}
-                height={36}
-                className="w-auto h-auto max-w-[34px] max-h-[34px] object-contain drop-shadow"
-                priority
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-heading font-extrabold text-lg text-slate-900 dark:text-white tracking-tight flex items-center gap-1">
-                Click<span className="text-blue-500">Deliver</span>
-              </span>
-              <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 dark:text-slate-400">
-                Alipur Chattha
-              </span>
-            </div>
-          </Link>
-
-          {/* Desktop Navigation Links with animated underline and scroll-spy */}
-          <nav
-            onMouseLeave={() => setHoveredLink(null)}
-            className="hidden lg:flex items-center gap-1 p-1 rounded-full bg-slate-100/80 dark:bg-white/5 border border-slate-200/80 dark:border-white/10 backdrop-blur-md"
-          >
-            {NAV_ITEMS.map((link) => {
-              const isActive = activeSection === link.href;
-              const isHovered = hoveredLink === link.href;
-
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  onMouseEnter={() => setHoveredLink(link.href)}
-                  className={`relative px-4 py-1.5 rounded-full text-xs font-heading font-medium transition-colors duration-200 ${
-                    isActive
-                      ? 'text-blue-600 dark:text-white font-semibold'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
-                  }`}
-                >
-                  <span className="relative z-10">{link.label}</span>
-
-                  {/* Active highlight pill */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="nav-pill"
-                      className="absolute inset-0 bg-blue-600/10 dark:bg-blue-600/30 rounded-full border border-blue-500/30 dark:border-blue-400/40 z-0"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-
-                  {/* Animated underline / hover indicator */}
-                  {isHovered && !isActive && (
-                    <motion.div
-                      layoutId="nav-hover-pill"
-                      className="absolute bottom-1 left-3 right-3 h-[2px] bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full z-0"
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                    />
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Action CTAs & Theme Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <ThemeToggle />
-
-            {/* Desktop Download CTA with Magnetic hover */}
-            <div className="hidden sm:block">
-              <Magnetic strength={0.25}>
-                <a
-                  href="#download"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-heading font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/35 transition-all duration-300"
-                >
-                  <span>Download App</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-              </Magnetic>
-            </div>
-
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-white transition-colors focus:outline-none"
-              aria-label="Toggle navigation menu"
-            >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[84px] flex items-center justify-between gap-5">
+        <Link
+          href="/"
+          aria-label="ClickDeliver home"
+          className="flex items-center gap-2.5 shrink-0"
+        >
+          <Image
+            src="/logo.png"
+            alt=""
+            width={39}
+            height={39}
+            priority
+            className="rounded-xl"
+          />
+          <div>
+            <span className="font-heading font-semibold text-xl tracking-tight">
+              Click
+              <span className="text-blue-500 dark:text-blue-400">Deliver</span>
+            </span>
+            <span className="block text-[8px] tracking-[.17em] text-slate-500 dark:text-slate-400 mt-0.5">
+              YOUR CITY. DELIVERED.
+            </span>
           </div>
+        </Link>
+        <nav
+          aria-label="Main navigation"
+          className="hidden xl:flex items-center gap-5"
+        >
+          {NAV_ITEMS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              aria-current={active === link.href ? "location" : undefined}
+              className={`py-3 text-[11px] font-medium transition-colors duration-200 ${active === link.href ? "text-blue-600 dark:text-blue-300" : "text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-300"}`}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <ThemeToggle />
+          <a
+            href="#download"
+            className="hidden sm:inline-flex items-center gap-2 px-4 h-11 rounded-xl text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200"
+          >
+            Get the app <ArrowUpRight size={15} />
+          </a>
+          <button
+            ref={toggleRef}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
+            aria-label={
+              mobileOpen ? "Close navigation menu" : "Open navigation menu"
+            }
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="xl:hidden w-11 h-11 rounded-xl border border-slate-200 dark:border-white/10 flex items-center justify-center"
+          >
+            {mobileOpen ? <X size={21} /> : <Menu size={21} />}
+          </button>
         </div>
       </div>
-
-      {/* Mobile Slide-in Drawer with Staggered Items */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            ref={menuRef}
+            id="mobile-menu"
+            initial={{ opacity: reduced ? 1 : 0, height: reduced ? "auto" : 0 }}
+            animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.24, ease: MOTION_EASE }}
-            className="lg:hidden border-b border-slate-200 dark:border-white/10 bg-white/95 dark:bg-[#060911]/95 backdrop-blur-2xl overflow-hidden"
+            transition={{ duration: reduced ? 0 : 0.22 }}
+            className="xl:hidden overflow-hidden bg-white dark:bg-[#0b1425]"
           >
-            <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col gap-2">
-              {NAV_ITEMS.map((link, idx) => (
-                <motion.div
-                  key={link.label}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.025 + idx * 0.025, duration: 0.26, ease: MOTION_EASE }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={`flex items-center justify-between py-2.5 px-3 rounded-xl text-sm font-heading font-medium transition-colors ${
-                      activeSection === link.href
-                        ? 'bg-blue-600/10 dark:bg-blue-600/20 text-blue-600 dark:text-blue-400 font-semibold border border-blue-500/20 dark:border-blue-500/30'
-                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
-                    }`}
-                  >
-                    <span>{link.label}</span>
-                    <ArrowUpRight className="w-4 h-4 text-slate-400" />
-                  </Link>
-                </motion.div>
-              ))}
-
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.025 + NAV_ITEMS.length * 0.025, duration: 0.28, ease: MOTION_EASE }}
-                className="pt-4 flex flex-col gap-3"
-              >
+            <nav
+              aria-label="Mobile navigation"
+              className="px-5 sm:px-8 py-4 flex flex-col max-h-[calc(100dvh-84px)] overflow-y-auto"
+            >
+              {NAV_ITEMS.map((link) => (
                 <a
-                  href="#download"
-                  onClick={() => setMobileOpen(false)}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center font-heading font-semibold text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2"
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => closeForLink(link.href)}
+                  aria-current={active === link.href ? "location" : undefined}
+                  className="flex items-center justify-between px-3 py-3.5 rounded-xl text-sm hover:bg-blue-500/10 focus:bg-blue-500/10"
                 >
-                  <span>Download Free App</span>
-                  <ArrowUpRight className="w-4 h-4" />
+                  {link.label}
+                  <ArrowUpRight size={15} className="text-blue-500" />
                 </a>
-              </motion.div>
-            </div>
+              ))}
+              <a
+                href="#download"
+                onClick={() => closeForLink("#download")}
+                className="bg-blue-600 text-white rounded-xl text-center py-3.5 mt-3 font-semibold text-sm"
+              >
+                Download ClickDeliver
+              </a>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   );
 }

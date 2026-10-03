@@ -19,13 +19,13 @@ export function FeaturesSection() {
           <Reveal direction="up" delay={0.05}>
             <div className="section-tag mx-auto">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Power Packed Platform</span>
+              <span>HAR DIN, HAR ZAROORAT</span>
             </div>
           </Reveal>
 
           <TextReveal
-            text="Har Cheez Ek App Mein — Smart & Superfast"
-            highlightWords={['Smart', '&', 'Superfast']}
+            text="Har Cheez Ek App Mein."
+            highlightWords={['Ek', 'App', 'Mein.']}
             as="h2"
             className="section-heading"
             delay={0.15}
@@ -33,8 +33,7 @@ export function FeaturesSection() {
 
           <Reveal direction="up" delay={0.25}>
             <p className="section-subheading">
-              ClickDeliver combines express on-demand delivery, custom shopkeeper messaging,
-              and budget-friendly bike ride booking into one sleek experience.
+              Grocery ho, dawaai ho ya bike ride — apne shehar ki services ab ek hi app mein.
             </p>
           </Reveal>
         </div>
