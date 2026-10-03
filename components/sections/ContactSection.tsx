@@ -31,7 +31,6 @@ export function ContactSection() {
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const roleLabels: Record<string, string> = {
     customer: 'Customer Inquiry / Order Help',
@@ -54,8 +53,8 @@ export function ContactSection() {
 
     setTimeout(() => {
       setIsSubmitting(false);
-      setIsSubmitted(true);
-      toast.success('WhatsApp mein Send dabayein taake message pohanchay.');
+      setFormData({ name: '', phone: '', role: 'customer', message: '' });
+      toast.success('WhatsApp open ho raha hai, wahan se message send karein.');
     }, 500);
   };
 
@@ -207,42 +206,6 @@ export function ContactSection() {
                   Chaahe rider banna ho, shopkeeper partner banna ho ya koi feedback dena ho.
                 </p>
 
-                {isSubmitted ? (
-                  <div role="status" className="p-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center flex flex-col items-center">
-                    <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center mb-3 shadow-lg shadow-emerald-500/30">
-                      <CheckCircle2 className="w-6 h-6" />
-                    </div>
-                    <h4 className="text-lg font-heading font-bold text-slate-900 dark:text-white mb-1">
-                      WhatsApp Par Message Tayyar Hai
-                    </h4>
-                    <p className="text-xs text-emerald-700 dark:text-emerald-300 max-w-md mx-auto mb-5 leading-relaxed font-medium">
-                      Aapka message hamare official WhatsApp number <strong className="text-slate-900 dark:text-white font-bold">{APP_CONFIG.phoneDisplay}</strong> ke liye tayyar hai. WhatsApp mein Send dabayein taake message hamari team tak pohanchay.
-                    </p>
-                    <div className="flex flex-wrap gap-3 justify-center">
-                      <a
-                        href={`https://wa.me/${APP_CONFIG.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-                          `*ClickDeliver Website Inquiry*\n\n👤 *Naam:* ${formData.name}\n📱 *Phone:* ${formData.phone}\n🎯 *Maqsad:* ${roleLabels[formData.role] || formData.role}\n\n💬 *Message:*\n${formData.message}`
-                        )}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-heading font-bold flex items-center gap-2 transition-all shadow-lg shadow-emerald-500/25"
-                      >
-                        <span>Open in WhatsApp</span>
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                      </a>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setIsSubmitted(false);
-                          setFormData({ name: '', phone: '', role: 'customer', message: '' });
-                        }}
-                        className="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-700 dark:text-white text-xs font-heading font-semibold transition-all"
-                      >
-                        Naya Message Bhejein
-                      </button>
-                    </div>
-                  </div>
-                ) : (
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
@@ -321,7 +284,6 @@ export function ContactSection() {
                       </button>
                     </Magnetic>
                   </form>
-                )}
               </div>
             </Reveal>
           </div>
