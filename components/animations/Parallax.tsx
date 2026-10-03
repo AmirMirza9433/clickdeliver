@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useSpring, useTransform, useReducedMotion } from 'framer-motion';
 
 interface ParallaxProps {
   children: React.ReactNode;
@@ -33,11 +33,12 @@ export function Parallax({
 
   // Calculate subtle offset (-50px to 50px scaled by speed)
   const offsetDistance = 100 * speed;
-  const y = useTransform(
+  const rawY = useTransform(
     scrollYProgress,
     [0, 1],
     [-offsetDistance, offsetDistance]
   );
+  const y = useSpring(rawY, { stiffness: 180, damping: 30, mass: 0.3 });
 
   if (shouldReduceMotion || isTouchDevice) {
     return <div className={className}>{children}</div>;

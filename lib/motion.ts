@@ -7,14 +7,14 @@ import { Variants, Transition } from 'framer-motion';
  */
 
 // Custom cubic-bezier easing curve
-export const MOTION_EASE = [0.22, 1, 0.36, 1] as const;
-export const MOTION_EASE_OUT = [0, 0, 0.2, 1] as const;
-export const MOTION_EASE_SPRING = { type: 'spring', stiffness: 350, damping: 28 } as const;
+export const MOTION_EASE = [0.16, 1, 0.3, 1] as const;
+export const MOTION_EASE_OUT = [0.16, 1, 0.3, 1] as const;
+export const MOTION_EASE_SPRING = { type: 'spring', stiffness: 420, damping: 32 } as const;
 
 // Standard durations (0.5s - 0.9s per prompt instructions)
-export const DURATION_FAST = 0.4;
-export const DURATION_NORMAL = 0.65;
-export const DURATION_SLOW = 0.85;
+export const DURATION_FAST = 0.24;
+export const DURATION_NORMAL = 0.48;
+export const DURATION_SLOW = 0.64;
 
 export const transitionDefault: Transition = {
   duration: DURATION_NORMAL,
@@ -68,8 +68,8 @@ export const staggerContainerVariants: Variants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.05,
+      staggerChildren: 0.07,
+      delayChildren: 0.03,
     },
   },
 };

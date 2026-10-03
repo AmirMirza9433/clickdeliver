@@ -14,6 +14,14 @@ const config: Config = {
         heading: ['var(--font-heading)', 'sans-serif'],
         body: ['var(--font-body)', 'sans-serif'],
       },
+      transitionDuration: {
+        '200': '180ms',
+        '300': '240ms',
+        '500': '400ms',
+      },
+      transitionTimingFunction: {
+        DEFAULT: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
@@ -85,10 +93,10 @@ const config: Config = {
         },
         'marquee-left': {
           '0%': { transform: 'translateX(0%)' },
-          '100%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(calc(-50% - 0.75rem))' },
         },
         'marquee-right': {
-          '0%': { transform: 'translateX(-50%)' },
+          '0%': { transform: 'translateX(calc(-50% - 0.75rem))' },
           '100%': { transform: 'translateX(0%)' },
         },
         shimmer: {
@@ -96,8 +104,8 @@ const config: Config = {
         },
       },
       animation: {
-        'accordion-down': 'accordion-down 0.25s ease-out',
-        'accordion-up': 'accordion-up 0.25s ease-out',
+        'accordion-down': 'accordion-down 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+        'accordion-up': 'accordion-up 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
         float: 'float 5s ease-in-out infinite',
         'pulse-glow': 'pulse-glow 4s ease-in-out infinite',
         'marquee-left': 'marquee-left 35s linear infinite',

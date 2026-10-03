@@ -1,43 +1,37 @@
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
-import { HeroSection } from '@/components/sections/HeroSection';
-import { StatsSection } from '@/components/sections/StatsSection';
-import { FeaturesSection } from '@/components/sections/FeaturesSection';
-import { HowItWorksSection } from '@/components/sections/HowItWorksSection';
-import { CustomOrderSection } from '@/components/sections/CustomOrderSection';
-import { RideSection } from '@/components/sections/RideSection';
-import { UserTypesSection } from '@/components/sections/UserTypesSection';
-import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
-import { DownloadSection } from '@/components/sections/DownloadSection';
-import { FaqSection } from '@/components/sections/FaqSection';
-import { ContactSection } from '@/components/sections/ContactSection';
-import { ScrollProgressBar } from '@/components/ui/ScrollProgressBar';
-import { CursorFollower } from '@/components/ui/CursorFollower';
-import { MobileDownloadBar } from '@/components/ui/MobileDownloadBar';
-import { BackToTop } from '@/components/ui/BackToTop';
-import { SmoothScroll } from '@/components/ui/SmoothScroll';
-import { Toaster } from 'sonner';
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { StatsSection } from "@/components/sections/StatsSection";
+import { FeaturesSection } from "@/components/sections/FeaturesSection";
+import { HowItWorksSection } from "@/components/sections/HowItWorksSection";
+import { CustomOrderSection } from "@/components/sections/CustomOrderSection";
+import { RideSection } from "@/components/sections/RideSection";
+import { UserTypesSection } from "@/components/sections/UserTypesSection";
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
+import { DownloadSection } from "@/components/sections/DownloadSection";
+import { FaqSection } from "@/components/sections/FaqSection";
+import { ContactSection } from "@/components/sections/ContactSection";
+import { MobileDownloadBar } from "@/components/ui/MobileDownloadBar";
+import { BackToTop } from "@/components/ui/BackToTop";
+import { Toaster } from "sonner";
 
 export default function Home() {
   return (
     <>
-      {/* Lenis Smooth Scroll */}
-      <SmoothScroll />
-
-      {/* Top Scroll Progress Bar */}
-      <ScrollProgressBar />
-
-      {/* Desktop interactive cursor follower (auto-disabled on touch) */}
-      <CursorFollower />
-
       {/* Toast notifications */}
       <Toaster position="bottom-right" richColors />
 
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
       {/* Navigation */}
       <Navbar />
 
       {/* Main Content strictly following requested section order */}
-      <main className="relative overflow-x-hidden min-h-screen">
+      <main
+        id="main-content"
+        className="relative overflow-x-hidden min-h-screen"
+      >
         {/* 1. Hero */}
         <HeroSection />
 

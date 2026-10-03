@@ -51,16 +51,25 @@ const chatScript: ChatMessage[] = [
 
 export function CustomOrderSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { amount: 0.25 });
+  const isInView = useInView(sectionRef, { amount: 0.15 });
   const shouldReduceMotion = useReducedMotion();
 
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>(chatScript);
   const [isTyping, setIsTyping] = useState(false);
-  const [showRiderPill, setShowRiderPill] = useState(false);
+  const [showRiderPill, setShowRiderPill] = useState(true);
   const [cycle, setCycle] = useState(0);
+  const played = useRef(false);
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || played.current) return;
+    played.current = true;
+
+    if (shouldReduceMotion) {
+      setMessages(chatScript);
+      setShowRiderPill(true);
+      setIsTyping(false);
+      return;
+    }
 
     // Reset simulation
     setMessages([]);
@@ -108,19 +117,16 @@ export function CustomOrderSection() {
       }, 5700)
     );
 
-    // Step 6: Loop simulation every ~10s when in view
-    timeouts.push(
-      setTimeout(() => {
-        setCycle((c) => c + 1);
-      }, 10500)
-    );
-
     return () => {
       timeouts.forEach(clearTimeout);
+      setMessages(chatScript);
+      setShowRiderPill(true);
+      setIsTyping(false);
     };
-  }, [cycle, isInView]);
+  }, [cycle, isInView, shouldReduceMotion]);
 
   const handleRestart = () => {
+    played.current = false;
     setCycle((c) => c + 1);
   };
 
@@ -215,14 +221,14 @@ export function CustomOrderSection() {
                         Ali Medical &amp; General Store
                       </h4>
                       <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
-                        <span>Online</span> &middot; Main Bazar Alipur Chattha
+                        <span>Illustrative chat</span> &middot; Alipur Chattha
                       </p>
                     </div>
                   </div>
 
                   <button
                     onClick={handleRestart}
-                    title="Restart Simulation"
+                    title="Replay illustrative conversation" aria-label="Replay illustrative conversation"
                     className="p-2 rounded-xl bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors flex items-center gap-1 text-xs"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
@@ -231,8 +237,8 @@ export function CustomOrderSection() {
                 </div>
 
                 {/* Chat Messages Stream */}
-                <div className="min-h-[290px] flex flex-col justify-end gap-3 p-2">
-                  <AnimatePresence>
+                <div className="h-[540px] sm:h-[460px] overflow-y-auto flex flex-col gap-3 p-2">
+                  <AnimatePresence initial={false}>
                     {messages.map((msg) => {
                       const isCust = msg.sender === 'customer';
                       return (
@@ -240,7 +246,7 @@ export function CustomOrderSection() {
                           key={msg.id}
                           initial={{ opacity: 0, y: 12, scale: 0.96 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
-                          transition={{ duration: 0.35, ease: MOTION_EASE }}
+                          transition={{ duration: 0.26, ease: MOTION_EASE }}
                           className={`flex ${isCust ? 'justify-end' : 'justify-start'}`}
                         >
                           <div
@@ -275,9 +281,9 @@ export function CustomOrderSection() {
                     >
                       <span className="text-[11px] text-slate-600 dark:text-slate-400 font-medium">Shopkeeper is typing</span>
                       <div className="flex gap-1.5 items-center">
-                        <span className="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <span className="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '160ms' }} />
-                        <span className="w-2 h-2 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '320ms' }} />
+                        <span className="w-2 h-2 rounded-full bg-blue-500 " style={{ animationDelay: '0ms' }} />
+                        <span className="w-2 h-2 rounded-full bg-blue-500 " style={{ animationDelay: '160ms' }} />
+                        <span className="w-2 h-2 rounded-full bg-blue-500 " style={{ animationDelay: '320ms' }} />
                       </div>
                     </motion.div>
                   )}
@@ -291,15 +297,15 @@ export function CustomOrderSection() {
                       className="relative mt-3 p-3 rounded-2xl bg-gradient-to-r from-emerald-500/15 via-blue-500/15 to-emerald-500/15 dark:from-emerald-500/20 dark:via-blue-500/20 dark:to-emerald-500/20 border border-emerald-500/30 dark:border-emerald-500/40 text-center flex items-center justify-between gap-3 shadow-lg shadow-emerald-500/10 overflow-hidden"
                     >
                       {/* Pulse halo */}
-                      <span className="absolute -inset-1 rounded-2xl bg-emerald-500/10 animate-pulse pointer-events-none" />
+                      <span className="absolute -inset-1 rounded-2xl bg-emerald-500/10  pointer-events-none" />
 
                       <div className="relative z-10 flex items-center gap-2 text-left">
-                        <div className="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-md">
+                        <div className="w-8 h-8 rounded-xl bg-emerald-700 text-white flex items-center justify-center shadow-md">
                           <Bike className="w-4 h-4" />
                         </div>
                         <div>
                           <p className="text-xs font-heading font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
+                            <span className="w-2 h-2 rounded-full bg-emerald-400  inline-block" />
                             Rider assigned &ndash; ETA 8 mins
                           </p>
                           <p className="text-[10px] text-emerald-700 dark:text-emerald-300 font-medium">
@@ -307,7 +313,7 @@ export function CustomOrderSection() {
                           </p>
                         </div>
                       </div>
-                      <span className="relative z-10 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500 text-white shadow">
+                      <span className="relative z-10 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-700 text-white shadow">
                         Track Live
                       </span>
                     </motion.div>
@@ -322,6 +328,7 @@ export function CustomOrderSection() {
                   </div>
                   <button
                     onClick={handleRestart}
+                    aria-label="Replay custom order example"
                     className="p-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white transition-colors shadow-md"
                   >
                     <Send className="w-4 h-4" />

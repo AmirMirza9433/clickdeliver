@@ -52,7 +52,7 @@ export function UserTypesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-          <Reveal direction="up" delay={0.05}>
+          <Reveal direction="left" delay={0.05}>
             <div className="section-tag mx-auto">
               <Sparkles className="w-3.5 h-3.5 text-blue-400" />
               <span>Built For Everyone</span>
@@ -65,9 +65,10 @@ export function UserTypesSection() {
             as="h2"
             className="section-heading"
             delay={0.15}
+            direction="left"
           />
 
-          <Reveal direction="up" delay={0.25}>
+          <Reveal direction="left" delay={0.25}>
             <p className="section-subheading">
               ClickDeliver brings the entire city together: customers get convenience, riders earn
               respectable daily income, and local shops expand their customer base.
@@ -85,7 +86,7 @@ export function UserTypesSection() {
               return (
                 <button
                   key={role.id}
-                  onClick={() => setActiveTab(role.id)}
+                  onClick={() => setActiveTab(role.id)} aria-pressed={activeTab === role.id}
                   className={`relative flex items-center justify-center gap-1.5 sm:gap-2.5 py-2.5 sm:py-3 px-2 rounded-xl font-heading text-xs sm:text-sm font-bold transition-colors duration-200 z-10 focus:outline-none ${
                     isSelected ? 'text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
@@ -108,13 +109,13 @@ export function UserTypesSection() {
         </div>
 
         {/* Tab Content with AnimatePresence */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={activeTab}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.35, ease: MOTION_EASE }}
+            transition={{ duration: 0.25, ease: MOTION_EASE }}
             className="rounded-3xl p-5 sm:p-8 lg:p-12 bg-white/80 dark:bg-slate-900/70 border border-slate-200 dark:border-white/10 backdrop-blur-2xl shadow-2xl shadow-blue-500/5"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
@@ -147,11 +148,11 @@ export function UserTypesSection() {
                     return (
                       <motion.div
                         key={b.title}
-                        initial={{ opacity: 0, y: 16 }}
+                        initial={false}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{
-                          duration: 0.45,
-                          delay: 0.1 + i * 0.08,
+                          duration: 0.34,
+                          delay: 0.055 + i * 0.055,
                           ease: MOTION_EASE,
                         }}
                         className="p-3.5 sm:p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200/80 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 transition-colors flex flex-col justify-between"
@@ -173,12 +174,12 @@ export function UserTypesSection() {
                           >
                             <motion.path
                               d="M20 6L9 17l-5-5"
-                              initial={{ pathLength: 0 }}
+                              initial={false}
                               animate={{ pathLength: 1 }}
                               transition={{
-                                duration: 0.5,
-                                delay: 0.2 + i * 0.1,
-                                ease: 'easeOut',
+                                duration: 0.38,
+                                delay: 0.1 + i * 0.065,
+                                ease: MOTION_EASE,
                               }}
                             />
                           </svg>

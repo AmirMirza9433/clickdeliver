@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { HOW_IT_WORKS_STEPS } from '@/data/howItWorks';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { Reveal } from '@/components/animations/Reveal';
@@ -30,24 +30,12 @@ export function HowItWorksSection() {
   const stepsContainerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
 
-  // Connecting line scroll progress tied to scroll
-  const { scrollYProgress } = useScroll({
-    target: stepsContainerRef,
-    offset: ['start 80%', 'end 60%'],
-  });
-
-  const lineProgress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 24,
-    restDelta: 0.001,
-  });
-
   return (
     <section id="how-it-works" className="relative py-20 lg:py-28 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <Reveal direction="up" delay={0.05}>
+          <Reveal direction="right" delay={0.05}>
             <div className="section-tag mx-auto">
               <Sparkles className="w-3.5 h-3.5" />
               <span>3 Simple Steps</span>
@@ -60,9 +48,10 @@ export function HowItWorksSection() {
             as="h2"
             className="section-heading"
             delay={0.15}
+            direction="right"
           />
 
-          <Reveal direction="up" delay={0.25}>
+          <Reveal direction="right" delay={0.25}>
             <p className="section-subheading">
               No complex registrations. Within 60 seconds you can place an order or book a captain.
             </p>
@@ -77,12 +66,14 @@ export function HowItWorksSection() {
             <div className="hidden sm:block absolute left-8 top-10 bottom-10 w-0.5 bg-white/10" />
 
             {/* Connecting line that draws itself as the user scrolls */}
-            {!shouldReduceMotion && (
-              <motion.div
-                style={{ scaleY: lineProgress, originY: 0 }}
-                className="hidden sm:block absolute left-8 top-10 bottom-10 w-0.5 bg-gradient-to-b from-blue-500 via-cyan-400 to-emerald-400 shadow-[0_0_8px_rgba(59,130,246,0.5)]"
-              />
-            )}
+            <motion.div
+              initial={false}
+              whileInView={{ scaleY: shouldReduceMotion ? 1 : [0, 1] }}
+              viewport={{ once: true, amount: .3 }}
+              transition={{ duration: shouldReduceMotion ? 0 : .65 }}
+              style={{ originY: 0 }}
+              className="hidden sm:block absolute left-8 top-10 bottom-10 w-0.5 bg-gradient-to-b from-blue-500 via-cyan-400 to-emerald-400 shadow-[0_0_8px_rgba(59,130,246,0.5)]"
+            />
 
             {HOW_IT_WORKS_STEPS.map((step, idx) => {
               const Icon = iconMap[step.iconName] || Smartphone;
@@ -94,16 +85,18 @@ export function HowItWorksSection() {
               return (
                 <motion.div
                   key={step.number}
-                  initial={{ opacity: 0, x: enterX }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={false}
+                  whileInView={{ opacity: shouldReduceMotion ? 1 : [.3, 1], y: shouldReduceMotion ? 0 : [16, 0] }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{
-                    duration: 0.65,
-                    delay: idx * 0.12,
+                    duration: 0.48,
+                    delay: idx * 0.075,
                     ease: MOTION_EASE,
                   }}
                   onClick={() => setActiveStep(idx)}
-                  className={`cursor-pointer rounded-2xl p-6 transition-all duration-300 relative flex items-start gap-5 border ${
+                  role="button" tabIndex={0} aria-pressed={isActive} aria-label={`Preview step ${step.number}: ${step.title}`}
+                  onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setActiveStep(idx); } }}
+                  className={`cursor-pointer rounded-2xl p-6 transition-[background-color,border-color,box-shadow] duration-200 relative flex items-start gap-5 border ${
                     isActive
                       ? 'bg-white dark:bg-slate-900/90 border-blue-500/60 shadow-xl shadow-blue-500/15'
                       : 'bg-white/70 dark:bg-slate-900/30 border-slate-200/80 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:bg-white dark:hover:bg-slate-900/50'
@@ -111,16 +104,16 @@ export function HowItWorksSection() {
                 >
                   {/* Step Number Circle with Spring Pop-In */}
                   <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
+                    initial={false}
                     whileInView={{ scale: 1, opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{
                       type: 'spring',
-                      stiffness: 350,
-                      damping: 20,
-                      delay: 0.1 + idx * 0.12,
+                      stiffness: 420,
+                      damping: 28,
+                      delay: 0.06 + idx * 0.075,
                     }}
-                    className={`w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 font-heading font-extrabold text-lg transition-all duration-300 z-10 ${
+                    className={`w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 font-heading font-extrabold text-lg transition-[background-color,border-color,color,box-shadow] duration-200 z-10 ${
                       isActive
                         ? 'bg-gradient-to-br from-blue-600 to-blue-500 text-white shadow-lg shadow-blue-500/40 ring-4 ring-blue-500/20'
                         : 'bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400'
@@ -135,7 +128,7 @@ export function HowItWorksSection() {
                         {step.badge}
                       </span>
                       {isActive && (
-                        <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                        <span className="flex items-center gap-1 hidden sm:flex text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                           <Check className="w-3 h-3" /> Active Step
                         </span>
                       )}
@@ -175,13 +168,13 @@ export function HowItWorksSection() {
                   </div>
 
                   {/* Animated Screen Content */}
-                  <AnimatePresence mode="wait">
+                  <AnimatePresence mode="wait" initial={false}>
                     <motion.div
                       key={activeStep}
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -15 }}
-                      transition={{ duration: 0.3, ease: MOTION_EASE }}
+                      transition={{ duration: 0.22, ease: MOTION_EASE }}
                       className="flex-1 flex flex-col justify-between py-3"
                     >
                       {activeStep === 0 && (
@@ -262,7 +255,7 @@ export function HowItWorksSection() {
                           <div className="relative h-28 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 overflow-hidden flex items-center justify-center shadow-xs">
                             <div className="absolute inset-0 bg-blue-500/5 dark:bg-blue-500/10" />
                             <div className="flex flex-col items-center">
-                              <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg animate-bounce">
+                              <div className="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg ">
                                 <MapPin className="w-4 h-4" />
                               </div>
                               <span className="text-[10px] font-bold text-slate-900 dark:text-white mt-1">
@@ -288,7 +281,7 @@ export function HowItWorksSection() {
                   <div className="pt-3 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                     <span>{currentStep.phoneDetails.status}</span>
                     <span className="text-slate-900 dark:text-white font-semibold flex items-center gap-1">
-                      Next <ArrowRight className="w-3 h-3" />
+                      Illustrative preview
                     </span>
                   </div>
                 </div>

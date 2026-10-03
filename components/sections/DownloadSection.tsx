@@ -14,8 +14,8 @@ import {
 } from 'lucide-react';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { Reveal } from '@/components/animations/Reveal';
-import { Parallax } from '@/components/animations/Parallax';
 import { Magnetic } from '@/components/animations/Magnetic';
+import { MOTION_EASE } from '@/lib/motion';
 
 export function DownloadSection() {
   const perks = [
@@ -41,7 +41,7 @@ export function DownloadSection() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Column: Badges & Copy */}
             <div className="lg:col-span-7">
-              <Reveal direction="up" delay={0.05}>
+              <Reveal direction="right" delay={0.05}>
                 <div className="section-tag mb-4">
                   <Download className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
                   <span>Get ClickDeliver Now</span>
@@ -54,9 +54,10 @@ export function DownloadSection() {
                 as="h2"
                 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-slate-900 dark:text-white mb-4 tracking-tight leading-tight"
                 delay={0.15}
+                direction="right"
               />
 
-              <Reveal direction="up" delay={0.25}>
+              <Reveal direction="right" delay={0.25}>
                 <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 font-body leading-relaxed mb-8">
                   Chahe rozmarra ki grocery mangwani ho, emergency dawaai ya foran bike ride —
                   ClickDeliver aapke phone mein hona zaroori hai. Abhi download karein!
@@ -74,14 +75,9 @@ export function DownloadSection() {
                     id="download-section-google-play"
                     className="group relative block overflow-hidden rounded-2xl p-1 transition-transform duration-300 hover:scale-105 active:scale-95"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 opacity-70 rounded-2xl blur-sm group-hover:opacity-100 transition-opacity animate-pulse-glow" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 opacity-30 rounded-2xl group-hover:opacity-70 transition-opacity " />
                     <div className="relative bg-black rounded-xl p-1.5 flex items-center overflow-hidden">
                       {/* Subtle shine sweep effect */}
-                      <motion.div
-                        className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 pointer-events-none"
-                        animate={{ translateX: ['-100%', '200%'] }}
-                        transition={{ duration: 3, repeat: Infinity, repeatDelay: 2, ease: 'easeInOut' }}
-                      />
                       <Image
                         src="/google-play-badge.svg"
                         alt="Get ClickDeliver on Google Play"
@@ -103,14 +99,9 @@ export function DownloadSection() {
                     id="download-section-app-store"
                     className="group relative block overflow-hidden rounded-2xl p-1 transition-transform duration-300 hover:scale-105 active:scale-95"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 opacity-70 rounded-2xl blur-sm group-hover:opacity-100 transition-opacity animate-pulse-glow" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-500 opacity-30 rounded-2xl group-hover:opacity-70 transition-opacity " />
                     <div className="relative bg-black rounded-xl p-1.5 flex items-center overflow-hidden">
                       {/* Subtle shine sweep effect */}
-                      <motion.div
-                        className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 pointer-events-none"
-                        animate={{ translateX: ['-100%', '200%'] }}
-                        transition={{ duration: 3, repeat: Infinity, repeatDelay: 2, ease: 'easeInOut' }}
-                      />
                       <Image
                         src="/app-store-badge.svg"
                         alt="Download ClickDeliver on the App Store"
@@ -139,13 +130,13 @@ export function DownloadSection() {
 
             {/* Right Column: Animated QR Card with floating parallax, scale-in and hover lift */}
             <div className="lg:col-span-5 flex justify-center">
-              <Parallax speed={0.1}>
+              <div>
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  initial={false}
                   whileInView={{ opacity: 1, scale: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
+                  whileHover={{ y: -6, scale: 1.015 }}
                   className="relative rounded-3xl p-6 sm:p-8 bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-white/15 shadow-xl shadow-blue-500/10 flex flex-col items-center text-center max-w-sm w-full"
                 >
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-heading font-semibold bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-300 border border-blue-500/20 dark:border-blue-500/30 mb-4">
@@ -156,20 +147,20 @@ export function DownloadSection() {
                   {/* QR Toggle Tabs */}
                   <div className="flex bg-slate-100 dark:bg-slate-800/50 p-1 rounded-xl mb-4 w-full">
                     <button
-                      onClick={() => setActiveQR('android')}
+                      onClick={() => setActiveQR('android')} aria-pressed={activeQR === 'android'}
                       className={`flex-1 py-1.5 text-xs font-heading font-bold rounded-lg transition-all ${
                         activeQR === 'android'
-                          ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400'
+                          ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-200'
                           : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                       }`}
                     >
                       Android
                     </button>
                     <button
-                      onClick={() => setActiveQR('ios')}
+                      onClick={() => setActiveQR('ios')} aria-pressed={activeQR === 'ios'}
                       className={`flex-1 py-1.5 text-xs font-heading font-bold rounded-lg transition-all ${
                         activeQR === 'ios'
-                          ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400'
+                          ? 'bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-200'
                           : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                       }`}
                     >
@@ -204,7 +195,7 @@ export function DownloadSection() {
                     </div>
                   </div>
                 </motion.div>
-              </Parallax>
+              </div>
             </div>
           </div>
         </div>

@@ -17,8 +17,8 @@ export function FeatureCard({ icon, title, description }: Props) {
   return (
     <motion.div
       variants={staggerItem}
-      whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      className="group relative p-6 rounded-xl bg-brand-surface border border-brand-border hover:border-brand-primary transition-all duration-300 cursor-pointer overflow-hidden"
+      whileHover={{ y: -6, transition: { duration: 0.2 } }}
+      className="group relative p-6 rounded-xl bg-brand-surface border border-brand-border hover:border-brand-primary transition-[border-color,box-shadow] duration-200 cursor-pointer overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/0 to-brand-primary/0 group-hover:from-brand-primary/5 group-hover:to-brand-primary/10 transition-all duration-300" />
       <div className="relative z-10">

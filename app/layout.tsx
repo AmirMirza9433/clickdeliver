@@ -1,8 +1,8 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { PageLoader } from '@/components/ui/PageLoader';
 import { ThemeProvider } from '@/components/ui/ThemeProvider';
 import { QuickContactFab } from '@/components/ui/QuickContactFab';
+import { PageLoader } from '@/components/ui/PageLoader';
 import { APP_CONFIG } from '@/data/siteConfig';
 
 const siteUrl =

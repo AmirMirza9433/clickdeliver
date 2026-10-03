@@ -9,17 +9,28 @@ export function MobileDownloadBar() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    let frameId = 0;
     const handleScroll = () => {
-      // Show when scrolled past 380px (past hero)
-      if (window.scrollY > 380) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
+      if (frameId) return;
+      frameId = requestAnimationFrame(() => {
+        const hero = document.getElementById('home');
+        const download = document.getElementById('download');
+        const contact = document.getElementById('contact');
+        const isVisible = (element: HTMLElement | null) => { const rect = element?.getBoundingClientRect(); return rect && rect.top < window.innerHeight && rect.bottom > 0; };
+        const nextVisible = (hero?.getBoundingClientRect().bottom ?? 0) < 84 && !isVisible(download) && !isVisible(contact);
+        setVisible((current) =>
+          current === nextVisible ? current : nextVisible
+        );
+        frameId = 0;
+      });
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (
@@ -29,8 +40,9 @@ export function MobileDownloadBar() {
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 80, opacity: 0 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="fixed bottom-4 left-4 right-4 z-40 md:hidden"
+          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          style={{ bottom: 'max(16px, env(safe-area-inset-bottom))' }}
+          className="fixed left-4 right-4 z-40 md:hidden"
         >
           <a
             href="#download"

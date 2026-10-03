@@ -1,61 +1,115 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { NAV_ITEMS, APP_CONFIG } from '@/data/siteConfig';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
-import { Magnetic } from '@/components/animations/Magnetic';
-import { MOTION_EASE } from '@/lib/motion';
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Menu, X, ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { NAV_ITEMS } from "@/data/siteConfig";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { Magnetic } from "@/components/animations/Magnetic";
+import { MOTION_EASE } from "@/lib/motion";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-  const lastScrollY = useRef(0);
+  
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
 
+  // Scroll and Observer logic
   useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY;
+    const scroll = () => {
+      setScrolled(window.scrollY > 20);
+      if (window.scrollY < 100) setActiveSection("");
+    };
+    scroll();
+    window.addEventListener("scroll", scroll, { passive: true });
+    
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`);
+        }),
+      { rootMargin: "-100px 0px -60% 0px" },
+    );
+    
+    NAV_ITEMS.forEach((item) => {
+      const section = document.querySelector(item.href);
+      if (section) observer.observe(section);
+    });
+    
+    return () => {
+      window.removeEventListener("scroll", scroll);
+      observer.disconnect();
+    };
+  }, []);
 
-      // Transparent at top -> blurred glass + shadow after 20px
-      setScrolled(currentY > 20);
+  // Resize logic
+  useEffect(() => {
+    const media = matchMedia("(min-width: 1280px)");
+    const change = () => {
+      if (media.matches) setMobileOpen(false);
+    };
+    media.addEventListener("change", change);
+    return () => media.removeEventListener("change", change);
+  }, []);
 
-      // Header remains fixed always, no hiding logic needed
-      lastScrollY.current = currentY;
-
-      // Scroll-spy active link detection
-      const sections = NAV_ITEMS.map((item) => item.href.substring(1)).filter(Boolean);
-      const scrollPosition = currentY + 160;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el && el.offsetTop <= scrollPosition) {
-          setActiveSection(`#${sections[i]}`);
-          break;
+  // Keyboard navigation logic for mobile menu
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const keydown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        toggleRef.current?.focus();
+      }
+      if (e.key === "Tab") {
+        const links = menuRef.current?.querySelectorAll<HTMLElement>("a, button");
+        if (!links?.length) return;
+        if (
+          e.shiftKey &&
+          (document.activeElement === links[0] ||
+            document.activeElement === toggleRef.current)
+        ) {
+          e.preventDefault();
+          links[links.length - 1].focus();
+        } else if (
+          !e.shiftKey &&
+          document.activeElement === links[links.length - 1]
+        ) {
+          e.preventDefault();
+          toggleRef.current?.focus();
         }
       }
     };
+    menuRef.current?.querySelector("a")?.focus();
+    document.addEventListener("keydown", keydown);
+    return () => {
+      document.body.style.overflow = previous;
+      document.removeEventListener("keydown", keydown);
+    };
+  }, [mobileOpen]);
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const closeForLink = (href: string) => {
+    setMobileOpen(false);
+    const destination = document.querySelector<HTMLElement>(href);
+    if (destination) {
+      destination.tabIndex = -1;
+      destination.focus({ preventScroll: true });
+    }
+  };
 
   return (
     <motion.header
-      animate={{
-        y: 0,
-      }}
-      transition={{
-        duration: 0.35,
-        ease: MOTION_EASE,
-      }}
+      animate={{ y: 0 }}
+      transition={{ duration: reduced ? 0 : 0.35, ease: MOTION_EASE }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
+        scrolled || mobileOpen
           ? 'py-3 bg-white/90 dark:bg-[#060911]/90 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/10 shadow-lg shadow-slate-900/5 dark:shadow-black/25'
           : 'py-5 bg-transparent'
       }`}
@@ -84,7 +138,7 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links with animated underline and scroll-spy */}
+          {/* Desktop Navigation Links */}
           <nav
             onMouseLeave={() => setHoveredLink(null)}
             className="hidden lg:flex items-center gap-1.5 p-1.5 rounded-full bg-white/90 dark:bg-[#111827]/90 border border-slate-200 dark:border-white/10 backdrop-blur-md shadow-sm"
@@ -106,7 +160,6 @@ export function Navbar() {
                 >
                   <span className="relative z-10">{link.label}</span>
 
-                  {/* Active highlight pill */}
                   {isActive && (
                     <motion.div
                       layoutId="nav-pill"
@@ -115,7 +168,6 @@ export function Navbar() {
                     />
                   )}
 
-                  {/* Animated underline / hover indicator */}
                   {isHovered && !isActive && (
                     <motion.div
                       layoutId="nav-hover-pill"
@@ -132,7 +184,7 @@ export function Navbar() {
           <div className="flex items-center gap-2 sm:gap-3">
             <ThemeToggle />
 
-            {/* Desktop Download CTA with Magnetic hover */}
+            {/* Desktop Download CTA */}
             <div className="hidden sm:block">
               <Magnetic strength={0.25}>
                 <a
@@ -150,6 +202,9 @@ export function Navbar() {
 
             {/* Mobile Menu Toggle */}
             <button
+              ref={toggleRef}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
               onClick={() => setMobileOpen(!mobileOpen)}
               className="lg:hidden p-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-white transition-colors focus:outline-none"
               aria-label="Toggle navigation menu"
@@ -158,63 +213,65 @@ export function Navbar() {
             </button>
           </div>
         </div>
-      </div>
 
-      {/* Mobile Slide-in Drawer with Staggered Items */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.32, ease: MOTION_EASE }}
-            className="lg:hidden border-b border-slate-200 dark:border-white/10 bg-white/95 dark:bg-[#060911]/95 backdrop-blur-2xl overflow-hidden"
-          >
-            <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col gap-2">
-              {NAV_ITEMS.map((link, idx) => (
-                <motion.div
-                  key={link.label}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 + idx * 0.04, duration: 0.35, ease: MOTION_EASE }}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={`flex items-center justify-between py-2.5 px-3 rounded-xl text-sm font-heading font-medium transition-colors ${
-                      activeSection === link.href
-                        ? 'bg-blue-600/10 dark:bg-blue-600/20 text-blue-600 dark:text-blue-400 font-semibold border border-blue-500/20 dark:border-blue-500/30'
-                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
-                    }`}
+        {/* Mobile Slide-in Drawer */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              ref={menuRef}
+              id="mobile-menu"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.32, ease: MOTION_EASE }}
+              className="lg:hidden border-b border-slate-200 dark:border-white/10 bg-white/95 dark:bg-[#060911]/95 backdrop-blur-2xl overflow-hidden"
+            >
+              <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col gap-2">
+                {NAV_ITEMS.map((link, idx) => (
+                  <motion.div
+                    key={link.label}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.05 + idx * 0.04, duration: 0.35, ease: MOTION_EASE }}
                   >
-                    <span>{link.label}</span>
-                    <ArrowUpRight className="w-4 h-4 text-slate-400" />
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      href={link.href}
+                      onClick={() => closeForLink(link.href)}
+                      className={`flex items-center justify-between py-2.5 px-3 rounded-xl text-sm font-heading font-medium transition-colors ${
+                        activeSection === link.href
+                          ? 'bg-blue-600/10 dark:bg-blue-600/20 text-blue-600 dark:text-blue-400 font-semibold border border-blue-500/20 dark:border-blue-500/30'
+                          : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                      <ArrowUpRight className="w-4 h-4 text-slate-400" />
+                    </Link>
+                  </motion.div>
+                ))}
 
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 + NAV_ITEMS.length * 0.04, duration: 0.4 }}
-                className="pt-4 flex flex-col gap-3"
-              >
-                <a
-                  href="#download"
-                  onClick={() => setMobileOpen(false)}
-                  className="group relative flex overflow-hidden w-full rounded-xl p-[3px] shadow-lg shadow-blue-500/25 transition-all duration-300"
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.05 + NAV_ITEMS.length * 0.04, duration: 0.4 }}
+                  className="pt-4 flex flex-col gap-3"
                 >
-                  <span className="absolute inset-[-1000%] animate-[spin_20s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#e11d48,#a855f7,#3b82f6,#10b981,#e11d48)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span className="relative flex items-center justify-center gap-2 w-full h-full py-3 rounded-[9px] bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-heading font-semibold text-sm transition-all duration-300">
-                    <span>Download Free App</span>
-                    <ArrowUpRight className="w-4 h-4" />
-                  </span>
-                </a>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                  <a
+                    href="#download"
+                    onClick={() => closeForLink('#download')}
+                    className="group relative flex overflow-hidden w-full rounded-xl p-[3px] shadow-lg shadow-blue-500/25 transition-all duration-300"
+                  >
+                    <span className="absolute inset-[-1000%] animate-[spin_20s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#e11d48,#a855f7,#3b82f6,#10b981,#e11d48)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="relative flex items-center justify-center gap-2 w-full h-full py-3 rounded-[9px] bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-heading font-semibold text-sm transition-all duration-300">
+                      <span>Download Free App</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </span>
+                  </a>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.header>
   );
 }

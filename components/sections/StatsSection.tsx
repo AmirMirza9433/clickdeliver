@@ -14,22 +14,22 @@ const iconMap: Record<string, any> = {
 
 export function StatsSection() {
   return (
-    <section className="relative py-12 z-20">
+    <section className="relative py-12 z-20 stats-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Reveal direction="up" delay={0.05} distance={30}>
+        <Reveal direction="right" delay={0.05} distance={36}>
           <div className="relative rounded-3xl p-6 sm:p-8 lg:p-10 bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 backdrop-blur-2xl shadow-2xl shadow-blue-500/5 overflow-hidden">
             {/* Subtle Ambient Light Strip */}
             <div className="absolute -top-24 left-1/4 w-96 h-36 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-24 right-1/4 w-96 h-36 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 divide-y sm:divide-y-0 sm:divide-x divide-slate-200 dark:divide-white/5">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 ">
               {STATS_DATA.map((stat, idx) => {
                 const Icon = iconMap[stat.id] || Award;
                 return (
                   <div
                     key={stat.id}
                     className={`flex flex-col items-center text-center ${
-                      idx > 0 ? 'pt-6 sm:pt-0 sm:pl-6 lg:pl-12' : ''
+                      ''
                     }`}
                   >
                     <div className="w-10 h-10 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mb-3">
@@ -38,7 +38,7 @@ export function StatsSection() {
                     <div className="text-3xl sm:text-4xl lg:text-5xl font-heading font-extrabold text-slate-900 dark:text-white tracking-tight flex items-baseline">
                       <CountUp
                         end={stat.value}
-                        duration={1.8}
+                        duration={1.25}
                         suffix={stat.suffix}
                         prefix={stat.prefix}
                       />
